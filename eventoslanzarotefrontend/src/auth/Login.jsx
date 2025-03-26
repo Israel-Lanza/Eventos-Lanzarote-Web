@@ -15,7 +15,7 @@ const LoginPage = () => {
       
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
-        window.location.href = "/dashboard"; // Redirigir al usuario a un dashboard o ruta protegida
+        window.location.href = "/dashboard"; //Redirigir al usuario a un dashboard o ruta protegida visit() mirarlo para ver como funciona
       }
     } catch (error) {
       if (error.response && error.response.data.errors) {

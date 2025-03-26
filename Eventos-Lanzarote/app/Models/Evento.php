@@ -25,7 +25,7 @@ class Evento extends Model
         '10' => 'octubre',
         '11' => 'noviembre',
         '12' => 'diciembre'
-    ];
+    ];//Se puede quitar hasta que se implemente lo de utils de js
 
 
     public function categorias(){
