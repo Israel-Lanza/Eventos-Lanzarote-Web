@@ -69,7 +69,7 @@ class UserController extends Controller
                 'password.required' => 'La contraseña es obligatoria.',
 
                 'cif.required'        => 'El CIF es obligatorio.',
-                'cif.max'             => 'El CIF sse comprende de 1 letra y 8 numeros.',
+                'cif.max'             => 'El CIF se comprende de 1 letra y 8 numeros.',
 
             ]);
 

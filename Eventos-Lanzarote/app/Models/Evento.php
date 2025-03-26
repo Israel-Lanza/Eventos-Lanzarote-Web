@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Evento extends Model
 {
-
-    
     const ESTADOS = [
         'P' => 'Pendiente',
         'A' => 'Aprobado',

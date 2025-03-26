@@ -6,7 +6,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:3000'],//La URL de react (desde donde vienen las solicitudes, osea desde donde se reciven (será del frontend React))
+    'allowed_origins' => ['http://localhost:5173'],//La URL de react (desde donde vienen las solicitudes, osea desde donde se reciven (será del frontend React))
 
     'allowed_origins_patterns' => [],
 
