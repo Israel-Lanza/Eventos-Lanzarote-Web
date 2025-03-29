@@ -1,6 +1,7 @@
 import Sidebar from "../components/Sidebar";
 import Resumen from "../components/Resumen";
 import { Outlet } from "react-router-dom";
+import ListadoEventos from "../components/ListadoEventos";
 
 
 

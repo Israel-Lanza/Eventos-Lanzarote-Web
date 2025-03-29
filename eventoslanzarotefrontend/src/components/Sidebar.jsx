@@ -22,6 +22,9 @@ export default function Sidebar() {
         }
     };
 
+    const user = JSON.parse(localStorage.getItem('user'));
+    const admin = user?.roles.includes("admin");
+
     return (
 
         <div className="flex">
@@ -35,12 +38,21 @@ export default function Sidebar() {
                         <Link to="/" className="flex items-center text-gray-300 hover:text-white transition">
                             <Home size={18} className="mr-2" /> Inicio
                         </Link>
-                        <Link to="/eventos" className="flex items-center text-gray-300 hover:text-white transition">
+
+                        <Link to="/dashboard" className="flex items-center text-gray-300 hover:text-white transition">
                             <Calendar size={18} className="mr-2" /> Eventos
                         </Link>
-                        <Link to="/empresas" className="flex items-center text-gray-300 hover:text-white transition">
-                            <Users size={18} className="mr-2" /> Empresas
-                        </Link>
+
+                        {admin && (
+                            <Link to="/dashboard/empresas" className="flex items-center text-gray-300 hover:text-white transition">
+                                <Users size={18} className="mr-2" /> Empresas
+                            </Link>
+                        )}
+
+
+
+
+
                     </div>
                 </div>
                 <div>
