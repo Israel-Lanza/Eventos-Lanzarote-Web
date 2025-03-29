@@ -15,6 +15,8 @@ const LoginPage = () => {
       
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
+        //Guardar usuario e informacion del usuario en localstorage
+        localStorage.setItem("user", JSON.stringify(response.data.user));
         window.location.href = "/dashboard"; //Redirigir al usuario a un dashboard o ruta protegida visit() mirarlo para ver como funciona
       }
     } catch (error) {

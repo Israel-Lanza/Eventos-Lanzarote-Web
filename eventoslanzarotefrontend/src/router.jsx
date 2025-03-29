@@ -12,6 +12,7 @@ import AdminDashboard from "./pages/Dashboard";
 import ListadoEventos from "./components/ListadoEventos";
 import Descripcion from "./pages/Descripcion";
 import ListadoEmpresas from "./components/ListadoEmpresas";
+import RutasProtegidas from "./components/RutasProtegidas";
 
 
 export default function Router() {
@@ -27,10 +28,15 @@ export default function Router() {
                     <Route path="eventos/:nombreEvento" element={<Descripcion/>}/>
                 </Route>
                 <Route path="/login" element={<LoginPage/>}/>
-                <Route path="/dashboard" element={<AdminDashboard />}>
+
+                <Route path="/dashboard" element={<RutasProtegidas roleRequired="admin"><AdminDashboard /></RutasProtegidas>}>
                     <Route index element={<ListadoEventos />} />
-                    <Route index element={<ListadoEmpresas />} />
+                    <Route path="empresas" element={<ListadoEmpresas />} />
                 </Route>
+                <Route path="/dashboard" element={<RutasProtegidas roleRequired="empresa"><AdminDashboard /></RutasProtegidas>}>
+                    <Route index element={<ListadoEventos />} />
+                </Route>
+
             </Routes>
         </BrowserRouter>
     );
