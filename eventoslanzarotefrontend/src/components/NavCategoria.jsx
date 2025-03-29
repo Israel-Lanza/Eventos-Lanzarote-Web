@@ -7,15 +7,15 @@ import TheaterComedyIcon from '@mui/icons-material/TheaterComedy';
 
 const NavCategoria = () => {
     const categorias = [
-        { nombre: 'Musicales', icon: Music4, link: 'eventos/categoria/musicales' },
-        { nombre: 'Talleres, cursos y conferencias', icon: BookOpen, link: 'eventos/categoria/talleres&cursos&conferencias' },
-        { nombre: 'Exposiciones', icon: Palette, link: 'eventos/categoria/exposiciones' },
-        { nombre: 'Gastronómicos', icon: Utensils, link: 'eventos/categoria/gastrononicos' },
-        { nombre: 'Infantiles', icon: Smile, link: 'eventos/categoria/infantiles' },
-        { nombre: 'Tradicionales', icon: Feather, link: 'eventos/categoria/tradicionales' },
-        { nombre: 'Ferias, galas y festivales', icon: FestivalIcon, link: 'eventos/categoria/ferias&galas&festivales' },
-        { nombre: 'Artes Escénicas', icon: TheaterComedyIcon, link: 'eventos/categoria/artes-escenicas' },
-        { nombre: 'Deportivos', icon: Volleyball, link: 'eventos/categoria/deportivos' }
+        { nombre: 'Musicales', icon: Music4, link: '/eventos/categoria/musicales' },
+        { nombre: 'Talleres, cursos y conferencias', icon: BookOpen, link: '/eventos/categoria/talleres&cursos&conferencias' },
+        { nombre: 'Exposiciones', icon: Palette, link: '/eventos/categoria/exposiciones' },
+        { nombre: 'Gastronómicos', icon: Utensils, link: '/eventos/categoria/gastrononicos' },
+        { nombre: 'Infantiles', icon: Smile, link: '/eventos/categoria/infantiles' },
+        { nombre: 'Tradicionales', icon: Feather, link: '/eventos/categoria/tradicionales' },
+        { nombre: 'Ferias, galas y festivales', icon: FestivalIcon, link: '/eventos/categoria/ferias&galas&festivales' },
+        { nombre: 'Artes Escénicas', icon: TheaterComedyIcon, link: '/eventos/categoria/artes-escenicas' },
+        { nombre: 'Deportivos', icon: Volleyball, link: '/eventos/categoria/deportivos' }
     ];
     
     return (

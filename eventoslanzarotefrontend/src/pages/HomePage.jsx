@@ -26,7 +26,7 @@ const HomePage = () => {
 
       {/* Eventos de esta semana */}
       <div className="mb-6">
-        <h3 className="text-2xl font-bold mb-4">Eventos de esta semana</h3>
+        <h3 className="text-2xl font-bold mb-4">Próximos eventos</h3>
 
         {loading ? (
           // Mostrar Skeletons mientras se cargan los eventos

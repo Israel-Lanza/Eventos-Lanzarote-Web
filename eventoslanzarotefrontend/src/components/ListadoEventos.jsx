@@ -1,14 +1,40 @@
 import { useEffect, useState } from "react";
 import { Edit, MoreVertical, Trash } from "lucide-react";
 import { getEventos } from "../services/eventos";
+import Formulario2 from '../components/Formulario2'
+import Modal from '@mui/material/Modal';
+import { Menu, X } from "lucide-react";
+
+import Box from '@mui/material/Box';
 
 export default function ListadoEventos() {
 
     const [eventos, setEventos] = useState([]);
+    const [mostrarForm, setMostrarForm] = useState(false);
+
+    const handleMostrarForm = () => setMostrarForm(true);
+    const handleClose = () => setMostrarForm(false);
+    
 
     useEffect(() => {
         getEventos().then(data => setEventos(data));
     }, []);
+    
+    const modalStyle = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '80%',
+        maxWidth: 800,
+        bgcolor: 'background.paper',
+        borderRadius: '16px',
+        boxShadow: 24,
+        p: 4,
+        maxHeight: '90vh',
+        overflowY: 'auto',
+    };
+
 
     return (
         <div className="bg-white shadow-lg rounded-lg p-6">
@@ -18,7 +44,15 @@ export default function ListadoEventos() {
                     className="border border-gray-300 rounded-md p-2 w-72"
                     placeholder="Buscar eventos..."
                 />
+
+                <button
+                    onClick={handleMostrarForm}
+                    className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+                >
+                    Agregar eventos
+                </button>
             </div>
+
 
             <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
@@ -74,6 +108,27 @@ export default function ListadoEventos() {
                     </tbody>
                 </table>
             </div>
+
+            {/* Modal */}
+            <Modal open={mostrarForm} onClose={handleClose}>
+                <Box sx={modalStyle}>
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-xl font-bold">Nuevo Evento</h2>
+                        <button onClick={handleClose}>
+                            <X size={24} />
+                        </button>
+                    </div>
+                    <Formulario2 closeModal={handleClose} />
+                    <div className="flex justify-end mt-4">
+                        <button
+                            onClick={handleClose}
+                            className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
+                        >
+                            Cerrar
+                        </button>
+                    </div>
+                </Box>
+            </Modal>
         </div>
     )
 }

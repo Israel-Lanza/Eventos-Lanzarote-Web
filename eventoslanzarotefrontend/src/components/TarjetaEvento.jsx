@@ -1,6 +1,7 @@
 import { getDisplay } from "../constantes/categorias";
 import { Link } from "react-router-dom";
 import PlaceIcon from '@mui/icons-material/Place';
+import { formatearFecha } from "../utils/formatearFecha";
 
 const TarjetaEvento = ({ evento }) => {
     let categoriasDisplay = "Sin categoría";
@@ -42,7 +43,7 @@ const TarjetaEvento = ({ evento }) => {
                             {categoriasDisplay}
                         </div>
                         <h3 className="text-lg font-bold text-gray-800 mb-1">{evento.nombre || "Nombre no disponible"}</h3>
-                        <p className="text-sm text-gray-600">{evento.fecha || "Fecha no disponible"}</p>
+                        <p className="text-sm text-gray-600">{formatearFecha(evento.fecha) || "Fecha no disponible"}</p>
                         <p className="text-sm text-gray-600">{evento.precio ? `${evento.precio} €` : "Gratis"}</p>
                         <p className="text-sm text-gray-600">{evento.hora || "Hora no especificada"}</p>
                         <div className="text-sm text-gray-600 flex items-center mt-1">

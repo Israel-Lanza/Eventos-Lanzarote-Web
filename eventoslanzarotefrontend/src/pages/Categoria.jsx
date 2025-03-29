@@ -4,6 +4,7 @@ import { getEventosCategory } from "../services/eventos";
 import TarjetaEvento from "../components/TarjetaEvento";
 import categorias from "../constantes/categorias";
 import { Skeleton, Button } from "@mui/material";
+import NavCategoria from "../components/NavCategoria";
 
 const Categoria = () => {
   const { nombreCategoria } = useParams();
@@ -47,6 +48,7 @@ const Categoria = () => {
 
   return (
     <div className="container mx-auto px-4 py-6">
+      <NavCategoria/>
       {/* Título de la Categoría */}
       <h1 className="text-3xl font-bold text-gray-800 mb-6">{displayName}</h1>
 
