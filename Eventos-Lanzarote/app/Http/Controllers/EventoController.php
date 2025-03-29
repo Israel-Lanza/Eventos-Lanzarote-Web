@@ -23,10 +23,11 @@ class EventoController extends Controller
         return response()->json($eventos);
     }
 
-    public function show($id)
+    public function show($nombre)
     {
+        $nombre = str_replace('-', ' ', $nombre);
         $evento = Evento::select('id', 'nombre', 'imagen', 'ubicacion', 'fecha', 'precio', 'hora', 'descripcion', 'enlace')
-            ->where('id', $id)
+            ->where('nombre', $nombre)
             ->first();
 
         if (!$evento) {

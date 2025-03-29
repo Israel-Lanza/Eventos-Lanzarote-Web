@@ -25,7 +25,7 @@ Route::post('/logout', [AutenticationController::class, 'logout'])->middleware('
 
 //Rutas para eventos en el INDEX
 Route::get('/eventos', [EventoController::class, 'index']);//Listar eventos INDEX
-Route::get('/eventos/{id}', [EventoController::class, 'show']); //Mostrar un evento INDEX
+Route::get('/eventos/{nombre}', [EventoController::class, 'show']); //Mostrar un evento INDEX
 Route::get('/eventos/categoria/{categoria}', [EventoController::class, 'filtrarPorCategoria']); //Filtrar por categoría INDEX
 
 //Rutas para eventos en el DASHBOARD de Admin y Empresa 
