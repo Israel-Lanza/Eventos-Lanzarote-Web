@@ -8,7 +8,7 @@ const LoginPage = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setErrors({}); // Limpiar errores previos
+    setErrors({}); //Limpiar errores previos
 
     try {
       const response = await api.post("/login", { email, password });
@@ -19,9 +19,9 @@ const LoginPage = () => {
       }
     } catch (error) {
       if (error.response && error.response.data.errors) {
-        setErrors(error.response.data.errors); // Laravel devuelve errores validados aquí
+        setErrors(error.response.data.errors); //Laravel devuelve errores validados aquí
       } else if (error.response && error.response.data.message) {
-        setErrors({ general: error.response.data.message }); // Error general (ej: Credenciales incorrectas)
+        setErrors({ general: error.response.data.message }); //Error general (ej: Credenciales incorrectas)
       }
     }
   };

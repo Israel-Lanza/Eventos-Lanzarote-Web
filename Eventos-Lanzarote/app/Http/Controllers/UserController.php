@@ -4,96 +4,93 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
+
 
 class UserController extends Controller
 {
-
-    function listado()
+    public function index()
     {
         $usuarios = User::select('id', 'nombre', 'email', 'cif')
-        ->where('id', '!=', User::orderBy('id')->first()->id)->paginate(5);
-        return view('usuarios.listado', compact('usuarios'));
+            ->where('id', '!=', User::orderBy('id')->first()->id)
+            ->paginate(5);
+
+        return response()->json($usuarios);
     }
 
-
-    function formulario($oper = '', $id = '')
+    /*public function show($id)
     {
-        $usuario = empty($id) ? new User() : User::find($id);
+        $usuario = User::select('id', 'nombre', 'email', 'cif')
+            ->where('id', $id)
+            ->first();
 
-        return view('usuarios.formulario', compact('oper', 'usuario'));
-    }
-
-    function leer($id)
-    {
-        return $this->formulario('cons', $id);
-    }
-
-    function actualizar($id)
-    {
-        return $this->formulario('modi', $id);
-    }
-
-    function eliminar($id)
-    {
-        return $this->formulario('supr', $id);
-    }
-
-    function alta()
-    {
-        return $this->formulario();
-    }
-
-    function almacenar(Request $request)
-    {
-        if ($request->oper == 'supr') {
-
-            $user = User::find($request->id);
-            $user->delete();
-
-            $salida = redirect()->route('usuarios.mostrar');
-        } else {
-
-            $request->validate([
-                'nombre'               => 'required|string|max:200',
-                'email'                => 'required|string',
-                'password'             => 'required',
-                'cif'                  => 'required|max:9|regex:/^[A-Z]\d{7}[A-Z0-9]$/',
-            ], [
-                'nombre.required'   => 'El nombre de la empresa es obligatorio.',
-                'nombre.string'     => 'Debe ser de tipo cadena de texto.',
-                'nombre.max'        => 'Máximo 255 caracteres',
-
-                'email.required'    => 'El email es obligatorio.',
-                'email.string'      => 'Debe ser de tipo cadena de texto.',
-
-                'password.required' => 'La contraseña es obligatoria.',
-
-                'cif.required'        => 'El CIF es obligatorio.',
-                'cif.max'             => 'El CIF se comprende de 1 letra y 8 numeros.',
-
-            ]);
-
-
-            $user = empty($request->id) ? new User() : User::find($request->id);
-
-            $user->nombre             = $request->nombre;
-            $user->email              = $request->email;
-            $user->password           = $request->password;
-            $user->cif                = $request->cif;
-
-
-            $user->save();
-
-            $user->assignRole('empresa');
-
-            if ($request->ajax()) {
-                return response()->json([
-                    'mensaje' => 'Usuario creado correctamente.',
-                    'usuario'  => $user
-                ]);
-            }
+        if (!$usuario) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
         }
-        return $salida;
+
+        return response()->json($usuario);
+    }*/
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nombre'    => 'required|string|max:200',
+            'email'     => 'required|email|unique:users,email',
+            'password'  => 'required|string|min:8',
+            'cif'       => 'required|max:9|regex:/^[A-Z]\d{7}[A-Z0-9]$/',
+        ]);
+
+        $user = new User();
+        $user->nombre = $request->nombre;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->cif = $request->cif;
+
+        $user->save();
+        $user->assignRole('empresa');
+
+
+        return response()->json(['mensaje' => 'Usuario creado correctamente', 'usuario' => $user], 201);
     }
 
+    public function update(Request $request, $id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+
+        $request->validate([
+            'nombre'    => 'string|max:200',
+            'email'     => 'email|unique:users,email,' . $id,
+            'password'  => 'nullable|string|min:8',
+            'cif'       => 'required|max:9|regex:/^[A-Z]\d{7}[A-Z0-9]$/',
+        ]);
+
+        $user->nombre = $request->nombre ?? $user->nombre;
+        $user->email = $request->email ?? $user->email;
+        $user->cif = $request->cif ?? $user->cif;
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return response()->json(['mensaje' => 'Usuario actualizado correctamente', 'usuario' => $user]);
+    }
+
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+
+        $user->delete();
+
+        return response()->json(['mensaje' => 'Usuario eliminado correctamente']);
+    }
 }

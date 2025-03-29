@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AutenticationController;
 use App\Http\Controllers\EventoController;
+use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,12 +23,25 @@ Route::post('/login', [AutenticationController::class, 'login']);
 Route::post('/logout', [AutenticationController::class, 'logout'])->middleware('auth:sanctum');
 
 
+//Rutas para eventos en el INDEX
+Route::get('/eventos', [EventoController::class, 'index']);//Listar eventos INDEX
+Route::get('/eventos/{id}', [EventoController::class, 'show']); //Mostrar un evento INDEX
+Route::get('/eventos/categoria/{categoria}', [EventoController::class, 'filtrarPorCategoria']); //Filtrar por categoría INDEX
 
+//Rutas para eventos en el DASHBOARD de Admin y Empresa 
+Route::middleware(['auth:sanctum', 'role:admin|empresa'])->group(function () {
+    Route::post('/eventos', [EventoController::class, 'store']); //Crear un evento DASHBOARD (ROL ADMIN/EMPRESA)
+    Route::put('/eventos/{id}', [EventoController::class, 'update']); //Actualizar evento DASHBOARD (ROL ADMIN/EMPRESA)
+    Route::delete('/eventos/{id}', [EventoController::class, 'destroy']); //Eliminar evento DASHBOARD (ROL ADMIN/EMPRESA)
+});
 
-Route::get('/eventos', [EventoController::class, 'index']);  // Listar eventos
-Route::get('/eventos/{id}', [EventoController::class, 'show']); // Mostrar un evento
-Route::post('/eventos', [EventoController::class, 'store']); // Crear un evento
-Route::put('/eventos/{id}', [EventoController::class, 'update']); // Actualizar evento
-Route::delete('/eventos/{id}', [EventoController::class, 'destroy']); // Eliminar evento
-Route::get('/eventos/categoria/{categoria}', [EventoController::class, 'filtrarPorCategoria']); // Filtrar por categoría
-Route::patch('/eventos/{id}/estado', [EventoController::class, 'cambiarEstado']); // Cambiar estado del evento
+Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+    // Rutas para gestión de empresas (Usuarios)
+    Route::get('/empresas', [UserController::class, 'index']); //Mostrar los datos de las empresas para rol ADMIN
+    Route::post('/empresas', [UserController::class, 'store']); //Crear un usuario (empresa) para rol ADMIN
+    Route::put('/empresas/{id}', [UserController::class, 'update']); //Actualizar los datos del usuario (empresa) para rol ADMIN
+    Route::delete('/empresas/{id}', [UserController::class, 'destroy']); //Eliminar usuario (empresa) DASHBOARD para rol ADMIN
+
+    //Cambiar estado del evento DASHBOARD (ROL ADMIN)
+    Route::patch('/eventos/{id}/estado', [EventoController::class, 'cambiarEstado']);
+});

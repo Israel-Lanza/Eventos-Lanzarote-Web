@@ -36,6 +36,7 @@ class EventoController extends Controller
         return response()->json($evento);
     }
 
+    //Dashboard (Admin/Empresa)
     public function store(Request $request)
     {
         $request->validate([
@@ -78,6 +79,7 @@ class EventoController extends Controller
         return response()->json(['mensaje' => 'Evento creado correctamente', 'evento' => $evento], 201);
     }
 
+    //Dashboard (Admin/Empresa)
     public function update(Request $request, $id)
     {
         $evento = Evento::find($id);
@@ -107,6 +109,7 @@ class EventoController extends Controller
         return response()->json(['mensaje' => 'Evento actualizado correctamente', 'evento' => $evento]);
     }
 
+    //Dashboard (Admin / Empresa)
     public function destroy($id)
     {
         $evento = Evento::find($id);
@@ -129,6 +132,7 @@ class EventoController extends Controller
         return response()->json($eventos);
     }
 
+    //Dashboard (Admin)
     public function cambiarEstado(Request $request, $id)
     {
         $evento = Evento::find($id);

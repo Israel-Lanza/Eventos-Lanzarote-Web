@@ -1,7 +1,25 @@
 import { Link } from "react-router-dom"
 import { Calendar, Home, LogOut, Users } from "lucide-react"
+import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
-export default function Sidebar() {         
+
+export default function Sidebar() { 
+    const navigate = useNavigate();  //Hook para redirigir al usuario
+    
+    const handleLogout = async () => {
+        try {
+            const response = await api.post('/logout');
+            
+            if (response.status === 200) {
+                localStorage.removeItem('token');
+                navigate('/login');  // Redirige al usuario a la página de login
+            }
+        } catch (error) {
+            console.error('Error al cerrar sesión', error);
+        }
+    };
+    
     return (  
         <div className="bg-gray-100 border-r p-6 h-screen w-64 flex flex-col justify-between">
             {/* Encabezado */}
@@ -32,7 +50,7 @@ export default function Sidebar() {
 
             {/* Cerrar sesión */}
             <div>
-                <button className="flex items-center text-red-600 hover:text-red-800 transition">
+                <button onClick={handleLogout} className="flex items-center text-red-600 hover:text-red-800 transition">
                     <LogOut size={18} className="mr-2" />
                     Cerrar sesión
                 </button>

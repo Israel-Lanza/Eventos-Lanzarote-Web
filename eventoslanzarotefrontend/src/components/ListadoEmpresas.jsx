@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Edit, MoreVertical, Trash } from "lucide-react";
-import { getEventos } from "../services/eventos";
+import { getEmpresas } from "../services/empresas";
 
-export default function ListadoEventos() {
+export default function ListadoEmpresas() {
 
-    const [eventos, setEventos] = useState([]);
+    const [empresas, setEmpresas] = useState([]);
 
     useEffect(() => {
-        getEventos().then(data => setEventos(data));
+        getEmpresas().then(data => setEventos(data));
     }, []);
 
     return (
@@ -16,7 +16,7 @@ export default function ListadoEventos() {
                 <input
                     type="text"
                     className="border border-gray-300 rounded-md p-2 w-72"
-                    placeholder="Buscar eventos..."
+                    placeholder="Buscar empresas..."
                 />
             </div>
 
@@ -24,27 +24,19 @@ export default function ListadoEventos() {
                 <table className="w-full text-left border-collapse">
                     <thead>
                         <tr>
-                            <th className="border-b py-2 px-4">Evento</th>
-                            <th className="border-b py-2 px-4">Empresa</th>
-                            <th className="border-b py-2 px-4">Fecha</th>
-                            <th className="border-b py-2 px-4">Ubicación</th>
-                            <th className="border-b py-2 px-4">Estado</th>
+                            <th className="border-b py-2 px-4">Nombre</th>
+                            <th className="border-b py-2 px-4">Email</th>
+                            <th className="border-b py-2 px-4">CIF</th>
                             <th className="border-b py-2 px-4"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {eventos.length > 0 ? (
-                            eventos.map(evento => (
-                                <tr key={evento.id} className="hover:bg-gray-100">
-                                    <td className="py-2 px-4 font-medium">{evento.nombre}</td>
-                                    <td className="py-2 px-4">{evento.autor}</td>
-                                    <td className="py-2 px-4">{evento.fecha}</td>
-                                    <td className="py-2 px-4">{evento.ubicacion}</td>
-                                    <td className="py-2 px-4">
-                                        <span className={`px-2 py-1 text-sm rounded-md ${evento.estado === "A" ? "bg-green-500 text-white" : "bg-gray-400 text-white"}`}>
-                                            {evento.estado === "A" ? "Activo" : "Pendiente"}
-                                        </span>
-                                    </td>
+                        {empresas.length > 0 ? (
+                            empresas.map(empresa => (
+                                <tr key={empresa.id} className="hover:bg-gray-100">
+                                    <td className="py-2 px-4 font-medium">{empresa.nombre}</td>
+                                    <td className="py-2 px-4">{empresa.email}</td>
+                                    <td className="py-2 px-4">{empresa.cif}</td>
                                     <td className="py-2 px-4">
                                         <div className="relative">
                                             <button className="p-2 rounded-full hover:bg-gray-200 transition" aria-label="Opciones">
@@ -68,12 +60,12 @@ export default function ListadoEventos() {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={6} className="text-center py-4 text-gray-500">No hay resultados</td>
+                                <td colSpan={4} className="text-center py-4 text-gray-500">No hay resultados</td>
                             </tr>
                         )}
                     </tbody>
                 </table>
             </div>
         </div>
-    )
+    );
 }

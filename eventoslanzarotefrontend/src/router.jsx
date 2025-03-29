@@ -11,6 +11,7 @@ import LoginPage from "./auth/Login";
 import AdminDashboard from "./pages/Dashboard copy";
 import ListadoEventos from "./components/ListadoEventos";
 import Descripcion from "./pages/Descripcion";
+import ListadoEmpresas from "./components/ListadoEmpresas";
 
 
 export default function Router() {
@@ -33,6 +34,7 @@ export default function Router() {
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/dashboard" element={<AdminDashboard />}>
                     <Route index element={<ListadoEventos />} />
+                    <Route index element={<ListadoEmpresas />} />
                 </Route>
                 
             </Routes>
