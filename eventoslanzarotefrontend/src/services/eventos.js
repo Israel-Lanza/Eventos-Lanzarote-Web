@@ -1,6 +1,6 @@
 import api from "./api";
 
-// 🔥 Función para obtener eventos desde Laravel
+//Función para obtener eventos desde Laravel
 export const getEventos = async () => {
   try {
     const response = await api.get("/eventos"); // Solicitud GET a Laravel
@@ -22,7 +22,7 @@ export const getEventosCategory = async (categoria) => {
   }
 };
 
-// 🔥 Función para obtener un evento por ID
+//Función para obtener un evento por ID
 export const getEventoById = async (id) => {
     try {
       const response = await api.get(`/eventos/${id}`);
@@ -33,7 +33,7 @@ export const getEventoById = async (id) => {
     }
   };
   
-  // 🔥 Función para crear un nuevo evento
+  //Función para crear un nuevo evento
   export const createEvento = async (eventoData) => {
     try {
       const response = await api.post("/eventos", eventoData);
@@ -44,7 +44,7 @@ export const getEventoById = async (id) => {
     }
   };
   
-  // 🔥 Función para actualizar un evento existente
+  //Función para actualizar un evento existente
   export const updateEvento = async (id, eventoData) => {
     try {
       const response = await api.put(`/eventos/${id}`, eventoData);
@@ -55,7 +55,7 @@ export const getEventoById = async (id) => {
     }
   };
   
-  // 🔥 Función para eliminar un evento
+  //Función para eliminar un evento
   export const deleteEvento = async (id) => {
     try {
       await api.delete(`/eventos/${id}`);
