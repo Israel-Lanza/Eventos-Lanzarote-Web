@@ -1,6 +1,6 @@
 import { getDisplay } from "../constantes/categorias";
-import { MapPin } from 'lucide-react';
 import { Link } from "react-router-dom";
+import PlaceIcon from '@mui/icons-material/Place';
 
 const TarjetaEvento = ({ evento }) => {
     let categoriasDisplay = "Sin categoría";
@@ -46,7 +46,7 @@ const TarjetaEvento = ({ evento }) => {
                         <p className="text-sm text-gray-600">{evento.precio ? `${evento.precio} €` : "Gratis"}</p>
                         <p className="text-sm text-gray-600">{evento.hora || "Hora no especificada"}</p>
                         <div className="text-sm text-gray-600 flex items-center mt-1">
-                            <MapPin className="w-4 h-4 mr-1" />
+                            <PlaceIcon className="w-4 h-4 mr-1" />
                             {evento.ubicacion || "Ubicación no disponible"}
                         </div>
                         <p className="text-sm text-gray-700 mt-2 line-clamp-2">

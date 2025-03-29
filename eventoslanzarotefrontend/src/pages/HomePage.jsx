@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getEventos } from "../services/eventos";
 import TarjetaEvento from "../components/TarjetaEvento";
 import { Skeleton } from "@mui/material";
+import NavCategoria from "../components/NavCategoria";
 
 const HomePage = () => {
   const [eventos, setEventos] = useState([]);
@@ -20,6 +21,8 @@ const HomePage = () => {
       <div className="bg-blue-500 text-white p-6 mb-6 rounded shadow">
         <h3 className="text-xl font-bold">Tu guía de ocio en la isla de Lanzarote</h3>
       </div>
+
+      <NavCategoria/>
 
       {/* Eventos de esta semana */}
       <div className="mb-6">
