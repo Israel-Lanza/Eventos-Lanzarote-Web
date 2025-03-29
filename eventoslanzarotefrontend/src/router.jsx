@@ -8,7 +8,7 @@ import Categoria from './pages/Categoria';
 import Companies from "./pages/Companies";
 import Eventos from "./pages/Eventos";
 import LoginPage from "./auth/Login";
-import AdminDashboard from "./pages/Dashboard copy";
+import AdminDashboard from "./pages/Dashboard";
 import ListadoEventos from "./components/ListadoEventos";
 import Descripcion from "./pages/Descripcion";
 import ListadoEmpresas from "./components/ListadoEmpresas";
@@ -26,17 +26,11 @@ export default function Router() {
                     <Route path="eventos/categoria/:nombreCategoria" element={<Categoria/>}/>
                     <Route path="eventos/:nombreEvento" element={<Descripcion/>}/>
                 </Route>
-                <Route path="/panel" element={<Administracion />}>
-                    <Route index element={<Dashboard />} />
-                    <Route path="empresas" element={<Companies />} />
-                    <Route path="eventos" element={<Eventos />} />
-                </Route>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/dashboard" element={<AdminDashboard />}>
                     <Route index element={<ListadoEventos />} />
                     <Route index element={<ListadoEmpresas />} />
                 </Route>
-                
             </Routes>
         </BrowserRouter>
     );
