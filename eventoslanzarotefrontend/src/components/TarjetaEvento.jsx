@@ -1,4 +1,6 @@
 import { getDisplay } from "../constantes/categorias";
+import { MapPin } from 'lucide-react';
+import { Link } from "react-router-dom";
 
 const TarjetaEvento = ({ evento }) => {
     let categoriasDisplay = "Sin categoría";
@@ -16,39 +18,48 @@ const TarjetaEvento = ({ evento }) => {
     }
 
     return (
-        <div className="w-full md:w-1/2 p-4">
-            <div className="flex flex-col md:flex-row bg-white shadow-md rounded-lg overflow-hidden">
-                
+        <div className="p-4">
+            <div className="bg-white shadow-lg rounded-2xl overflow-hidden transition-transform transform hover:scale-105 border border-gray-200 h-full flex flex-col">
+
                 {/* Imagen del evento */}
-                <div className="md:w-1/3 w-full">
-                    <img
-                        src={evento.imagen ? `http://api-eventoslanzarote.api/${evento.imagen}` : "https://via.placeholder.com/150"}
+                <div className="h-48 w-full overflow-hidden">
+                    {/* <img
+                        src={evento.imagen ? `http://api-eventoslanzarote.api/${evento.imagen}` : "https://via.placeholder.com/300x200"}
                         alt={evento.nombre}
-                        className="object-cover w-full h-full"
+                        className="w-full h-full object-cover"
+                    /> */}
+                    <img
+                        src="https://inkscape.app/wp-content/uploads/imagen-vectorial.webp"
+                        alt="lanzarote"
+                        className="w-full h-full object-cover"
                     />
                 </div>
-                
+
                 {/* Contenido del evento */}
-                <div className="p-4 flex flex-col justify-between w-full">
+                <div className="p-4 flex flex-col justify-between flex-grow">
                     <div>
-                        <strong className="text-blue-600 text-sm block mb-1">
+                        <div className="text-sm text-blue-600 font-semibold mb-2 whitespace-normal break-words">
                             {categoriasDisplay}
-                        </strong>
-                        <h3 className="text-lg font-bold mb-2">{evento.nombre || "Nombre no disponible"}</h3>
-                        <p className="text-sm text-gray-500 mb-2">{evento.fecha || "Fecha no disponible"}</p>
-                        <p className="text-sm text-gray-500 mb-2">{evento.precio ? `${evento.precio} €` : "Gratis"}</p>
-                        <div className="text-sm text-gray-500 mb-2">{evento.hora || "Hora no especificada"}</div>
-                        <p className="text-sm text-gray-500 mb-2">
-                            📍 {evento.ubicacion || "Ubicación no disponible"}
-                        </p>
-                        <p className="text-sm text-gray-700 mb-2">
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-800 mb-1">{evento.nombre || "Nombre no disponible"}</h3>
+                        <p className="text-sm text-gray-600">{evento.fecha || "Fecha no disponible"}</p>
+                        <p className="text-sm text-gray-600">{evento.precio ? `${evento.precio} €` : "Gratis"}</p>
+                        <p className="text-sm text-gray-600">{evento.hora || "Hora no especificada"}</p>
+                        <div className="text-sm text-gray-600 flex items-center mt-1">
+                            <MapPin className="w-4 h-4 mr-1" />
+                            {evento.ubicacion || "Ubicación no disponible"}
+                        </div>
+                        <p className="text-sm text-gray-700 mt-2 line-clamp-2">
                             {evento.descripcion || "Sin descripción"}
                         </p>
                     </div>
-                    
-                    <a href={evento.link || "#"} className="mt-2 py-2 px-4 bg-blue-500 text-white text-center rounded hover:bg-blue-600 transition">
+
+                    <Link
+                        to={`/eventos/${evento.nombre.replace(/\s+/g, '-').toLowerCase()}`}
+                        className="mt-3 py-2 px-4 bg-blue-500 text-white text-center rounded-xl hover:bg-blue-600 transition inline-block"
+                    >
                         Más información
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

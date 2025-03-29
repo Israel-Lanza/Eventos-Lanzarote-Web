@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import NavCategoria from "./NavCategoria";
+import { Search } from 'lucide-react';
 
 const Header = () => {
     return (
@@ -14,7 +15,7 @@ const Header = () => {
                     {/* Logo */}
                     <div className="flex-1 text-center">
                         <div className="logo">
-                            <a href="#" className="text-2xl font-bold text-gray-800">Nombre del sitio</a>
+                            <a href="#" className="text-2xl font-bold text-gray-800"></a>
                         </div>
                     </div>
 
@@ -32,7 +33,7 @@ const Header = () => {
                                 type="submit"
                                 className="text-gray-600 hover:text-gray-900 transition"
                             >
-                                🔍
+                                <Search />
                             </button>
                         </form>
                         <Link to="login" className="py-1 px-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">Iniciar Sesión</Link>

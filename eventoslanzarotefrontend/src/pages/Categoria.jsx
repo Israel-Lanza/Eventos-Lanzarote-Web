@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { getEventosCategory } from "../services/eventos";
 import TarjetaEvento from "../components/TarjetaEvento";
 import categorias from "../constantes/categorias";
+import { Skeleton, Button } from "@mui/material";
 
 const Categoria = () => {
   const { nombreCategoria } = useParams();
@@ -12,6 +13,8 @@ const Categoria = () => {
 
   const [eventos, setEventos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const eventosPorPagina = 6;
 
   useEffect(() => {
     if (sigla) {
@@ -23,21 +26,70 @@ const Categoria = () => {
     }
   }, [sigla]);
 
+  // Calcular eventos a mostrar en la página actual
+  const indexOfLastEvento = currentPage * eventosPorPagina;
+  const indexOfFirstEvento = indexOfLastEvento - eventosPorPagina;
+  const eventosActuales = eventos.slice(indexOfFirstEvento, indexOfLastEvento);
+  const totalPages = Math.ceil(eventos.length / eventosPorPagina);
+
+  // Funciones de paginación
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-6">
       {/* Título de la Categoría */}
       <h1 className="text-3xl font-bold text-gray-800 mb-6">{displayName}</h1>
-      
+
       {loading ? (
-        <p className="text-gray-600 text-center">Cargando eventos...</p>
-      ) : eventos.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {eventos.map(evento => (
-            <TarjetaEvento key={evento.id} evento={evento} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
+          {Array.from(new Array(6)).map((_, index) => (
+            <div key={index} className="p-4 bg-white shadow-md rounded-lg h-full">
+              <Skeleton variant="rectangular" height={150} />
+              <Skeleton variant="text" className="my-2" />
+              <Skeleton variant="text" />
+            </div>
           ))}
         </div>
+      ) : eventosActuales.length > 0 ? (
+        <div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 mb-6">
+            {eventosActuales.map(evento => (
+              <TarjetaEvento key={evento.id} evento={evento} />
+            ))}
+          </div>
+          {/* Paginación */}
+          <div className="flex justify-between items-center mt-4">
+            <Button 
+              variant="outlined" 
+              onClick={handlePreviousPage} 
+              disabled={currentPage === 1}
+            >
+              Anterior
+            </Button>
+
+            <span>Página {currentPage} de {totalPages}</span>
+
+            <Button 
+              variant="outlined" 
+              onClick={handleNextPage} 
+              disabled={currentPage === totalPages}
+            >
+              Siguiente
+            </Button>
+          </div>
+        </div>
       ) : (
-        <p className="text-gray-600 text-center">No hay eventos disponibles en esta categoría.</p>
+        <p className="text-gray-500">No hay eventos disponibles.</p>
       )}
     </div>
   );

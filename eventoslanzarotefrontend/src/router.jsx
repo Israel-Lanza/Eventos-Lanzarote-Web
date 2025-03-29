@@ -10,6 +10,7 @@ import Eventos from "./pages/Eventos";
 import LoginPage from "./auth/Login";
 import AdminDashboard from "./pages/Dashboard copy";
 import ListadoEventos from "./components/ListadoEventos";
+import Descripcion from "./pages/Descripcion";
 
 
 export default function Router() {
@@ -22,6 +23,7 @@ export default function Router() {
                     <Route index element={<HomePage />} />
                     <Route path="about" element={<About />} />
                     <Route path="eventos/categoria/:nombreCategoria" element={<Categoria/>}/>
+                    <Route path="eventos/:nombreEvento" element={<Descripcion/>}/>
                 </Route>
                 <Route path="/panel" element={<Administracion />}>
                     <Route index element={<Dashboard />} />

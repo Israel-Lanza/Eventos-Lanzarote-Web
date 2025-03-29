@@ -23,9 +23,9 @@ export const getEventosCategory = async (categoria) => {
 };
 
 //Función para obtener un evento por ID
-export const getEventoById = async (id) => {
+export const getEventoById = async (nombreEvento) => {
     try {
-      const response = await api.get(`/eventos/${id}`);
+      const response = await api.get(`/eventos/${nombreEvento}`);
       return response.data;
     } catch (error) {
       console.error("Error obteniendo el evento:", error);

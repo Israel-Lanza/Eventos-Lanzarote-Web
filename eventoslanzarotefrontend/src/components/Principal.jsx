@@ -1,20 +1,22 @@
-// src/components/Layout.tsx
-import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 import Header from "./Header";
+import { Outlet } from "react-router-dom";
 
 const Principal = () => {
   return (
-    <div className="container">
-      <header className="mb-5">
-        <Header />
-      </header>
+    <div className="flex flex-col min-h-screen items-center">
+      <div className="w-full max-w-6xl px-4">
+        
+        <header className="mb-5">
+          <Header />
+        </header>
 
-      <main >
-        <Outlet /> {/* Aquí se renderizan los componentes hijos */}
-      </main>
+        <main>
+          <Outlet /> 
+        </main>
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 };
