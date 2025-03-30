@@ -15,7 +15,7 @@ class EventoController extends Controller
 {
     public function index()
     {
-        $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor')
+        $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace')
             ->with(['categorias:id,sigla'])
             ->where('estado', 'A')
             ->get();
@@ -23,7 +23,7 @@ class EventoController extends Controller
         return response()->json($eventos);
     }
 
-    // Para sacar todos los eventos sin tener en cuenta el estado
+    //Para sacar todos los eventos sin tener en cuenta el estado
     public function getAllEvents($autor)
     {
         $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor')
@@ -110,13 +110,21 @@ class EventoController extends Controller
             'imagen'        => 'nullable|image|max:2048',
         ]);
 
-        $evento->update($request->all());
+        $evento->nombre = $request->nombre ?? $evento->nombre;
+        $evento->descripcion = $request->descripcion ?? $evento->descripcion;
+        $evento->fecha = $request->fecha ?? $evento->fecha;
+        $evento->hora = $request->hora ?? $evento->hora;
+        $evento->ubicacion = $request->ubicacion ?? $evento->ubicacion;
+        $evento->enlace = $request->enlace ?? $evento->enlace;
+        $evento->precio = $request->precio ?? $evento->precio;
 
         if ($request->hasFile('imagen')) {
             $nombreImagen = str_replace(' ', '', $request->nombre . '.' . $request->file('imagen')->getClientOriginalExtension());
             $path = $request->file('imagen')->storeAs('imgEventos', $nombreImagen);
             $evento->imagen = Storage::url("/" . $path);
         }
+
+        $evento->save();
 
         //ACTUALIZAR CATEGORÍAS (como en el store)
         if ($request->has('categorias')) {
