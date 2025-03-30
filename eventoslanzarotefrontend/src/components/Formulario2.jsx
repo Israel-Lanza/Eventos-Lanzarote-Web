@@ -3,7 +3,7 @@ import { createEvento, updateEvento } from "../services/eventos";
 import categoriasDisponibles from "../constantes/categorias";
 import { Calendar, Clock, Upload, Euro, Link as LinkIcon } from "lucide-react";
 
-function Formulario({ closeModal, eventoEditar = null }) {
+function Formulario({ closeModal, eventoEditar = null, onActualizar }) {
   const [formData, setFormData] = useState({
     nombre: "",
     descripcion: "",
@@ -61,14 +61,6 @@ function Formulario({ closeModal, eventoEditar = null }) {
     }));
   };
 
-  const handleFechaFinCheckbox = (e) => {
-    setMostrarFechaFin(e.target.checked);
-    if (!e.target.checked) {
-      setFormData((prev) => ({ ...prev, fechaFin: "" }));
-    }
-  };
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -95,6 +87,7 @@ function Formulario({ closeModal, eventoEditar = null }) {
     }
 
     if (resultado) {
+      if (onActualizar) onActualizar();
       closeModal();
     }
   };

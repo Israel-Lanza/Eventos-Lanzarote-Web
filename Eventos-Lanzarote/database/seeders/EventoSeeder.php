@@ -26,7 +26,7 @@ class EventoSeeder extends Seeder
                 'imagen' => 'concierto_rock.jpg',
                 'precio' => 50.00,
                 'estado' => 'A',
-                'autor' => 'Admin'
+                'autor' => 'admin'
             ],
             [
                 'nombre' => 'Taller de Fotografía',
@@ -39,7 +39,7 @@ class EventoSeeder extends Seeder
                 'imagen' => 'taller_fotografia.jpg',
                 'precio' => 30.00,
                 'estado' => 'A',
-                'autor' => 'Admin'
+                'autor' => 'admin'
             ],
             [
                 'nombre' => 'Exposición de Arte Moderno',
@@ -52,7 +52,7 @@ class EventoSeeder extends Seeder
                 'imagen' => 'expo_arte.jpg',
                 'precio' => 15.00,
                 'estado' => 'A',
-                'autor' => 'Admin'
+                'autor' => 'admin'
             ],
         ];
 

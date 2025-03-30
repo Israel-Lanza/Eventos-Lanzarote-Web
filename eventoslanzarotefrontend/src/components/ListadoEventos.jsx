@@ -55,6 +55,12 @@ export default function ListadoEventos() {
         setMenuActivo(null);
     };
 
+    const actualizarEventos = () => {
+        if (user && user.nombre) {
+            getAllEvents(user.nombre).then(data => setEventos(data));
+        }
+    }; 
+
     useEffect(() => {
         if (user && user.nombre) {
             getAllEvents(user.nombre).then(data => setEventos(data));
@@ -93,7 +99,7 @@ export default function ListadoEventos() {
             </div>
 
             <div className="overflow-x-auto overflow-visible">
-                <table className="w-full text-left border-collapse">
+                <table className="w-full text-left border-collapse h-96">
                     <thead>
                         <tr>
                             <th className="border-b py-2 px-4">Evento</th>
@@ -176,7 +182,11 @@ export default function ListadoEventos() {
                             <X size={24} />
                         </button>
                     </div>
-                    <Formulario2 closeModal={handleClose} eventoEditar={editarEvento} />
+                    <Formulario2 
+                    closeModal={handleClose} 
+                    eventoEditar={editarEvento} 
+                    onActualizar={actualizarEventos}
+                    />
                     <div className="flex justify-end mt-4">
                         <button
                             onClick={handleClose}
