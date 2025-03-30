@@ -7,9 +7,10 @@ export default function ListadoEmpresas() {
     const [empresas, setEmpresas] = useState([]);
 
     useEffect(() => {
-        getEmpresas().then(data => setEventos(data));
+        getEmpresas().then(data => setEmpresas(data));
     }, []);
 
+    console.log(empresas.data);
     return (
         <div className="bg-white shadow-lg rounded-lg p-6">
             <div className="mb-4 flex justify-between items-center">
@@ -31,8 +32,8 @@ export default function ListadoEmpresas() {
                         </tr>
                     </thead>
                     <tbody>
-                        {empresas.length > 0 ? (
-                            empresas.map(empresa => (
+                        {empresas.data.length > 0 ? (
+                            empresas.data.map(empresa => (
                                 <tr key={empresa.id} className="hover:bg-gray-100">
                                     <td className="py-2 px-4 font-medium">{empresa.nombre}</td>
                                     <td className="py-2 px-4">{empresa.email}</td>
