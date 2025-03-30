@@ -26,11 +26,16 @@ class EventoController extends Controller
     //Para sacar todos los eventos sin tener en cuenta el estado
     public function getAllEvents($autor)
     {
-        $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor')
+        if ($autor == 'admin') {
+            $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace')
+            ->with(['categorias:id,sigla'])
+            ->get();
+        } else{
+            $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace')
             ->with(['categorias:id,sigla'])
             ->where('autor', $autor)
             ->get();
-
+        }
         return response()->json($eventos);
     }
 
