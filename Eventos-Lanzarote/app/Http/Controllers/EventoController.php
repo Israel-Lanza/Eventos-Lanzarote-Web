@@ -26,7 +26,7 @@ class EventoController extends Controller
     public function show($nombre)
     {
         $nombre = str_replace('-', ' ', $nombre);
-        $evento = Evento::select('id', 'nombre', 'imagen', 'ubicacion', 'fecha', 'precio', 'hora', 'descripcion', 'enlace')
+        $evento = Evento::select('id', 'nombre', 'imagen', 'ubicacion', 'fecha', 'precio', 'hora', 'descripcion', 'enlace', 'autor')
             ->where('nombre', $nombre)
             ->first();
 
