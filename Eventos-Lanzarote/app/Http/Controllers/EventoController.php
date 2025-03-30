@@ -23,6 +23,17 @@ class EventoController extends Controller
         return response()->json($eventos);
     }
 
+    // Para sacar todos los eventos sin tener en cuenta el estado
+    public function getAllEvents($autor)
+    {
+        $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor')
+            ->with(['categorias:id,sigla'])
+            ->where('autor', $autor)
+            ->get();
+
+        return response()->json($eventos);
+    }
+
     public function show($nombre)
     {
         $nombre = str_replace('-', ' ', $nombre);
@@ -64,7 +75,7 @@ class EventoController extends Controller
         if ($request->hasFile('imagen')) {
             $nombreImagen = str_replace(' ', '', $request->nombre . '.' . $request->file('imagen')->getClientOriginalExtension());
             $path = $request->file('imagen')->storeAs('imgEventos', $nombreImagen);
-            $evento->imagen = Storage::url("/" . $path);
+            $evento->imagen = Storage::url($path);
         }
 
         $evento->save();

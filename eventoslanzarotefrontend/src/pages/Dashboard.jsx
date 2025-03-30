@@ -3,9 +3,6 @@ import Resumen from "../components/Resumen";
 import { Outlet } from "react-router-dom";
 import ListadoEventos from "../components/ListadoEventos";
 
-
-
-
 export default function AdminDashboard() {
 
     //Obtener el usuario del localStorage
@@ -24,7 +21,7 @@ export default function AdminDashboard() {
                         <h2 className="text-2xl font-bold text-gray-800">Panel de Administración</h2>
                     </div>
                 </div>
-                <div className="mb-6">
+                <div className="mb-6 flex flex-col gap-6 min-h-[80vh]">
                     <Resumen />
 
                     {admin && (

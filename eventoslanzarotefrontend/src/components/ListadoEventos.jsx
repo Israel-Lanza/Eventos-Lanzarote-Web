@@ -13,6 +13,7 @@ export default function ListadoEventos() {
   const [eventoAEliminar, setEventoAEliminar] = useState(null);
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
 
+
   const menuRefs = useRef({});
 
   const handleMostrarForm = () => setMostrarForm(true);
@@ -81,7 +82,7 @@ export default function ListadoEventos() {
                 </button>
             </div>
 
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto overflow-visible">
                 <table className="w-full text-left border-collapse">
                 <thead>
                     <tr>

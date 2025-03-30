@@ -30,6 +30,7 @@ Route::get('/eventos/categoria/{categoria}', [EventoController::class, 'filtrarP
 
 //Rutas para eventos en el DASHBOARD de Admin y Empresa 
 Route::middleware(['auth:sanctum', 'role:admin|empresa'])->group(function () {
+    Route::get('/eventos/all/{autor}', [EventoController::class, 'getAllEvents']);//Listar todos los eventos (ADMIN // EMPRESA)
     Route::post('/eventos', [EventoController::class, 'store']); //Crear un evento DASHBOARD (ROL ADMIN/EMPRESA)
     Route::put('/eventos/{id}', [EventoController::class, 'update']); //Actualizar evento DASHBOARD (ROL ADMIN/EMPRESA)
     Route::delete('/eventos/{id}', [EventoController::class, 'destroy']); //Eliminar evento DASHBOARD (ROL ADMIN/EMPRESA)

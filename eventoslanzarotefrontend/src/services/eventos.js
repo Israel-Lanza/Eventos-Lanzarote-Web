@@ -11,6 +11,16 @@ export const getEventos = async () => {
   }
 };
 
+export const getAllEvents = async (autor) => {
+  try {
+    const response = await api.get(`/eventos/all/${autor}`); // Solicitud GET a Laravel
+    return response.data; // Devuelve los datos de la respuesta
+  } catch (error) {
+    console.error("Error obteniendo eventos:", error);
+    return []; // Devuelve un array vacío en caso de error
+  }
+};
+
 export const getEventosCategory = async (categoria) => {
   try {
     const response = await api.get(`eventos/categoria/${categoria}`); // Solicitud GET a Laravel
@@ -36,7 +46,13 @@ export const getEventoById = async (nombreEvento) => {
   //Función para crear un nuevo evento
   export const createEvento = async (eventoData) => {
     try {
-      const response = await api.post("/eventos", eventoData);
+      console.log(eventoData);
+      const response = await api.post("/eventos", eventoData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      alert(response.data);
       return response.data;
     } catch (error) {
       console.error("Error creando el evento:", error);

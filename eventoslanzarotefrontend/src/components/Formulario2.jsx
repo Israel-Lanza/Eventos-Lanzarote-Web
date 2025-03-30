@@ -68,6 +68,7 @@ function Formulario({ closeModal, eventoEditar = null }) {
     }
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -187,6 +188,18 @@ function Formulario({ closeModal, eventoEditar = null }) {
       </div>
 
       <div>
+        <label className="block text-gray-700 font-bold mb-2">Ubicación</label>
+        <input
+          type="text"
+          name="ubicacion"
+          value={formData.ubicacion}
+          className="w-full px-4 py-2 border rounded-md"
+          placeholder="Ubicación del evento"
+          onChange={handleChange}
+        />
+      </div>
+
+      <div>
         <label className="block text-gray-700 font-bold mb-2">Descripción</label>
         <textarea
           name="descripcion"
@@ -203,7 +216,13 @@ function Formulario({ closeModal, eventoEditar = null }) {
         <div className="flex flex-col items-center justify-center border rounded-md py-6 px-4 mb-4 bg-gray-100">
           <Upload size={32} className="mb-2" />
           <p className="text-gray-600 mb-2">Sube una imagen representativa</p>
-          <input type="file" accept="image/*" onChange={handleImageChange} />
+          <input
+          type="file"
+          name="imagen"
+          id="imagen"
+          onChange={handleImageChange}
+          className="form-control"
+        />
         </div>
       </div>
 
