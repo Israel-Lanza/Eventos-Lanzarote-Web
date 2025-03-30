@@ -7,14 +7,14 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
+/*Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
 Route::get('/usuarios', function () {
     $users = User::all();
     return response()->json($users);
-});
+});*/
 
 //Ruta para el login (visualizacion del login)
 Route::post('/login', [AutenticationController::class, 'login']);
@@ -44,4 +44,16 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 
     //Cambiar estado del evento DASHBOARD (ROL ADMIN)
     Route::patch('/eventos/{id}/estado', [EventoController::class, 'cambiarEstado']);
+});
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {//Sirve para RutasProtegidas.jsx
+    $user = $request->user();
+    $user->roles = $user->getRoleNames(); // Importante para mostrar roles en frontend
+
+    return response()->json([
+        'id' => $user->id,
+        'nombre' => $user->nombre,
+        'email' => $user->email,
+        'roles' => $user->roles
+    ]);
 });

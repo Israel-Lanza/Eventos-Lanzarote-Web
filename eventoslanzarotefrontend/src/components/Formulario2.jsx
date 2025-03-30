@@ -48,6 +48,14 @@ function Formulario() {
     }
   };
 
+  const handleFechaFinCheckbox = (e) => {
+    setMostrarFechaFin(e.target.checked);
+    // Opcional: limpiar el campo fechaFin si se desactiva
+    if (!e.target.checked) {
+      setFormData((prev) => ({ ...prev, fechaFin: "" }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();

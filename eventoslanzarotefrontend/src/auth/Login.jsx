@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -17,7 +19,18 @@ const LoginPage = () => {
         localStorage.setItem("token", response.data.token);
         //Guardar usuario e informacion del usuario en localstorage
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        window.location.href = "/dashboard"; //Redirigir al usuario a un dashboard o ruta protegida visit() mirarlo para ver como funciona
+
+        const roles = response.data.user.roles;
+
+        if (roles.includes("admin")) {
+          navigate("/dashboard"); //Transición sin recarga
+        } else if (roles.includes("empresa")) {
+          navigate("/dashboard");
+        } else {
+          navigate("/");
+        }
+
+        
       }
     } catch (error) {
       if (error.response && error.response.data.errors) {
