@@ -48,7 +48,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {//Sirve para RutasProtegidas.jsx
     $user = $request->user();
-    $user->roles = $user->getRoleNames(); // Importante para mostrar roles en frontend
+    $user->roles = $user->getRoleNames(); //Importante para mostrar roles en frontend
 
     return response()->json([
         'id' => $user->id,
