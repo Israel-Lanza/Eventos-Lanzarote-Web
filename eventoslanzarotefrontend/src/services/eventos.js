@@ -55,13 +55,32 @@ export const getEventoById = async (nombreEvento) => {
     }
   };
   
-  //Función para eliminar un evento
+  /*//Función para eliminar un evento
   export const deleteEvento = async (id) => {
-    try {
+    try{
       await api.delete(`/eventos/${id}`);
       return true; // Indica que se eliminó correctamente
-    } catch (error) {
+    }catch(error) {
       console.error("Error eliminando el evento:", error);
       return false;
     }
+  };*/
+
+  export const deleteEvento = async (id) => {
+    try {
+      const response = await api.delete(`/eventos/${id}`);
+      console.log("Evento eliminado:", response.data);
+      return true;
+    } catch (error) {
+      if (error.response) {
+        console.error("Error eliminando el evento:", {
+          status: error.response.status,
+          data: error.response.data
+        });
+      } else {
+        console.error("Error eliminando el evento:", error.message);
+      }
+      return false;
+    }
   };
+  

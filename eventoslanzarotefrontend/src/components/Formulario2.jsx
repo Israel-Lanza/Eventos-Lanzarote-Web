@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { createEvento } from "../services/eventos";
-import { ArrowLeft, Calendar, Clock, MapPin, Upload, Euro, Link as LinkIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { createEvento, updateEvento } from "../services/eventos";
+import categoriasDisponibles from "../constantes/categorias";
+import { Calendar, Clock, Upload, Euro, Link as LinkIcon } from "lucide-react";
 
-
-function Formulario() {
+function Formulario({ closeModal, eventoEditar = null }) {
   const [formData, setFormData] = useState({
     nombre: "",
     descripcion: "",
@@ -18,6 +18,24 @@ function Formulario() {
   });
 
   const [mostrarFechaFin, setMostrarFechaFin] = useState(false);
+
+  useEffect(() => {
+    if (eventoEditar) {
+      setFormData({
+        nombre: eventoEditar.nombre || "",
+        descripcion: eventoEditar.descripcion || "",
+        fecha: eventoEditar.fecha || "",
+        fechaFin: eventoEditar.fechaFin || "",
+        hora: eventoEditar.hora || "",
+        precio: eventoEditar.precio || "",
+        ubicacion: eventoEditar.ubicacion || "",
+        enlaceWeb: eventoEditar.enlace || "",
+        imagen: null,
+        categorias: eventoEditar.categorias?.map(c => c.sigla) || [],
+      });
+      if (eventoEditar.fechaFin) setMostrarFechaFin(true);
+    }
+  }, [eventoEditar]);
 
   const handleChange = (e) => {
     setFormData({
@@ -35,22 +53,16 @@ function Formulario() {
 
   const handleCategoriaChange = (e) => {
     const { value, checked } = e.target;
-    if (checked) {
-      setFormData({
-        ...formData,
-        categorias: [...formData.categorias, value],
-      });
-    } else {
-      setFormData({
-        ...formData,
-        categorias: formData.categorias.filter((cat) => cat !== value),
-      });
-    }
+    setFormData((prev) => ({
+      ...prev,
+      categorias: checked
+        ? [...prev.categorias, value]
+        : prev.categorias.filter((cat) => cat !== value),
+    }));
   };
 
   const handleFechaFinCheckbox = (e) => {
     setMostrarFechaFin(e.target.checked);
-    // Opcional: limpiar el campo fechaFin si se desactiva
     if (!e.target.checked) {
       setFormData((prev) => ({ ...prev, fechaFin: "" }));
     }
@@ -68,38 +80,44 @@ function Formulario() {
     data.append("hora", formData.hora);
     data.append("precio", formData.precio);
     data.append("ubicacion", formData.ubicacion);
-    data.append("enlaceWeb", formData.enlaceWeb);
+    data.append("enlace", formData.enlaceWeb);
     if (formData.imagen) {
       data.append("imagen", formData.imagen);
     }
     formData.categorias.forEach((categoria) => data.append("categorias[]", categoria));
 
-    const resultado = await createEvento(data);
+    let resultado;
+    if (eventoEditar) {
+      resultado = await updateEvento(eventoEditar.id, data);
+    } else {
+      resultado = await createEvento(data);
+    }
+
     if (resultado) {
-      alert("Evento creado con éxito");
+      closeModal();
     }
   };
+
   return (
     <form onSubmit={handleSubmit} className="container mx-auto p-6 bg-white rounded-lg shadow-lg space-y-6">
-      {/* Nombre */}
       <div>
         <label className="block text-gray-700 font-bold mb-2">Título del Evento</label>
         <input
           type="text"
           name="nombre"
+          value={formData.nombre}
           className="w-full px-4 py-2 border rounded-md"
           placeholder="Título del Evento"
           onChange={handleChange}
         />
       </div>
 
-      {/* Fecha, Hora y Ubicación */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
           <label className="block text-gray-700 font-bold mb-2">Fecha de Inicio</label>
           <div className="flex items-center border rounded-md px-3 py-2">
             <Calendar size={16} className="mr-2" />
-            <input type="date" name="fecha" className="w-full" onChange={handleChange} />
+            <input type="date" name="fecha" value={formData.fecha} className="w-full" onChange={handleChange} />
           </div>
         </div>
 
@@ -107,7 +125,7 @@ function Formulario() {
           <label className="block text-gray-700 font-bold mb-2">Fecha de Fin (opcional)</label>
           <div className="flex items-center border rounded-md px-3 py-2">
             <Calendar size={16} className="mr-2" />
-            <input type="date" name="fechaFin" className="w-full" onChange={handleChange} />
+            <input type="date" name="fechaFin" value={formData.fechaFin} className="w-full" onChange={handleChange} />
           </div>
         </div>
 
@@ -115,25 +133,28 @@ function Formulario() {
           <label className="block text-gray-700 font-bold mb-2">Hora</label>
           <div className="flex items-center border rounded-md px-3 py-2">
             <Clock size={16} className="mr-2" />
-            <input type="time" name="hora" className="w-full" onChange={handleChange} />
+            <input type="time" name="hora" value={formData.hora} className="w-full" onChange={handleChange} />
           </div>
         </div>
       </div>
 
-      {/* Categorías */}
       <div>
         <label className="block text-gray-700 font-bold mb-2">Categorías</label>
-        <div className="flex space-x-6">
-          {["musica", "deportes", "arte"].map((cat) => (
-            <label key={cat} className="flex items-center space-x-2">
-              <input type="checkbox" value={cat} onChange={handleCategoriaChange} />
-              <span>{cat.charAt(0).toUpperCase() + cat.slice(1)}</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+          {Object.entries(categoriasDisponibles).map(([key, cat]) => (
+            <label key={key} className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                value={cat.sigla}
+                checked={formData.categorias.includes(cat.sigla)}
+                onChange={handleCategoriaChange}
+              />
+              <span>{cat.display}</span>
             </label>
           ))}
         </div>
       </div>
 
-      {/* Precio y Enlace Web */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-gray-700 font-bold mb-2">Precio</label>
@@ -143,7 +164,7 @@ function Formulario() {
               type="number"
               name="precio"
               className="w-full"
-              placeholder="0.00"
+              value={formData.precio}
               onChange={handleChange}
             />
           </div>
@@ -158,12 +179,13 @@ function Formulario() {
               name="enlaceWeb"
               className="w-full"
               placeholder="https://"
+              value={formData.enlaceWeb}
               onChange={handleChange}
             />
           </div>
         </div>
       </div>
-      {/* Descripción */}
+
       <div>
         <label className="block text-gray-700 font-bold mb-2">Descripción</label>
         <textarea
@@ -171,11 +193,11 @@ function Formulario() {
           rows={5}
           className="w-full p-4 border rounded-md"
           placeholder="Describe tu evento en detalle..."
+          value={formData.descripcion}
           onChange={handleChange}
         ></textarea>
       </div>
 
-      {/* Imagen */}
       <div>
         <label className="block text-gray-700 font-bold mb-2">Imagen del Evento</label>
         <div className="flex flex-col items-center justify-center border rounded-md py-6 px-4 mb-4 bg-gray-100">
@@ -185,12 +207,11 @@ function Formulario() {
         </div>
       </div>
 
-      {/* Botón */}
       <button
         type="submit"
         className="w-full py-2 px-4 text-white bg-blue-500 rounded-md hover:bg-blue-600 transition"
       >
-        Crear Evento
+        {eventoEditar ? 'Actualizar Evento' : 'Crear Evento'}
       </button>
     </form>
   );

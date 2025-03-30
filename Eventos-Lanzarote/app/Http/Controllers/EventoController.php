@@ -15,7 +15,7 @@ class EventoController extends Controller
 {
     public function index()
     {
-        $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio')
+        $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor')
             ->with(['categorias:id,sigla'])
             ->where('estado', 'A')
             ->get();
@@ -105,6 +105,12 @@ class EventoController extends Controller
             $nombreImagen = str_replace(' ', '', $request->nombre . '.' . $request->file('imagen')->getClientOriginalExtension());
             $path = $request->file('imagen')->storeAs('imgEventos', $nombreImagen);
             $evento->imagen = Storage::url("/" . $path);
+        }
+
+        //ACTUALIZAR CATEGORÍAS (como en el store)
+        if ($request->has('categorias')) {
+            $categoriaIds = Categoria::whereIn('sigla', $request->categorias)->pluck('id')->toArray();
+            $evento->categorias()->sync($categoriaIds);
         }
 
         return response()->json(['mensaje' => 'Evento actualizado correctamente', 'evento' => $evento]);
