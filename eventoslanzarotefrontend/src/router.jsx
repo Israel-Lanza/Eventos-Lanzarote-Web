@@ -9,7 +9,7 @@ import ListadoEventos from "./components/ListadoEventos";
 import Descripcion from "./pages/Descripcion";
 import ListadoEmpresas from "./components/ListadoEmpresas";
 import RutasProtegidas from "./components/RutasProtegidas";
-
+import Buscar from "./pages/Buscador";
 
 export default function Router() {
 
@@ -21,6 +21,7 @@ export default function Router() {
                     <Route path="about" element={<About />} />
                     <Route path="eventos/categoria/:nombreCategoria" element={<Categoria/>}/>
                     <Route path="eventos/:nombreEvento" element={<Descripcion/>}/>
+                    <Route path="/buscar" element={<Buscar />} />
                 </Route>
                 <Route path="/login" element={<LoginPage/>}/>
 

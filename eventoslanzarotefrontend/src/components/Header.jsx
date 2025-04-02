@@ -39,6 +39,15 @@ const Header = () => {
     }
   };
 
+  //Buscador por nombre funcionalidad
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const termino = e.target.search.value;
+    if (termino.trim()) {
+      navigate(`/buscar?query=${encodeURIComponent(termino)}`);
+    }
+  };
+
   return (
     <header className="border-b py-3">
       <div className="flex justify-between items-center">
@@ -49,20 +58,21 @@ const Header = () => {
 
         {/* Logo */}
         <div className="flex-1 text-center">
-          <div className="logo">
-            <a href="#" className="text-2xl font-bold text-gray-800"></a>
-          </div>
+          <Link to="/" className="inline-block">
+            <div className="logo" />
+          </Link>
         </div>
+
 
         {/* Buscador y Botón dinámico */}
         <div className="flex-1 flex justify-end items-center space-x-4 relative" ref={dropdownRef}>
-          <form action="" method="GET" className="flex items-center space-x-2">
+          <form onSubmit={handleSearchSubmit} className="flex items-center space-x-2">
             <input
               type="text"
               name="search"
               id="search"
-              className="border border-gray-300 rounded-md px-3 py-1 text-sm"
-              placeholder="Buscar..."
+              className="border border-gray-300 rounded-md px-6 py-2 text-base w-64 sm:w-72 md:w-80 lg:w-72 transition-all focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              placeholder="Buscar por nombre de evento"
             />
             <button
               type="submit"

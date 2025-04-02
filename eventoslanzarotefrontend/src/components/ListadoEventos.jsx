@@ -13,6 +13,7 @@ export default function ListadoEventos() {
     const [eventoAEliminar, setEventoAEliminar] = useState(null);
     const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
     const [user, setUser] = useState(null);
+    const [busqueda, setBusqueda] = useState("");
 
     const menuRefs = useRef({});
 
@@ -61,6 +62,10 @@ export default function ListadoEventos() {
         }
     }; 
 
+    const eventosFiltrados = eventos.filter(evento =>
+        evento.nombre.toLowerCase().includes(busqueda.toLowerCase())
+    );
+
     useEffect(() => {
         if (user && user.nombre) {
             getAllEvents(user.nombre).then(data => setEventos(data));
@@ -87,8 +92,10 @@ export default function ListadoEventos() {
             <div className="mb-4 flex justify-between items-center">
                 <input
                     type="text"
-                    className="border border-gray-300 rounded-md p-2 w-72"
-                    placeholder="Buscar eventos..."
+                    className="border border-gray-300 rounded-md px-4 py-2 text-base w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Buscar eventos por nombre"
+                    value={busqueda}
+                    onChange={(e) => setBusqueda(e.target.value)}
                 />
                 <button
                     onClick={handleMostrarForm}
@@ -111,8 +118,8 @@ export default function ListadoEventos() {
                         </tr>
                     </thead>
                     <tbody>
-                        {eventos.length > 0 ? (
-                            eventos.map(evento => (
+                        {eventosFiltrados.length > 0 ? (
+                            eventosFiltrados.map(evento => (
                                 <tr key={evento.id} className="hover:bg-gray-100">
                                     <td className="py-2 px-4 font-medium">{evento.nombre}</td>
                                     <td className="py-2 px-4">{evento.autor}</td>

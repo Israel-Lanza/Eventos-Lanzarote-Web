@@ -14,9 +14,11 @@
 }
 
 .logo {
-  background-image: url('assets/logo4.png');
+  background-image: url('assets/logo4.png'); 
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   height: 120px;
+  width: 300px; /* 👈 añade esto si no tienes ancho definido */
+  display: inline-block; /* 👈 importante para que se vea el div vacío */
 }
