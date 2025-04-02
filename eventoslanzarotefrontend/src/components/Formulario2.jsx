@@ -157,6 +157,7 @@ function Formulario({ closeModal, eventoEditar = null, onActualizar }) {
             <input
               type="number"
               name="precio"
+              min="0"
               className="w-full"
               value={formData.precio}
               onChange={handleChange}

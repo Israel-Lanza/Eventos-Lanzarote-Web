@@ -218,6 +218,7 @@ function Formulario() {
           type="number"
           name="precio"
           id="precio"
+          min="0"
           placeholder="Precio"
           onChange={handleChange}
           className="form-control"

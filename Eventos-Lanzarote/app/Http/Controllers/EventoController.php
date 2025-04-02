@@ -28,13 +28,13 @@ class EventoController extends Controller
     {
         if ($autor == 'admin') {
             $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace')
-            ->with(['categorias:id,sigla'])
-            ->get();
-        } else{
+                ->with(['categorias:id,sigla'])
+                ->get();
+        } else {
             $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace')
-            ->with(['categorias:id,sigla'])
-            ->where('autor', $autor)
-            ->get();
+                ->with(['categorias:id,sigla'])
+                ->where('autor', $autor)
+                ->get();
         }
         return response()->json($eventos);
     }
@@ -60,12 +60,31 @@ class EventoController extends Controller
             'nombre'        => 'required|string|max:200',
             'descripcion'   => 'required',
             'fecha'         => 'required|after:today',
+            'fechaFin'      => 'nullable|date|after_or_equal:fecha',
             'hora'          => 'required|date_format:H:i',
             'ubicacion'     => 'required',
             'enlace'        => 'nullable|url',
             'precio'        => 'required|min:0|numeric',
             'imagen'        => 'nullable|image|max:2048',
+        ], [
+            'nombre.required'       => 'El nombre del evento es obligatorio.',
+            'nombre.max'            => 'El nombre no puede tener más de 200 caracteres.',
+            'descripcion.required'  => 'La descripción es obligatoria.',
+            'fecha.required'        => 'La fecha es obligatoria.',
+            'fecha.after'           => 'La fecha debe ser posterior a hoy.',
+            'fechaFin.date'         => 'La fecha de fin debe ser una fecha válida.',
+            'fechaFin.after_or_equal' => 'La fecha de fin debe ser igual o posterior a la fecha de inicio.',
+            'hora.required'         => 'La hora es obligatoria.',
+            'hora.date_format'      => 'La hora debe tener el formato HH:mm.',
+            'ubicacion.required'    => 'La ubicación es obligatoria.',
+            'enlace.url'            => 'El enlace debe ser una URL válida.',
+            'precio.required'       => 'El precio es obligatorio.',
+            'precio.numeric'        => 'El precio debe ser un número.',
+            'precio.min'            => 'El precio no puede ser negativo.',
+            'imagen.image'          => 'El archivo debe ser una imagen.',
+            'imagen.max'            => 'La imagen no puede superar los 2MB.',
         ]);
+        
 
         $evento = new Evento();
         $evento->nombre = $request->nombre;
@@ -75,6 +94,7 @@ class EventoController extends Controller
         $evento->ubicacion = $request->ubicacion;
         $evento->enlace = $request->enlace;
         $evento->precio = $request->precio;
+        $evento->fechaFin = $request->fechaFin ?? null;
         $evento->autor = Auth::user()->nombre;
 
         if ($request->hasFile('imagen')) {
@@ -113,6 +133,19 @@ class EventoController extends Controller
             'enlace'        => 'nullable|url',
             'precio'        => 'numeric|min:0',
             'imagen'        => 'nullable|image|max:2048',
+        ], [
+            'nombre.string'        => 'El nombre debe ser una cadena de texto.',
+            'nombre.max'           => 'El nombre no puede tener más de 200 caracteres.',
+            'descripcion.string'   => 'La descripción debe ser texto.',
+            'fecha.date'           => 'La fecha debe ser una fecha válida.',
+            'fecha.after'          => 'La fecha debe ser posterior a hoy.',
+            'hora.date_format'     => 'La hora debe tener el formato HH:mm.',
+            'ubicacion.string'     => 'La ubicación debe ser una cadena de texto.',
+            'enlace.url'           => 'El enlace debe ser una URL válida.',
+            'precio.numeric'       => 'El precio debe ser un número.',
+            'precio.min'           => 'El precio no puede ser negativo.',
+            'imagen.image'         => 'El archivo debe ser una imagen válida.',
+            'imagen.max'           => 'La imagen no puede superar los 2MB.',
         ]);
 
         $evento->nombre = $request->nombre ?? $evento->nombre;
@@ -179,5 +212,22 @@ class EventoController extends Controller
         $evento->save();
 
         return response()->json(['mensaje' => 'Estado actualizado correctamente', 'evento' => $evento]);
+    }
+
+
+    //Para la busqueda filtrada por nombre
+    public function buscarPorNombre(Request $request)
+    {
+        $nombre = $request->query('nombre');
+
+        $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace')
+            ->with(['categorias:id,sigla'])
+            ->when($nombre, function ($query, $nombre) {
+                return $query->where('nombre', 'like', '%' . $nombre . '%');
+            })
+            ->where('estado', 'A')
+            ->get();
+
+        return response()->json($eventos);
     }
 }

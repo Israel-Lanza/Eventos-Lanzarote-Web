@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { getEventos } from "../services/eventos";
+import { buscarEventosPorNombre } from "../services/eventos";
 import TarjetaEvento from "../components/TarjetaEvento";
 
 const Buscador = () => {
@@ -10,11 +10,9 @@ const Buscador = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getEventos().then(eventos => {
-      const filtrados = eventos.filter(evento =>
-        evento.nombre.toLowerCase().includes(query.toLowerCase())
-      );
-      setResultados(filtrados);
+    setLoading(true);
+    buscarEventosPorNombre(query).then(data => {
+      setResultados(data);
       setLoading(false);
     });
   }, [query]);

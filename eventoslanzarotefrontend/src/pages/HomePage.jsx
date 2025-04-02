@@ -4,6 +4,7 @@ import TarjetaEvento from "../components/TarjetaEvento";
 import { Skeleton } from "@mui/material";
 import NavCategoria from "../components/NavCategoria";
 
+
 const HomePage = () => {
   const [eventos, setEventos] = useState([]);
   const [loading, setLoading] = useState(true);

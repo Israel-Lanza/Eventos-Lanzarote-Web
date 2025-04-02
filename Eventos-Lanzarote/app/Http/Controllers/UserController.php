@@ -40,6 +40,22 @@ class UserController extends Controller
             'email'     => 'required|email|unique:users,email',
             'password'  => 'required|string|min:8',
             'cif'       => 'required|max:9|regex:/^[A-Z]\d{7}[A-Z0-9]$/',
+        ], [
+            'nombre.required'       => 'El nombre es obligatorio.',
+            'nombre.string'         => 'El nombre debe ser una cadena de texto.',
+            'nombre.max'            => 'El nombre no puede tener más de 200 caracteres.',
+        
+            'email.required'        => 'El correo electrónico es obligatorio.',
+            'email.email'           => 'El formato del correo no es válido.',
+            'email.unique'          => 'Este correo ya está en uso.',
+        
+            'password.required'     => 'La contraseña es obligatoria.',
+            'password.string'       => 'La contraseña debe ser una cadena de texto.',
+            'password.min'          => 'La contraseña debe tener al menos 8 caracteres.',
+        
+            'cif.required'          => 'El CIF es obligatorio.',
+            'cif.max'               => 'El CIF no puede tener más de 9 caracteres.',
+            'cif.regex'             => 'El CIF debe tener un formato válido (Ej: A1234567Z).',
         ]);
 
         $user = new User();
@@ -67,6 +83,19 @@ class UserController extends Controller
             'email'     => 'email|unique:users,email,' . $id,
             'password'  => 'nullable|string|min:8',
             'cif'       => 'required|max:9|regex:/^[A-Z]\d{7}[A-Z0-9]$/',
+        ], [
+            'nombre.string'         => 'El nombre debe ser una cadena de texto.',
+            'nombre.max'            => 'El nombre no puede tener más de 200 caracteres.',
+        
+            'email.email'           => 'El formato del correo no es válido.',
+            'email.unique'          => 'Este correo ya está en uso.',
+        
+            'password.string'       => 'La contraseña debe ser una cadena de texto.',
+            'password.min'          => 'La contraseña debe tener al menos 8 caracteres.',
+        
+            'cif.required'          => 'El CIF es obligatorio.',
+            'cif.max'               => 'El CIF no puede tener más de 9 caracteres.',
+            'cif.regex'             => 'El CIF debe tener un formato válido (Ej: A1234567Z).',
         ]);
 
         $user->nombre = $request->nombre ?? $user->nombre;

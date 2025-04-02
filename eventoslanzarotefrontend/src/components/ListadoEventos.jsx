@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Edit, MoreVertical, Trash, X } from "lucide-react";
-import { getAllEvents, deleteEvento } from "../services/eventos";
+import { getAllEvents, deleteEvento, cambiarEstadoEvento } from "../services/eventos";
 import Formulario2 from '../components/Formulario2';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -126,9 +126,32 @@ export default function ListadoEventos() {
                                     <td className="py-2 px-4">{evento.fecha}</td>
                                     <td className="py-2 px-4">{evento.ubicacion}</td>
                                     <td className="py-2 px-4">
-                                        <span className={`px-2 py-1 text-sm rounded-md ${evento.estado === "A" ? "bg-green-500 text-white" : "bg-gray-400 text-white"}`}>
-                                            {evento.estado === "A" ? "Activo" : "Pendiente"}
-                                        </span>
+                                    <select
+                                        value={evento.estado}
+                                        onChange={async (e) => {
+                                            const nuevoEstado = e.target.value;
+                                            const res = await cambiarEstadoEvento(evento.id, nuevoEstado);
+                                            if (res) {actualizarEventos();}
+                                        }}
+                                        className={`
+                                            custom-select
+                                            px-2 py-1 text-sm rounded-md cursor-pointer
+                                            border border-transparent
+                                            focus:outline-none focus:ring-1 focus:ring-gray-300
+                                            transition
+                                            ${
+                                              evento.estado === "A"
+                                                ? "bg-green-100 text-green-800"
+                                                : evento.estado === "P"
+                                                ? "bg-yellow-100 text-yellow-800"
+                                                : "bg-red-100 text-red-800"
+                                            }
+                                        `}
+                                        >
+                                        <option value="A">Aprobado</option>
+                                        <option value="P">Pendiente</option>
+                                        <option value="D">Denegado</option>
+                                    </select>
                                     </td>
                                     <td className="py-2 px-4">
                                         <div className="relative" ref={(el) => (menuRefs.current[evento.id] = el)}>

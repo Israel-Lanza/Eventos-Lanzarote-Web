@@ -41,35 +41,34 @@ export const getEventoById = async (nombreEvento) => {
       console.error("Error obteniendo el evento:", error);
       return null; // Retorna null si hay error
     }
-  };
+};
   
   //Función para crear un nuevo evento
-  export const createEvento = async (eventoData) => {
-    try {
-      console.log(eventoData);
-      const response = await api.post("/eventos", eventoData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      alert(response.data);
-      return response.data;
-    } catch (error) {
-      console.error("Error creando el evento:", error);
-      return null;
-    }
-  };
+export const createEvento = async (eventoData) => {
+  try {
+    console.log(eventoData);
+    const response = await api.post("/eventos", eventoData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error creando el evento:", error);
+    return null;
+  }
+};
   
   //Función para actualizar un evento existente
-  export const updateEvento = async (id, eventoData) => {
-    try {
-      const response = await api.put(`/eventos/${id}`, eventoData);
-      return response.data;
-    } catch (error) {
-      console.error("Error actualizando el evento:", error);
-      return null;
-    }
-  };
+export const updateEvento = async (id, eventoData) => {
+  try {
+    const response = await api.put(`/eventos/${id}`, eventoData);
+    return response.data;
+  } catch (error) {
+    console.error("Error actualizando el evento:", error);
+    return null;
+  }
+};
   
   /*//Función para eliminar un evento
   export const deleteEvento = async (id) => {
@@ -82,21 +81,50 @@ export const getEventoById = async (nombreEvento) => {
     }
   };*/
 
-  export const deleteEvento = async (id) => {
-    try {
-      const response = await api.delete(`/eventos/${id}`);
-      console.log("Evento eliminado:", response.data);
-      return true;
-    } catch (error) {
-      if (error.response) {
-        console.error("Error eliminando el evento:", {
-          status: error.response.status,
-          data: error.response.data
-        });
-      } else {
-        console.error("Error eliminando el evento:", error.message);
-      }
-      return false;
+export const deleteEvento = async (id) => {
+  try {
+    const response = await api.delete(`/eventos/${id}`);
+    console.log("Evento eliminado:", response.data);
+    return true;
+  } catch (error) {
+    if (error.response) {
+      console.error("Error eliminando el evento:", {
+        status: error.response.status,
+        data: error.response.data
+      });
+    } else {
+      console.error("Error eliminando el evento:", error.message);
     }
-  };
+    return false;
+  }
+};
+
+
+export const buscarEventosPorNombre = async (nombre) => {
+  try {
+    const response = await api.get(`/eventos/buscar?nombre=${encodeURIComponent(nombre)}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error buscando eventos por nombre:", error);
+    return [];
+  }
+};
+
+
+
+export const cambiarEstadoEvento = async (id, estado) => {
+  try {
+    const response = await api.patch(`/eventos/${id}/estado`, { estado });
+    return response.data;
+  } catch (error) {
+    console.error("Error al cambiar el estado del evento:", error);
+    return null;
+  }
+};
+
+
+
+
+
+
   
