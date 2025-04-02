@@ -52,7 +52,7 @@ class EventoSeeder extends Seeder
                 'imagen' => 'expo_arte.jpg',
                 'precio' => 15.00,
                 'estado' => 'A',
-                'autor' => 'admin'
+                'autor' => 'empresa'
             ],
         ];
 
