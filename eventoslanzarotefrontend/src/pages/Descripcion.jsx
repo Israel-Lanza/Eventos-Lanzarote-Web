@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getEventoById } from "../services/eventos";  // Asegúrate que esta función reciba un nombre o slug
 import { Card, CardContent, CardHeader, Divider, Button, Tabs, Tab } from "@mui/material";
 import { ArrowBack, Share, CalendarToday, AccessTime, LocationOn, Business, Map } from "@mui/icons-material";
@@ -51,10 +51,10 @@ const Descripcion = () => {
                             className="w-full h-96 object-cover rounded-lg"
                         /> */}
                         <img
-                        src="https://inkscape.app/wp-content/uploads/imagen-vectorial.webp"
-                        alt="lanzarote"
-                        className="w-full h-full object-cover"
-                    />
+                            src="https://inkscape.app/wp-content/uploads/imagen-vectorial.webp"
+                            alt="lanzarote"
+                            className="w-full h-full object-cover"
+                        />
                     </div>
 
                     <Tabs value={tabValue} onChange={handleTabChange} aria-label="Detalles del evento">
@@ -84,10 +84,38 @@ const Descripcion = () => {
                         <Card className="mt-4">
                             <CardContent>
                                 <h3 className="text-xl font-bold mb-4">Ubicación del evento</h3>
-                                <div className="h-72 bg-gray-200 rounded flex items-center justify-center">
-                                    <Map />
-                                    <span className="ml-2">Mapa de ubicación</span>
-                                </div>
+                                {evento.ubicacion ? (
+                                    <div className="w-full h-72 rounded overflow-hidden">
+                                        <div
+                                            id="map"
+                                            ref={(ref) => {
+                                                if (ref && window.google && evento.ubicacion) {
+                                                    const map = new window.google.maps.Map(ref, {
+                                                        zoom: 15,
+                                                        center: { lat: 28.1235, lng: -15.4363 }, // coordenadas por defecto
+                                                    });
+
+                                                    const geocoder = new window.google.maps.Geocoder();
+                                                    geocoder.geocode({ address: evento.ubicacion }, (results, status) => {
+                                                        if (status === "OK") {
+                                                            const location = results[0].geometry.location;
+                                                            map.setCenter(location);
+                                                            new window.google.maps.Marker({
+                                                                map,
+                                                                position: location,
+                                                            });
+                                                        } else {
+                                                            console.error("Geocode failed:", status);
+                                                        }
+                                                    });
+                                                }
+                                            }}
+                                            style={{ width: "100%", height: "100%" }}
+                                        ></div>
+                                    </div>
+                                ) : (
+                                    <p>Ubicación no disponible</p>
+                                )}
                             </CardContent>
                         </Card>
                     )}

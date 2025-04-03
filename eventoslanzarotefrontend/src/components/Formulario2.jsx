@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { createEvento, updateEvento } from "../services/eventos";
 import categoriasDisponibles from "../constantes/categorias";
 import { Calendar, Clock, Upload, Euro, Link as LinkIcon } from "lucide-react";
@@ -18,6 +18,7 @@ function Formulario({ closeModal, eventoEditar = null, onActualizar }) {
   });
 
   const [mostrarFechaFin, setMostrarFechaFin] = useState(false);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     if (eventoEditar) {
@@ -36,6 +37,23 @@ function Formulario({ closeModal, eventoEditar = null, onActualizar }) {
       if (eventoEditar.fechaFin) setMostrarFechaFin(true);
     }
   }, [eventoEditar]);
+
+  useEffect(() => {
+    if (window.google && inputRef.current) {
+      const autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, {
+        types: ["geocode"],
+      });
+
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (place.formatted_address) {
+          setFormData(prev => ({ ...prev, ubicacion: place.formatted_address }));
+        } else if (place.name) {
+          setFormData(prev => ({ ...prev, ubicacion: place.name }));
+        }
+      });
+    }
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -184,6 +202,7 @@ function Formulario({ closeModal, eventoEditar = null, onActualizar }) {
       <div>
         <label className="block text-gray-700 font-bold mb-2">Ubicación</label>
         <input
+          ref={inputRef}
           type="text"
           name="ubicacion"
           value={formData.ubicacion}
@@ -210,13 +229,7 @@ function Formulario({ closeModal, eventoEditar = null, onActualizar }) {
         <div className="flex flex-col items-center justify-center border rounded-md py-6 px-4 mb-4 bg-gray-100">
           <Upload size={32} className="mb-2" />
           <p className="text-gray-600 mb-2">Sube una imagen representativa</p>
-          <input
-          type="file"
-          name="imagen"
-          id="imagen"
-          onChange={handleImageChange}
-          className="form-control"
-        />
+          <input type="file" name="imagen" id="imagen" onChange={handleImageChange} className="form-control" />
         </div>
       </div>
 
