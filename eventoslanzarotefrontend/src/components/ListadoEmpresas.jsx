@@ -21,7 +21,7 @@ export default function ListadoEmpresas() {
                 />
             </div>
 
-            <div className="overflow-x-auto">
+            <div className="overflow-visible h-96 mb-3">
                 <table className="w-full text-left border-collapse">
                     <thead>
                         <tr>

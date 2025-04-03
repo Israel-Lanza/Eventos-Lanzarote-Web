@@ -105,8 +105,8 @@ export default function ListadoEventos() {
                 </button>
             </div>
 
-            <div className="overflow-x-auto overflow-visible">
-                <table className="w-full text-left border-collapse h-96">
+            <div className="overflow-visible h-96 mb-3">
+                <table className="w-full text-left border-collapse ">
                     <thead>
                         <tr>
                             <th className="border-b py-2 px-4">Evento</th>

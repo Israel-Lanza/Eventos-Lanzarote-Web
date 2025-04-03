@@ -21,7 +21,7 @@ export default function AdminDashboard() {
                         <h2 className="text-2xl font-bold text-gray-800">Panel de Administración</h2>
                     </div>
                 </div>
-                <div className="mb-6 flex flex-col gap-6 min-h-[80vh]">
+                <div className="mb-6 flex flex-col gap-6 min-h-[100vh]">
                     <Resumen />
 
                     {admin && (
