@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  laravel:
+    build:
+      context: ./eventos-backend
+      dockerfile: Dockerfile
+    container_name: laravel-app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./eventos-backend:/var/www
+
+  react:
+    build:
+      context: ./eventos-frontend
+      dockerfile: Dockerfile
+    container_name: react-app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./eventos-frontend:/app
+    command: sh -c "npm install && npm run dev -- --host"
