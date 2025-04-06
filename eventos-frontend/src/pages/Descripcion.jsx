@@ -4,6 +4,8 @@ import { getEventoById } from "../services/eventos";  // Asegúrate que esta fun
 import { Card, CardContent, CardHeader, Divider, Button, Tabs, Tab } from "@mui/material";
 import { ArrowBack, Share, CalendarToday, AccessTime, LocationOn, Business, Map } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { getDisplay } from "../constantes/categorias";
+import { formatearFecha } from "../utils/formatearFecha";
 
 
 const Descripcion = () => {
@@ -15,7 +17,7 @@ const Descripcion = () => {
     useEffect(() => {
         setLoading(true);
 
-        getEventoById(nombreEvento).then(data => {  // Ahora recibe el nombre del evento
+        getEventoById(nombreEvento).then(data => { //Ahora recibe el nombre del evento
             setEvento(data);
             setLoading(false);
         });
@@ -69,13 +71,20 @@ const Descripcion = () => {
                                 <p>{evento.descripcion} </p>
 
                                 <h3 className="text-xl font-bold mt-6 mb-4">Categorías</h3>
-                                {/* {evento.categorias.map((categoria, index) => (
-                                    <div key={index}>
-                                        <Link to={`/categoria/${categoria.nombre}`} className="text-blue-600 hover:underline">
-                                            {categoria.nombre}
-                                        </Link>
-                                    </div>
-                                ))} */}
+                                <div className="flex gap-2 flex-wrap mb-2">
+                                {Array.isArray(evento.categorias) && evento.categorias.length > 0 ? (
+                                <div className="text-m text-blue-600 font-semibold mb-2 whitespace-normal break-words">
+                                    {evento.categorias.map((categoria, index) => (
+                                    <span key={index}>
+                                        {getDisplay(categoria.sigla)}
+                                        {index < evento.categorias.length - 1 && ", "}
+                                    </span>
+                                    ))}
+                                </div>
+                                ) : (
+                                <span className="text-sm text-gray-500">Sin categoría</span>
+                                )}
+                                </div>
                             </CardContent>
                         </Card>
                     )}
@@ -128,37 +137,53 @@ const Descripcion = () => {
                             <div className="flex items-center gap-3 mb-4">
                                 <CalendarToday />
                                 <div>
-                                    <p>Fecha: {evento.fecha}</p>
+                                    <p><b>Fecha:</b> {formatearFecha(evento.fecha)}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-3 mb-4">
                                 <AccessTime />
                                 <div>
-                                    <p>Hora: {evento.hora}</p>
+                                    <p><b>Hora:</b>  {evento.hora}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-3 mb-4">
                                 <LocationOn />
                                 <div>
-                                    <p>Ubicación: {evento.ubicacion}</p>
+                                    <p><b>Ubicación:</b> {evento.ubicacion}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-3 mb-4">
                                 <Business />
                                 <div>
-                                    <p>Organizador: {evento.autor}</p>
+                                    <p><b>Organizador:</b> {evento.autor}</p>
                                 </div>
                             </div>
 
                             <Divider className="my-4" />
 
                             <div className="flex justify-between items-center">
-                                <p>Precio:</p>
-                                <p className="font-bold">{evento.precio}</p>
+                                <p><b>Precio:</b></p>
+                                {evento.precio &&
+                                    evento.precio.toString().toLowerCase() !== "0.00" &&
+                                    evento.precio.toString().toLowerCase() !== "gratis" ? (
+                                        evento.precio
+                                    ) : (
+                                        <p className="flex items-center justify-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-md text-sm font-medium border border-green-300">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            Entrada gratuita
+                                        </p>
+                                    )}
                             </div>
                             <br />
-
-                            <Button variant="contained" color="primary" className="w-full mt-4">Comprar entradas</Button>
+                            {evento.enlace && evento.enlace.trim() !== "" && (
+                                <a href={evento.enlace} target="_blank" rel="noopener noreferrer" className="block w-full mt-4">
+                                    <Button variant="contained" color="primary" className="w-full">
+                                        Más información
+                                    </Button>
+                                </a>
+                            )}
                         </CardContent>
                     </Card>
                 </div>

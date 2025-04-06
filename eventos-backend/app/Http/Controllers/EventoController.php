@@ -43,9 +43,10 @@ class EventoController extends Controller
     public function show($nombre)
     {
         $nombre = str_replace('-', ' ', $nombre);
-        $evento = Evento::select('id', 'nombre', 'imagen', 'ubicacion', 'fecha', 'precio', 'hora', 'descripcion', 'enlace', 'autor')
+
+        $evento = Evento::with(['categorias:id,sigla']) // 👈 Asegúrate de incluir "nombre"
             ->where('nombre', $nombre)
-            ->first();
+            ->first(['id', 'nombre', 'imagen', 'ubicacion', 'fecha', 'precio', 'hora', 'descripcion', 'enlace', 'autor']);
 
         if (!$evento) {
             return response()->json(['error' => 'Evento no encontrado'], 404);

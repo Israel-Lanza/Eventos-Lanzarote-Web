@@ -18,6 +18,19 @@ const TarjetaEvento = ({ evento }) => {
             .join(", ");
     }
 
+    const mostrarPrecio = (precio) => {
+        if (
+          precio === 0 ||
+          precio === "0.00" ||
+          precio?.toString().toLowerCase() === "gratis" ||
+          precio === null ||
+          precio === ""
+        ) {
+          return "Evento gratuito";
+        }
+        return `${precio} €`;
+    };
+
     return (
         <div className="p-4">
             <div className="bg-white shadow-lg rounded-2xl overflow-hidden transition-transform transform hover:scale-105 border border-gray-200 h-full flex flex-col">
@@ -44,7 +57,7 @@ const TarjetaEvento = ({ evento }) => {
                         </div>
                         <h3 className="text-lg font-bold text-gray-800 mb-1">{evento.nombre || "Nombre no disponible"}</h3>
                         <p className="text-sm text-gray-600">{formatearFecha(evento.fecha) || "Fecha no disponible"}</p>
-                        <p className="text-sm text-gray-600">{evento.precio ? `${evento.precio} €` : "Gratis"}</p>
+                        <p className="text-sm text-gray-600">{mostrarPrecio(evento.precio)}</p>
                         <p className="text-sm text-gray-600">{evento.hora || "Hora no especificada"}</p>
                         <div className="text-sm text-gray-600 flex items-center mt-1">
                             <PlaceIcon className="w-4 h-4 mr-1" />
