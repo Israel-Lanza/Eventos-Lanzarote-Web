@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { getEventoById } from "../services/eventos";  // Asegúrate que esta función reciba un nombre o slug
 import { Card, CardContent, CardHeader, Divider, Button, Tabs, Tab } from "@mui/material";
 import { ArrowBack, Share, CalendarToday, AccessTime, LocationOn, Business, Map } from "@mui/icons-material";
@@ -155,7 +155,10 @@ const Descripcion = () => {
                             <div className="flex items-center gap-3 mb-4">
                                 <Business />
                                 <div>
-                                    <p><b>Organizador:</b> {evento.autor}</p>
+                                    <p>
+                                        <b>Organizador: </b> 
+                                        {evento.autor === "admin" ? "Eventos Lanzarote" : evento.autor}
+                                    </p>
                                 </div>
                             </div>
 
