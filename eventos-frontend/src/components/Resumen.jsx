@@ -1,4 +1,23 @@
+import { useEffect, useState } from "react";
+import { getResumenEventos } from "../services/eventos"; // ajusta el path si es necesario
+
 export default function Resumen() {
+    const [resumen, setResumen] = useState({
+        total: 0,
+        activos: 0,
+        pendientes: 0,
+    });
+
+    useEffect(() => {
+        const autor = localStorage.getItem('nombreUsuario'); // o como lo tengas guardado
+        const fetchResumen = async () => {
+            const data = await getResumenEventos(autor);
+            setResumen(data);
+        };
+    
+        fetchResumen();
+    }, []);
+
     return (
         <div className="bg-white rounded-lg shadow-md p-6 mb-4">
             <div>
@@ -8,22 +27,22 @@ export default function Resumen() {
                     {/* Total Eventos */}
                     <div className="border border-gray-200 rounded-lg p-4 text-center">
                         <div className="text-gray-500 text-sm">Total Eventos</div>
-                        <div className="text-2xl font-bold">24</div>
+                        <div className="text-2xl font-bold">{resumen.total}</div>
                     </div>
 
                     {/* Eventos Activos */}
                     <div className="border border-gray-200 rounded-lg p-4 text-center">
                         <div className="text-gray-500 text-sm">Eventos Activos</div>
-                        <div className="text-2xl font-bold">18</div>
+                        <div className="text-2xl font-bold">{resumen.activos}</div>
                     </div>
 
                     {/* Pendientes */}
                     <div className="border border-gray-200 rounded-lg p-4 text-center">
                         <div className="text-gray-500 text-sm">Pendientes</div>
-                        <div className="text-2xl font-bold">6</div>
+                        <div className="text-2xl font-bold">{resumen.pendientes}</div>
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }

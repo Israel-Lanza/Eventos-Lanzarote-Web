@@ -123,6 +123,17 @@ export const cambiarEstadoEvento = async (id, estado) => {
 };
 
 
+export const getResumenEventos = async (autor) => {
+  try {
+    const response = await api.get(`/eventos/resumen/${autor}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error obteniendo el resumen de eventos:", error);
+    return { total: 0, activos: 0, pendientes: 0 };
+  }
+};
+
+
 
 
 

@@ -89,7 +89,7 @@ const Header = () => {
             >
               Iniciar Sesión
             </Link>
-          ) : (
+            ) : (
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
