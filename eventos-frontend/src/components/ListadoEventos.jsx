@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Edit, MoreVertical, Trash, X } from "lucide-react";
 import { deleteEvento, cambiarEstadoEvento } from "../services/eventos";
-import Formulario2 from '../components/Formulario2';
+import Formulario2 from './Formulario';
 import Modal from '@mui/material/Modal';
 import { useOutletContext } from "react-router-dom";
 import Box from '@mui/material/Box';

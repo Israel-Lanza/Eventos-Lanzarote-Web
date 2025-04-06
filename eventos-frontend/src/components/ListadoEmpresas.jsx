@@ -3,8 +3,9 @@ import { Edit, MoreVertical, Trash, X } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-// import FormularioEmpresa from '../components/FormularioEmpresa'; // 👉 crea este componente si aún no lo tienes
 import { deleteEmpresa } from "../services/empresas";
+import FormularioEmpresa from "./FormularioEmpresas";
+
 
 export default function ListadoEmpresas() {
     const { empresas, onActualizarDashboard } = useOutletContext();
@@ -150,11 +151,11 @@ export default function ListadoEmpresas() {
                             <X size={24} />
                         </button>
                     </div>
-                    {/* <FormularioEmpresa
+                     <FormularioEmpresa
                         closeModal={handleClose}
                         empresaEditar={empresaEditar}
                         onActualizar={onActualizarDashboard}
-                    /> */}
+                    /> 
                     <div className="flex justify-end mt-4">
                         <button
                             onClick={handleClose}
