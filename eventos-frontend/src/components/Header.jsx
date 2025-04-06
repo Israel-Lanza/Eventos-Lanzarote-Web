@@ -11,11 +11,27 @@ const Header = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    const token = localStorage.getItem("token");
+  
+    if (token) {
+      api.get("/user")
+        .then(response => {
+          const userData = response.data;
+          setUser(userData);
+          localStorage.setItem("user", JSON.stringify(userData));
+        })
+        .catch(() => {
+          //Si el token no es válido, limpiamos
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          setUser(null);
+        });
+    }else{
+      //No hay token = no hay sesión
+      setUser(null);
     }
   }, []);
+  
 
   // Cerrar dropdown si se hace clic fuera
   useEffect(() => {

@@ -9,7 +9,7 @@ export default function Resumen() {
     });
 
     useEffect(() => {
-        const autor = localStorage.getItem('nombreUsuario'); // o como lo tengas guardado
+        const autor = localStorage.getItem('user'); //o como lo tengas guardado
         const fetchResumen = async () => {
             const data = await getResumenEventos(autor);
             setResumen(data);
