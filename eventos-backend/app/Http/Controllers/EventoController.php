@@ -230,4 +230,25 @@ class EventoController extends Controller
 
         return response()->json($eventos);
     }
+
+
+    //Para sacar el resumen de los eventos que estan publicados
+    public function resumen($autor)
+    {
+        if ($autor === 'admin') {
+            $total = Evento::count();
+            $activos = Evento::where('estado', 'A')->count();
+            $pendientes = Evento::where('estado', 'P')->count();
+        } else {
+            $total = Evento::where('autor', $autor)->count();
+            $activos = Evento::where('estado', 'A')->where('autor', $autor)->count();
+            $pendientes = Evento::where('estado', 'P')->where('autor', $autor)->count();
+        }
+
+        return response()->json([
+            'total' => $total,
+            'activos' => $activos,
+            'pendientes' => $pendientes
+        ]);
+    }
 }

@@ -35,6 +35,7 @@ Route::middleware(['auth:sanctum', 'role:admin|empresa'])->group(function () {
     Route::post('/eventos', [EventoController::class, 'store']); //Crear un evento DASHBOARD (ROL ADMIN/EMPRESA)
     Route::put('/eventos/{id}', [EventoController::class, 'update']); //Actualizar evento DASHBOARD (ROL ADMIN/EMPRESA)
     Route::delete('/eventos/{id}', [EventoController::class, 'destroy']); //Eliminar evento DASHBOARD (ROL ADMIN/EMPRESA)
+    Route::get('/eventos/resumen/{autor}', [EventoController::class, 'resumen']);
 });
 
 Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
