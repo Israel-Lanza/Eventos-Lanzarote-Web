@@ -1,12 +1,13 @@
 import { useEffect, useState, useRef } from "react";
 import { Edit, MoreVertical, Trash, X } from "lucide-react";
-import { getAllEvents, deleteEvento, cambiarEstadoEvento } from "../services/eventos";
+import { deleteEvento, cambiarEstadoEvento } from "../services/eventos";
 import Formulario2 from '../components/Formulario2';
 import Modal from '@mui/material/Modal';
+import { useOutletContext } from "react-router-dom";
 import Box from '@mui/material/Box';
 
 export default function ListadoEventos() {
-    const [eventos, setEventos] = useState([]);
+    /*     const [eventos, setEventos] = useState(eventosIniciales || []); */
     const [mostrarForm, setMostrarForm] = useState(false);
     const [editarEvento, setEditarEvento] = useState(null);
     const [menuActivo, setMenuActivo] = useState(null);
@@ -17,6 +18,8 @@ export default function ListadoEventos() {
 
     const menuRefs = useRef({});
 
+    const { eventos, onActualizarDashboard } = useOutletContext();
+
     const handleMostrarForm = () => setMostrarForm(true);
     const handleClose = () => {
         setMostrarForm(false);
@@ -26,9 +29,9 @@ export default function ListadoEventos() {
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
-          setUser(JSON.parse(storedUser));
+            setUser(JSON.parse(storedUser));
         }
-      }, []);
+    }, []);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -58,9 +61,9 @@ export default function ListadoEventos() {
 
     const actualizarEventos = () => {
         if (user && user.nombre) {
-            getAllEvents(user.nombre).then(data => setEventos(data));
+            if (onActualizarDashboard) onActualizarDashboard();
         }
-    }; 
+    };
 
     const eventosFiltrados = eventos.filter(evento =>
         evento.nombre.toLowerCase().includes(busqueda.toLowerCase())
@@ -68,9 +71,9 @@ export default function ListadoEventos() {
 
     useEffect(() => {
         if (user && user.nombre) {
-            getAllEvents(user.nombre).then(data => setEventos(data));
+            if (onActualizarDashboard) onActualizarDashboard();
         }
-    }, [user]); 
+    }, [user, onActualizarDashboard]);
 
     const modalStyle = {
         position: 'absolute',
@@ -128,49 +131,54 @@ export default function ListadoEventos() {
                                     <td className="py-2 px-4">
                                         {user?.roles?.includes("admin") ? (
                                             <select
-                                            value={evento.estado}
-                                            onChange={async (e) => {
-                                                const nuevoEstado = e.target.value;
-                                                const res = await cambiarEstadoEvento(evento.id, nuevoEstado);
-                                                if (res) actualizarEventos();
-                                            }}
-                                            className={`
+                                                value={evento.estado}
+                                                onChange={async (e) => {
+                                                    const nuevoEstado = e.target.value;
+
+                                                    // Opcional: si quieres ver cambios al instante en UI (mejor experiencia)
+                                                    evento.estado = nuevoEstado;
+
+                                                    const res = await cambiarEstadoEvento(evento.id, nuevoEstado);
+
+                                                    if (!res && onActualizarDashboard) {
+                                                        onActualizarDashboard(); // solo si falla el guardado
+                                                    }
+                                                }}
+                                                className={`
                                                 custom-select
                                                 px-2 py-1 text-sm rounded-md cursor-pointer
                                                 border border-gray-300
                                                 focus:outline-none focus:ring-1 focus:ring-blue-300
                                                 transition
-                                                ${
-                                                evento.estado === "A"
-                                                    ? "bg-green-100 text-green-800"
-                                                    : evento.estado === "P"
-                                                    ? "bg-yellow-100 text-yellow-800"
-                                                    : "bg-red-100 text-red-800"
-                                                }
+                                                ${evento.estado === "A"
+                                                        ? "bg-green-100 text-green-800"
+                                                        : evento.estado === "P"
+                                                            ? "bg-yellow-100 text-yellow-800"
+                                                            : "bg-red-100 text-red-800"
+                                                    }
                                             `}
                                             >
-                                            <option value="A">Aprobado</option>
-                                            <option value="P">Pendiente</option>
-                                            <option value="D">Denegado</option>
+                                                <option value="A">Aprobado</option>
+                                                <option value="P">Pendiente</option>
+                                                <option value="D">Denegado</option>
                                             </select>
                                         ) : (
                                             <span
-                                            className={`
+                                                className={`
                                                 px-2 py-1 text-sm rounded-md 
-                                                ${
-                                                evento.estado === "A"
-                                                    ? "bg-green-100 text-green-800"
-                                                    : evento.estado === "P"
-                                                    ? "bg-yellow-100 text-yellow-800"
-                                                    : "bg-red-100 text-red-800"
-                                                }
+                                                ${evento.estado === "A"
+                                                        ? "bg-green-100 text-green-800"
+                                                        : evento.estado === "P"
+                                                            ? "bg-yellow-100 text-yellow-800"
+                                                            : "bg-red-100 text-red-800"
+                                                    }
                                             `}
                                             >
-                                            {evento.estado === "A"
-                                                ? "Aprobado"
-                                                : evento.estado === "P"
-                                                ? "Pendiente"
-                                                : "Denegado"}
+                                                {evento.estado === "A"
+                                                    ? "Aprobado"
+                                                    : evento.estado === "P"
+                                                        ? "Pendiente"
+                                                        : "Denegado"}
                                             </span>
                                         )}
                                     </td>
@@ -233,10 +241,10 @@ export default function ListadoEventos() {
                             <X size={24} />
                         </button>
                     </div>
-                    <Formulario2 
-                    closeModal={handleClose} 
-                    eventoEditar={editarEvento} 
-                    onActualizar={actualizarEventos}
+                    <Formulario2
+                        closeModal={handleClose}
+                        eventoEditar={editarEvento}
+                        onActualizar={actualizarEventos}
                     />
                     <div className="flex justify-end mt-4">
                         <button
@@ -277,7 +285,7 @@ export default function ListadoEventos() {
                             onClick={async () => {
                                 const exito = await deleteEvento(eventoAEliminar.id);
                                 if (exito) {
-                                    setEventos(prev => prev.filter(e => e.id !== eventoAEliminar.id));
+                                    if (onActualizarDashboard) onActualizarDashboard();
                                 }
                                 setMostrarConfirmacion(false);
                             }}

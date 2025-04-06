@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\EventSubmitted;
+use App\Models\User;
 
 class EventoController extends Controller
 {
@@ -84,7 +85,7 @@ class EventoController extends Controller
             'imagen.image'          => 'El archivo debe ser una imagen.',
             'imagen.max'            => 'La imagen no puede superar los 2MB.',
         ]);
-        
+
 
         $evento = new Evento();
         $evento->nombre = $request->nombre;
@@ -233,22 +234,49 @@ class EventoController extends Controller
 
 
     //Para sacar el resumen de los eventos que estan publicados
-    public function resumen($autor)
+    /* public function resumen($autor)
     {
         if ($autor === 'admin') {
             $total = Evento::count();
             $activos = Evento::where('estado', 'A')->count();
             $pendientes = Evento::where('estado', 'P')->count();
+            $denegados = Evento::where('estado', 'D')->count();
         } else {
             $total = Evento::where('autor', $autor)->count();
             $activos = Evento::where('estado', 'A')->where('autor', $autor)->count();
             $pendientes = Evento::where('estado', 'P')->where('autor', $autor)->count();
+            $denegados = Evento::where('estado', 'D')->where('autor', $autor)->count();
         }
 
         return response()->json([
             'total' => $total,
             'activos' => $activos,
-            'pendientes' => $pendientes
+            'pendientes' => $pendientes,
+            'denegados' => $denegados
+        ]);
+    } */
+
+    public function dashboardData(Request $request)
+    {
+        $usuario = $request->user();
+
+        if ($usuario->nombre === 'admin') {
+            $eventos = Evento::all();
+        } else {
+            $eventos = Evento::where('autor', $usuario->nombre)->get();
+        }
+
+        $resumen = [
+            'total' => $eventos->count(),
+            'activos' => $eventos->where('estado', 'A')->count(),
+            'pendientes' => $eventos->where('estado', 'P')->count(),
+            'denegados' => $eventos->where('estado', 'D')->count(),
+        ];
+
+        return response()->json([
+            'resumen' => $resumen,
+            'eventos' => $eventos,
+            'empresas' => User::role('empresa')->get(),
         ]);
     }
 }

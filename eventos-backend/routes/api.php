@@ -47,6 +47,8 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 
     //Cambiar estado del evento DASHBOARD (ROL ADMIN)
     Route::patch('/eventos/{id}/estado', [EventoController::class, 'cambiarEstado']);
+    Route::get('/dashboard-data', [EventoController::class, 'dashboardData']);
+
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {//Sirve para RutasProtegidas.jsx
@@ -60,3 +62,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {//S
         'roles' => $user->roles
     ]);
 });
+

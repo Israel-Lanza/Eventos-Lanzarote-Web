@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Edit, MoreVertical, Trash } from "lucide-react";
-import { getEmpresas } from "../services/empresas";
+/* import { getEmpresas } from "../services/empresas"; */
+import { useOutletContext } from "react-router-dom";
 
 export default function ListadoEmpresas() {
 
-    const [empresas, setEmpresas] = useState([]);
+    const { empresas } = useOutletContext();
+    const [busqueda, setBusqueda] = useState("");
 
-    useEffect(() => {
-        getEmpresas().then(data => setEmpresas(data));
-    }, []);
+    const empresasFiltradas = empresas.filter((e) =>
+        e.nombre.toLowerCase().includes(busqueda.toLowerCase())
+    );
 
-    console.log(empresas.data);
     return (
         <div className="bg-white shadow-lg rounded-lg p-6">
             <div className="mb-4 flex justify-between items-center">
@@ -18,6 +19,8 @@ export default function ListadoEmpresas() {
                     type="text"
                     className="border border-gray-300 rounded-md p-2 w-72"
                     placeholder="Buscar empresas..."
+                    value={busqueda}
+                    onChange={(e) => setBusqueda(e.target.value)}
                 />
             </div>
 
@@ -32,8 +35,8 @@ export default function ListadoEmpresas() {
                         </tr>
                     </thead>
                     <tbody>
-                        {empresas.data.length > 0 ? (
-                            empresas.data.map(empresa => (
+                        {empresasFiltradas.length > 0 ? (
+                            empresasFiltradas.map(empresa => (
                                 <tr key={empresa.id} className="hover:bg-gray-100">
                                     <td className="py-2 px-4 font-medium">{empresa.nombre}</td>
                                     <td className="py-2 px-4">{empresa.email}</td>

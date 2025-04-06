@@ -129,13 +129,19 @@ export const getResumenEventos = async (autor) => {
     return response.data;
   } catch (error) {
     console.error("Error obteniendo el resumen de eventos:", error);
-    return { total: 0, activos: 0, pendientes: 0 };
+    return { total: 0, activos: 0, pendientes: 0, denegados: 0 };
   }
 };
 
-
-
-
+export const getDashboardData = async () => {
+  try {
+      const res = await api.get("/dashboard-data");
+      return res.data;
+  } catch (error) {
+      console.error("Error cargando datos del dashboard", error);
+      return null;
+  }
+};
 
 
   
