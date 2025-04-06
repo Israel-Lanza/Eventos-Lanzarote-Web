@@ -194,7 +194,10 @@ class EventoController extends Controller
             return response()->json(['error' => 'Categoría no encontrada'], 404);
         }
 
-        $eventos = $categoriaModel->eventos()->where('estado', 'A')->get();
+        $eventos = $categoriaModel->eventos()
+        ->with('categorias:id,sigla') // 👈 Asegúrate de incluir esto
+        ->where('estado', 'A')
+        ->get();
         return response()->json($eventos);
     }
 
