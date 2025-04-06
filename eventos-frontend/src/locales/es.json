@@ -1,0 +1,17 @@
+{
+    "login": "Iniciar Sesión",
+    "logout": "Cerrar sesión",
+    "dashboard": "Panel de control",
+    "search_placeholder": "Buscar por nombre de evento",
+    "hello": "Hola",
+    "about_us": "Sobre Nosotros",
+    "spanish": "Español",
+    "english": "Inglés",
+    "welcome": "Tu guía de ocio en la isla de Lanzarote",
+    "next_events": "Próximos eventos",
+    "no_available": "No hay eventos disponibles",
+    "loading": "Cargando",
+    "share": "Compartir",
+    "go_back": "Volver atrás",
+    "event_details": "Detalles del evento"
+}

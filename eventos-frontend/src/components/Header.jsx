@@ -3,6 +3,7 @@ import NavCategoria from "./NavCategoria";
 import { Search } from 'lucide-react';
 import { useEffect, useState, useRef } from "react";
 import api from "../services/api";
+import { useTranslation } from 'react-i18next';
 
 const Header = () => {
   const [user, setUser] = useState(null);
@@ -10,9 +11,11 @@ const Header = () => {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
+  const { t, i18n } = useTranslation();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
-  
+
     if (token) {
       api.get("/user")
         .then(response => {
@@ -21,19 +24,15 @@ const Header = () => {
           localStorage.setItem("user", JSON.stringify(userData));
         })
         .catch(() => {
-          //Si el token no es válido, limpiamos
           localStorage.removeItem("token");
           localStorage.removeItem("user");
           setUser(null);
         });
-    }else{
-      //No hay token = no hay sesión
+    } else {
       setUser(null);
     }
   }, []);
-  
 
-  // Cerrar dropdown si se hace clic fuera
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -55,13 +54,16 @@ const Header = () => {
     }
   };
 
-  //Buscador por nombre funcionalidad
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    const termino = e.target.search.value;
-    if (termino.trim()) {
-      navigate(`/buscar?query=${encodeURIComponent(termino)}`);
+    const busqueda = e.target.search.value;
+    if (busqueda.trim()) {
+      navigate(`/buscar?query=${encodeURIComponent(busqueda)}`);
     }
+  };
+
+  const cambiarIdioma = (lang) => {
+    i18n.changeLanguage(lang);
   };
 
   return (
@@ -69,7 +71,7 @@ const Header = () => {
       <div className="flex justify-between items-center">
         {/* Enlace Sobre Nosotros */}
         <div className="flex-1">
-          <Link to="/about" className="text-gray-600 hover:text-gray-900 transition">Sobre Nosotros</Link>
+          <Link to="/about" className="text-gray-600 hover:text-gray-900 transition">{t('about_us')}</Link>
         </div>
 
         {/* Logo */}
@@ -79,8 +81,7 @@ const Header = () => {
           </Link>
         </div>
 
-
-        {/* Buscador y Botón dinámico */}
+        {/* Buscador y Usuario/Idioma */}
         <div className="flex-1 flex justify-end items-center space-x-4 relative" ref={dropdownRef}>
           <form onSubmit={handleSearchSubmit} className="flex items-center space-x-2">
             <input
@@ -88,7 +89,7 @@ const Header = () => {
               name="search"
               id="search"
               className="border border-gray-300 rounded-md px-6 py-2 text-base w-64 sm:w-72 md:w-80 lg:w-72 transition-all focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              placeholder="Buscar por nombre de evento"
+              placeholder={t("search_placeholder") || "Buscar por nombre de evento"}
             />
             <button
               type="submit"
@@ -98,20 +99,39 @@ const Header = () => {
             </button>
           </form>
 
+          {/* Botones de idioma */}
+          <div className="flex items-center space-x-2">
+            {i18n.language === 'es' ? (
+              <button
+                onClick={() => cambiarIdioma('en')}
+                className="text-sm px-2 py-1 flex items-center gap-1"
+              >
+                🇬🇧 {t('english')}
+              </button>
+            ) : (
+              <button
+                onClick={() => cambiarIdioma('es')}
+                className="text-sm px-2 py-1 flex items-center gap-1"
+              >
+                🇪🇸 {t('spanish')}
+              </button>
+            )}
+          </div>
+
           {!user ? (
             <Link
               to="/login"
               className="py-1 px-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
             >
-              Iniciar Sesión
+              {t("login")}
             </Link>
-            ) : (
+          ) : (
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="py-1 px-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
               >
-                Hola, {user.nombre}
+                {t("hello")}, {user.nombre}
               </button>
 
               {dropdownOpen && (
@@ -120,13 +140,13 @@ const Header = () => {
                     to="/dashboard"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    Ir al Dashboard
+                    {t('dashboard')}
                   </Link>
                   <button
                     onClick={handleLogout}
                     className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                   >
-                    Cerrar Sesión
+                    {t('logout')}
                   </button>
                 </div>
               )}

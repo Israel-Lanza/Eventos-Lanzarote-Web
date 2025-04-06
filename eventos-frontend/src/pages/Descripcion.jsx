@@ -6,13 +6,14 @@ import { ArrowBack, Share, CalendarToday, AccessTime, LocationOn, Business, Map 
 import { Link } from "react-router-dom";
 import { getDisplay } from "../constantes/categorias";
 import { formatearFecha } from "../utils/formatearFecha";
-
+import { useTranslation } from 'react-i18next';
 
 const Descripcion = () => {
     const { nombreEvento } = useParams();
     const [evento, setEvento] = useState(null);
     const [loading, setLoading] = useState(true);
     const [tabValue, setTabValue] = useState(0);
+    const { t } = useTranslation();
 
     useEffect(() => {
         setLoading(true);
@@ -23,9 +24,9 @@ const Descripcion = () => {
         });
     }, [nombreEvento]);
 
-    if (loading) return <div>Cargando...</div>;
+    if (loading) return <div>{t("loading")}...</div>;
 
-    if (!evento) return <div>Evento no encontrado</div>;
+    if (!evento) return <div>{t("not_found")}</div>;
 
     const handleTabChange = (event, newValue) => {
         setTabValue(newValue);
@@ -36,11 +37,11 @@ const Descripcion = () => {
             <div className="mb-6">
                 <Link to="/" className="mb-4 flex items-center text-sm text-gray-600 hover:text-black">
                     <ArrowBack className="mr-1" />
-                    Volver a eventos
+                    {t("go_back")}
                 </Link>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <h1 className="text-3xl font-bold">{evento.nombre}</h1>
-                    <Button variant="outlined" startIcon={<Share />}>Compartir</Button>
+                    <Button variant="outlined" startIcon={<Share />}>{t("share")}</Button>
                 </div>
             </div>
 
@@ -59,7 +60,7 @@ const Descripcion = () => {
                         />
                     </div>
 
-                    <Tabs value={tabValue} onChange={handleTabChange} aria-label="Detalles del evento">
+                    <Tabs value={tabValue} onChange={handleTabChange} aria-label={t('event_details')}>
                         <Tab label="Detalles" />
                         <Tab label="Ubicación" />
                     </Tabs>

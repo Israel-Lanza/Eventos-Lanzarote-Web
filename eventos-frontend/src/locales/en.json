@@ -1,0 +1,18 @@
+{
+    "login": "Log In",
+    "logout": "Log Out",
+    "dashboard": "Dashboard",
+    "search_placeholder": "Search by event name",
+    "hello": "Hello",
+    "about_us": "About Us",
+    "spanish": "Spanish",
+    "english": "English",
+    "welcome": "Your leisure guide in Lanzarote",
+    "next_events": "Upcoming events",
+    "no_available": "There are no scheduled events at the moment.",
+    "loading": "Loading",
+    "not_found": "Event not found",
+    "share": "Share",
+    "go_back": "Go back",
+    "event_details": "Event Details"
+}

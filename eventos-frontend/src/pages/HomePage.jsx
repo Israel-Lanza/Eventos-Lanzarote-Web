@@ -3,11 +3,13 @@ import { getEventos } from "../services/eventos";
 import TarjetaEvento from "../components/TarjetaEvento";
 import { Skeleton } from "@mui/material";
 import NavCategoria from "../components/NavCategoria";
+import { useTranslation } from 'react-i18next';
 
 
 const HomePage = () => {
   const [eventos, setEventos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     getEventos().then(data => {
@@ -20,14 +22,14 @@ const HomePage = () => {
     <>
       {/* Cabecera */}
       <div className="bg-blue-500 text-white p-6 mb-6 rounded shadow">
-        <h3 className="text-xl font-bold">Tu guía de ocio en la isla de Lanzarote</h3>
+        <h3 className="text-xl font-bold">{t("welcome")}</h3>
       </div>
 
       <NavCategoria/>
 
       {/* Eventos de esta semana */}
       <div className="mb-6">
-        <h3 className="text-2xl font-bold mb-4">Próximos eventos</h3>
+        <h3 className="text-2xl font-bold mb-4">{t("next_events")}</h3>
 
         {loading ? (
           // Mostrar Skeletons mientras se cargan los eventos
@@ -47,7 +49,7 @@ const HomePage = () => {
             ))}
           </div>
         ) : (
-          <p className="text-gray-500">No hay eventos disponibles.</p>
+          <p className="text-gray-500">{t("no_available")}</p>
         )}
       </div>
     </>
