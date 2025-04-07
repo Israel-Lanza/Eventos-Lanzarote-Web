@@ -4,12 +4,20 @@ import { Search } from 'lucide-react';
 import { useEffect, useState, useRef } from "react";
 import api from "../services/api";
 import { useTranslation } from 'react-i18next';
+import { useLocation } from "react-router-dom";
 
 const Header = () => {
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");//Buscador
+  const location = useLocation();//Buscador
+
+  useEffect(() => {
+    setSearchTerm(""); //Limpiar el buscador en cada cambio de ruta
+  }, [location.pathname]);
+
 
   const { t, i18n } = useTranslation();
 
@@ -88,6 +96,8 @@ const Header = () => {
               type="text"
               name="search"
               id="search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               className="border border-gray-300 rounded-md px-6 py-2 text-base w-64 sm:w-72 md:w-80 lg:w-72 transition-all focus:ring-2 focus:ring-blue-500 focus:outline-none"
               placeholder={t("search_placeholder") || "Buscar por nombre de evento"}
             />
