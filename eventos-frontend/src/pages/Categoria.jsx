@@ -5,17 +5,22 @@ import TarjetaEvento from "../components/TarjetaEvento";
 import categorias from "../constantes/categorias";
 import { Skeleton, Button } from "@mui/material";
 import NavCategoria from "../components/NavCategoria";
+import Breadcrumbs from "../components/Breadcrumbs";
+import { Link } from "react-router-dom";//Volver atras
+import { useTranslation } from 'react-i18next';
+import { ArrowBack } from "@mui/icons-material";
 
 const Categoria = () => {
   const { nombreCategoria } = useParams();
   const categoriaObj = categorias[nombreCategoria];
   const displayName = categoriaObj ? categoriaObj.display : nombreCategoria;
   const sigla = categoriaObj ? categoriaObj.sigla : null;
-
   const [eventos, setEventos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const eventosPorPagina = 6;
+  const { t } = useTranslation();
+  
 
   useEffect(() => {
     if (sigla) {
@@ -47,7 +52,19 @@ const Categoria = () => {
   };
 
   return (
+    
+
     <div className="container mx-auto px-4 py-6">
+      <Link to="/" className="mb-4 flex items-center text-sm text-gray-600 hover:text-black">
+          <ArrowBack className="mr-1" />
+          {t("go_back")}
+      </Link>
+      <Breadcrumbs
+        rutas={[
+          { to: "/", label: "Inicio" },
+          { label: displayName }
+        ]}
+      />
       <NavCategoria/>
       {/* Título de la Categoría */}
       <h1 className="text-3xl font-bold text-gray-800 mb-6">{displayName}</h1>

@@ -3,16 +3,21 @@ import { useState, useEffect } from "react";
 import { getEventoById } from "../services/eventos";  // Asegúrate que esta función reciba un nombre o slug
 import { Card, CardContent, CardHeader, Divider, Button, Tabs, Tab } from "@mui/material";
 import { ArrowBack, Share, CalendarToday, AccessTime, LocationOn, Business, Map } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";//Volver atras
 import { getDisplay } from "../constantes/categorias";
 import { formatearFecha } from "../utils/formatearFecha";
+import Breadcrumbs from "../components/Breadcrumbs";
 import { useTranslation } from 'react-i18next';
+import { useLocation } from "react-router-dom";
+import categorias from "../constantes/categorias";
 
 const Descripcion = () => {
     const { nombreEvento } = useParams();
     const [evento, setEvento] = useState(null);
     const [loading, setLoading] = useState(true);
     const [tabValue, setTabValue] = useState(0);
+    const location = useLocation();//Para el breadcrum
+    const { from, query, categoria } = location.state || {};//Para el breadcrum
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -31,14 +36,26 @@ const Descripcion = () => {
     const handleTabChange = (event, newValue) => {
         setTabValue(newValue);
     };
-
+    {/*{t("go_back")}*/}//Esto es para las traducciones
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="mb-6">
-                <Link to="/" className="mb-4 flex items-center text-sm text-gray-600 hover:text-black">
-                    <ArrowBack className="mr-1" />
-                    {t("go_back")}
-                </Link>
+            <Link to="/" className="mb-4 flex items-center text-sm text-gray-600 hover:text-black">
+                <ArrowBack className="mr-1" />
+                {t("go_back")}
+            </Link>
+            <Breadcrumbs
+                rutas={[
+                    { to: "/", label: "Inicio" },
+                    ...(categoria ? [
+                    { to: `/categoria/${categoria}`, label: categorias[categoria]?.display || categoria }
+                    ] : []),
+                    ...(query ? [
+                    { to: `/buscar?query=${query}`, label: `Resultados de "${query}"` }
+                    ] : []),
+                    { label: evento.nombre }
+                ]}
+            />
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <h1 className="text-3xl font-bold">{evento.nombre}</h1>
                     <Button variant="outlined" startIcon={<Share />}>{t("share")}</Button>

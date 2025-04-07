@@ -2,8 +2,10 @@ import { getDisplay } from "../constantes/categorias";
 import { Link } from "react-router-dom";
 import PlaceIcon from '@mui/icons-material/Place';
 import { formatearFecha } from "../utils/formatearFecha";
+import { useLocation } from "react-router-dom";
 
 const TarjetaEvento = ({ evento }) => {
+    const location = useLocation();
     let categoriasDisplay = "Sin categoría";
 
     if (evento.categorias) {
@@ -69,8 +71,15 @@ const TarjetaEvento = ({ evento }) => {
                     </div>
 
                     <Link
-                        to={`/eventos/${evento.nombre.replace(/\s+/g, '-').toLowerCase()}`}
                         className="mt-3 py-2 px-4 bg-blue-500 text-white text-center rounded-xl hover:bg-blue-600 transition inline-block"
+                        to={`/eventos/${evento.nombre.replace(/\s+/g, '-')}`}
+                        state={{
+                            from: location.pathname,
+                            query: new URLSearchParams(location.search).get("query") || null,
+                            categoria: location.pathname.includes("/categoria/")
+                            ? location.pathname.split("/").pop()
+                            : null
+                        }}
                     >
                         Más información
                     </Link>
