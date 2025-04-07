@@ -13,13 +13,11 @@ const Header = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");//Buscador
   const location = useLocation();//Buscador
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     setSearchTerm(""); //Limpiar el buscador en cada cambio de ruta
   }, [location.pathname]);
-
-
-  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -72,6 +70,7 @@ const Header = () => {
 
   const cambiarIdioma = (lang) => {
     i18n.changeLanguage(lang);
+    localStorage.setItem('lang', lang); 
   };
 
   return (

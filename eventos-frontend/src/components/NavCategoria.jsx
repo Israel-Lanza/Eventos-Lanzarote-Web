@@ -4,6 +4,8 @@ import FestivalIcon from '@mui/icons-material/Festival';
 import CelebrationIcon from '@mui/icons-material/Celebration';
 import StarIcon from '@mui/icons-material/Star';
 import TheaterComedyIcon from '@mui/icons-material/TheaterComedy';
+import { useTranslation } from "react-i18next";
+
 
 const NavCategoria = () => {
     const categorias = [
@@ -17,6 +19,7 @@ const NavCategoria = () => {
         { nombre: 'Artes Escénicas', icon: TheaterComedyIcon, link: '/eventos/categoria/artes-escenicas' },
         { nombre: 'Deportivos', icon: Volleyball, link: '/eventos/categoria/deportivos' }
     ];
+    const { t } = useTranslation();
     
     return (
         <>
@@ -32,7 +35,7 @@ const NavCategoria = () => {
                             className="bg-gray-100 rounded-2xl pt-4 pb-2 text-center shadow-sm hover:bg-blue-600 hover:text-white transition-all cursor-pointer"
                         >
                             <categoria.icon className="h-7 w-7 mx-auto mb-3" />
-                            <p className="font-medium text-sm">{categoria.nombre}</p>
+                            <p className="font-medium text-sm">{t(categoria.nombre)}</p>
                         </Link>
                     ))}
                 </div>

@@ -1,7 +1,7 @@
 {
     "login": "Iniciar Sesión",
     "logout": "Cerrar sesión",
-    "dashboard": "Panel de control",
+    "dashboard": "Panel de administración",
     "search_placeholder": "Buscar por nombre de evento",
     "hello": "Hola",
     "about_us": "Sobre Nosotros",
@@ -13,5 +13,33 @@
     "loading": "Cargando",
     "share": "Compartir",
     "go_back": "Volver atrás",
-    "event_details": "Detalles del evento"
+    "event_details": "Detalles del evento",
+    "menu": {
+        "home": "Inicio",
+        "events": "Eventos",
+        "business": "Empresas"
+    },
+    "about_event": "Sobre este evento",
+    "categories": "Categorías",
+    "no_category": "Sin categoría",
+    "location": "Ubicación del evento",
+    "form": {
+        "date": "Fecha",
+        "time": "Hora",
+        "price": "Precio",
+        "organizer": "Organizador"
+    },
+    "free": "Entrada gratuita",
+    "more": "Más información",
+    "details": "Detalles",
+    "info": "Información del evento",
+    "Musicales": "Musicales",
+    "Talleres, cursos y conferencias": "Talleres, cursos y conferencias",
+    "Exposiciones": "Exposiciones",
+    "Gastronómicos": "Gastronómicos",
+    "Infantiles": "Infantiles",
+    "Tradicionales": "Tradicionales",
+    "Ferias, galas y festivales": "Ferias, galas y festivales",
+    "Artes Escénicas": "Artes Escénicas",
+    "Deportivos": "Deportivos" 
 }

@@ -67,7 +67,7 @@ const Categoria = () => {
       />
       <NavCategoria/>
       {/* Título de la Categoría */}
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">{displayName}</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-6">{t(displayName)}</h1>
 
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">

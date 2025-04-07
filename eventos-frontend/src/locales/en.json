@@ -14,5 +14,33 @@
     "not_found": "Event not found",
     "share": "Share",
     "go_back": "Go back",
-    "event_details": "Event Details"
+    "event_details": "Event Details",
+    "menu": {
+        "home": "Home",
+        "events": "Events",
+        "business": "Business"
+    },
+    "about_event": "About this event",
+    "categories": "Categories",
+    "no_category": "Without category",
+    "location": "Location",
+    "form": {
+        "date": "Date",
+        "time": "Hour",
+        "price": "Price",
+        "organizer": "Organizer"
+    },
+    "free": "Free entry",
+    "more": "More information",
+    "details": "Details",
+    "info": "Event Information",
+    "Musicales": "Music",
+    "Talleres, cursos y conferencias": "Workshops, Courses & Conferences",
+    "Exposiciones": "Exhibitions",
+    "Gastronómicos": "Gastronomic",
+    "Infantiles": "Children's Events",
+    "Tradicionales": "Traditional",
+    "Ferias, galas y festivales": "Fairs, Galas & Festivals",
+    "Artes Escénicas": "Performing Arts",
+    "Deportivos": "Sports"
 }

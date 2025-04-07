@@ -4,10 +4,12 @@ import ListadoEventos from "../components/ListadoEventos";
 import { useEffect, useState } from "react";
 import { getDashboardData } from "../services/eventos";
 import { Outlet } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
+
 
 export default function AdminDashboard() {
     const [data, setData] = useState(null);
-
+    const { t } = useTranslation();
     const user = JSON.parse(localStorage.getItem('user'));
     const admin = user?.roles?.includes("admin");
     const empresa = user?.roles?.includes("empresa");
@@ -30,7 +32,7 @@ export default function AdminDashboard() {
             <Sidebar />
             <div className="flex-grow p-6 bg-gray-100">
                 <div className="text-center mb-6">
-                    <h2 className="text-2xl font-bold text-gray-800">Panel de Administración</h2>
+                    <h2 className="text-2xl font-bold text-gray-800">{t('dashboard')}</h2>
                 </div>
 
                 {/* ✅ Solo renderiza si data existe */}

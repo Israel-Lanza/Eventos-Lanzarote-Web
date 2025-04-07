@@ -3,11 +3,13 @@ import { Calendar, Home, LogOut, Users, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import api from "../services/api";
+import { useTranslation } from 'react-i18next';
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(true);
   const [user, setUser] = useState(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -36,20 +38,20 @@ export default function Sidebar() {
       <div className={`fixed inset-y-0 left-0 z-50 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform bg-gray-900 text-white w-64 p-6 h-screen flex flex-col justify-between shadow-lg`}>
         <div>
           <div className="mb-6 mt-12">
-            <h5 className="text-xl font-bold">Panel de Administración</h5>
+            <h5 className="text-xl font-bold">{t('dashboard')}</h5>
           </div>
           <div className="space-y-3">
             <Link to="/" className="flex items-center text-gray-300 hover:text-white transition">
-              <Home size={18} className="mr-2" /> Inicio
+              <Home size={18} className="mr-2" /> {t('menu.home')}
             </Link>
 
             <Link to="/dashboard" className="flex items-center text-gray-300 hover:text-white transition">
-              <Calendar size={18} className="mr-2" /> Eventos
+              <Calendar size={18} className="mr-2" /> {t('menu.events')}
             </Link>
 
             {admin && (
               <Link to="/dashboard/empresas" className="flex items-center text-gray-300 hover:text-white transition">
-                <Users size={18} className="mr-2" /> Empresas
+                <Users size={18} className="mr-2" /> {t('menu.business')}
               </Link>
             )}
           </div>

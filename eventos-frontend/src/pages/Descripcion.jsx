@@ -17,7 +17,7 @@ const Descripcion = () => {
     const [loading, setLoading] = useState(true);
     const [tabValue, setTabValue] = useState(0);
     const location = useLocation();//Para el breadcrum
-    const { from, query, categoria } = location.state || {};//Para el breadcrum
+    const { query, categoria } = location.state || {};//Para el breadcrum
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -78,17 +78,17 @@ const Descripcion = () => {
                     </div>
 
                     <Tabs value={tabValue} onChange={handleTabChange} aria-label={t('event_details')}>
-                        <Tab label="Detalles" />
-                        <Tab label="Ubicación" />
+                        <Tab label={t("details")} />
+                        <Tab label={t("location")} />
                     </Tabs>
 
                     {tabValue === 0 && (
                         <Card className="mt-4">
                             <CardContent>
-                                <h3 className="text-xl font-bold mb-4">Sobre este evento</h3>
+                                <h3 className="text-xl font-bold mb-4">{t('about_event')}</h3>
                                 <p>{evento.descripcion} </p>
 
-                                <h3 className="text-xl font-bold mt-6 mb-4">Categorías</h3>
+                                <h3 className="text-xl font-bold mt-6 mb-4">{t('categories')}</h3>
                                 <div className="flex gap-2 flex-wrap mb-2">
                                 {Array.isArray(evento.categorias) && evento.categorias.length > 0 ? (
                                 <div className="text-m text-blue-600 font-semibold mb-2 whitespace-normal break-words">
@@ -100,7 +100,7 @@ const Descripcion = () => {
                                     ))}
                                 </div>
                                 ) : (
-                                <span className="text-sm text-gray-500">Sin categoría</span>
+                                <span className="text-sm text-gray-500">{t('no_category')}</span>
                                 )}
                                 </div>
                             </CardContent>
@@ -110,7 +110,7 @@ const Descripcion = () => {
                     {tabValue === 1 && (
                         <Card className="mt-4">
                             <CardContent>
-                                <h3 className="text-xl font-bold mb-4">Ubicación del evento</h3>
+                                <h3 className="text-xl font-bold mb-4">{t('location')}</h3>
                                 {evento.ubicacion ? (
                                     <div className="w-full h-72 rounded overflow-hidden">
                                         <div
@@ -150,31 +150,31 @@ const Descripcion = () => {
 
                 <div>
                     <Card className="sticky top-4">
-                        <CardHeader title="Información del evento" />
+                        <CardHeader title={t("info")} />
                         <CardContent>
                             <div className="flex items-center gap-3 mb-4">
                                 <CalendarToday />
                                 <div>
-                                    <p><b>Fecha:</b> {formatearFecha(evento.fecha)}</p>
+                                    <p><b>{t('form.date')}:</b> {formatearFecha(evento.fecha)}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-3 mb-4">
                                 <AccessTime />
                                 <div>
-                                    <p><b>Hora:</b>  {evento.hora}</p>
+                                    <p><b>{t('form.time')}:</b>  {evento.hora}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-3 mb-4">
                                 <LocationOn />
                                 <div>
-                                    <p><b>Ubicación:</b> {evento.ubicacion}</p>
+                                    <p><b>{t('location')}:</b> {evento.ubicacion}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-3 mb-4">
                                 <Business />
                                 <div>
                                     <p>
-                                        <b>Organizador: </b> 
+                                        <b>{t('organizer')}: </b> 
                                         {evento.autor === "admin" ? "Eventos Lanzarote" : evento.autor}
                                     </p>
                                 </div>
@@ -183,17 +183,17 @@ const Descripcion = () => {
                             <Divider className="my-4" />
 
                             <div className="flex justify-between items-center">
-                                <p><b>Precio:</b></p>
+                                <p><b>{t('form.price')}:</b></p>
                                 {evento.precio &&
                                     evento.precio.toString().toLowerCase() !== "0.00" &&
                                     evento.precio.toString().toLowerCase() !== "gratis" ? (
-                                        evento.precio
+                                        evento.precio + '€'
                                     ) : (
                                         <p className="flex items-center justify-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-md text-sm font-medium border border-green-300">
                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
-                                            Entrada gratuita
+                                            {t('free')}
                                         </p>
                                     )}
                             </div>
@@ -201,7 +201,7 @@ const Descripcion = () => {
                             {evento.enlace && evento.enlace.trim() !== "" && (
                                 <a href={evento.enlace} target="_blank" rel="noopener noreferrer" className="block w-full mt-4">
                                     <Button variant="contained" color="primary" className="w-full">
-                                        Más información
+                                        {t('more')}
                                     </Button>
                                 </a>
                             )}
