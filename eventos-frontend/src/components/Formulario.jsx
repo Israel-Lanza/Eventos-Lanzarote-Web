@@ -3,7 +3,7 @@ import { createEvento, updateEvento } from "../services/eventos";
 import categoriasDisponibles from "../constantes/categorias";
 import { Calendar, Clock, Upload, Euro, Link as LinkIcon, CheckCircle } from "lucide-react";
 
-function Formulario({ closeModal, eventoEditar = null, onActualizar }) {
+export default function Formulario({ closeModal, eventoEditar = null, onActualizar }) {
   const [formData, setFormData] = useState({
     nombre: "",
     descripcion: "",
@@ -25,6 +25,7 @@ function Formulario({ closeModal, eventoEditar = null, onActualizar }) {
 
   useEffect(() => {
     if (eventoEditar) {
+      console.log("categorías del evento a editar:", eventoEditar.nombre);
       setFormData({
         nombre: eventoEditar.nombre || "",
         descripcion: eventoEditar.descripcion || "",
@@ -124,6 +125,7 @@ function Formulario({ closeModal, eventoEditar = null, onActualizar }) {
       }
     } catch (error) {
       if (error.response && error.response.status === 422) {
+        setEventoCreado(false);
         setErrores(error.response.data.errors);
       } else {
         console.error("Error en el formulario:", error);
@@ -297,7 +299,8 @@ function Formulario({ closeModal, eventoEditar = null, onActualizar }) {
       </div>
       {eventoCreado && (
         <div className="flex items-center justify-between p-4 mb-4 bg-green-100 border border-green-400 text-green-800 rounded">
-          <CheckCircle className="mr-2" /> Evento creado correctamente.
+          <CheckCircle className="mr-2" /> 
+          {eventoEditar ? "Evento actualizado correctamente." : "Evento creado correctamente."}
         </div>
       )}
 
@@ -314,4 +317,4 @@ function Formulario({ closeModal, eventoEditar = null, onActualizar }) {
   );
 }
 
-export default Formulario;
+

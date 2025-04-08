@@ -53,15 +53,11 @@ export const createEvento = async (eventoData) => {
     return response.data;
 };
   
-  //Función para actualizar un evento existente
+//Función para actualizar un evento existente
 export const updateEvento = async (id, eventoData) => {
-  try {
-    const response = await api.put(`/eventos/${id}`, eventoData);
-    return response.data;
-  } catch (error) {
-    console.error("Error actualizando el evento:", error);
-    return null;
-  }
+  const response = await api.put(`/eventos/${id}`, eventoData);
+  return response.data;
+  
 };
   
   /*//Función para eliminar un evento

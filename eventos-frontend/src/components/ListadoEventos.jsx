@@ -5,6 +5,7 @@ import Formulario2 from './Formulario';
 import Modal from '@mui/material/Modal';
 import { useOutletContext } from "react-router-dom";
 import Box from '@mui/material/Box';
+import { getEventoById } from "../services/eventos";
 
 export default function ListadoEventos() {
     /*     const [eventos, setEventos] = useState(eventosIniciales || []); */
@@ -15,6 +16,7 @@ export default function ListadoEventos() {
     const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
     const [user, setUser] = useState(null);
     const [busqueda, setBusqueda] = useState("");
+    const [cargandoEvento, setCargandoEvento] = useState(false);
     
 
     const menuRefs = useRef({});
@@ -54,11 +56,30 @@ export default function ListadoEventos() {
         setMenuActivo(menuActivo === id ? null : id);
     };
 
-    const handleEditar = (evento) => {
+    const handleEditar = async (evento) => {
         setEditarEvento(evento);
         setMostrarForm(true);
-        setMenuActivo(null);
+      
+        setCargandoEvento(true);
+      
+        try {
+          const eventoCompleto = await getEventoById(evento.nombre);
+          if (eventoCompleto) {
+            setEditarEvento(prev => ({
+              ...prev,
+              ...eventoCompleto,
+              categorias: eventoCompleto.categorias || prev.categorias || [],
+            }));
+          } else {
+            console.warn("No se encontró evento completo, se mantiene el básico");
+          }
+        } catch (error) {
+          console.error("Error al obtener el evento completo:", error);
+        } finally {
+          setCargandoEvento(false);
+        }
     };
+      
 
     const actualizarEventos = () => {
         if (user && user.nombre) {
@@ -239,11 +260,15 @@ export default function ListadoEventos() {
                             <X size={24} />
                         </button>
                     </div>
-                    <Formulario2
-                        closeModal={handleClose}
-                        eventoEditar={editarEvento}
-                        onActualizar={actualizarEventos}
-                    />
+                    {cargandoEvento ? (
+                        <div className="text-center text-gray-500 py-8">Cargando evento...</div>
+                    ) : (
+                        <Formulario2
+                            closeModal={handleClose}
+                            eventoEditar={editarEvento}
+                            onActualizar={actualizarEventos}
+                        />
+                    )}
                     <div className="flex justify-end mt-4">
                         <button
                             onClick={handleClose}
