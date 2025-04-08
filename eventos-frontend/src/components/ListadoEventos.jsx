@@ -15,6 +15,7 @@ export default function ListadoEventos() {
     const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
     const [user, setUser] = useState(null);
     const [busqueda, setBusqueda] = useState("");
+    
 
     const menuRefs = useRef({});
 
@@ -100,10 +101,7 @@ export default function ListadoEventos() {
                     value={busqueda}
                     onChange={(e) => setBusqueda(e.target.value)}
                 />
-                <button
-                    onClick={handleMostrarForm}
-                    className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
-                >
+                <button onClick={handleMostrarForm} className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
                     Agregar eventos
                 </button>
             </div>
@@ -135,13 +133,13 @@ export default function ListadoEventos() {
                                                 onChange={async (e) => {
                                                     const nuevoEstado = e.target.value;
 
-                                                    // Opcional: si quieres ver cambios al instante en UI (mejor experiencia)
+                                                    //Opcional: si quieres ver cambios al instante en UI (mejor experiencia)
                                                     evento.estado = nuevoEstado;
 
                                                     const res = await cambiarEstadoEvento(evento.id, nuevoEstado);
 
                                                     if (!res && onActualizarDashboard) {
-                                                        onActualizarDashboard(); // solo si falla el guardado
+                                                        onActualizarDashboard(); //solo si falla el guardado
                                                     }
                                                 }}
                                                 className={`

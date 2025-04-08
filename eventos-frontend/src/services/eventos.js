@@ -43,20 +43,14 @@ export const getEventoById = async (nombreEvento) => {
     }
 };
   
-  //Función para crear un nuevo evento
+//Función para crear un nuevo evento
 export const createEvento = async (eventoData) => {
-  try {
-    console.log(eventoData);
     const response = await api.post("/eventos", eventoData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
     return response.data;
-  } catch (error) {
-    console.error("Error creando el evento:", error);
-    return null;
-  }
 };
   
   //Función para actualizar un evento existente

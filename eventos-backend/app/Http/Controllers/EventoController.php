@@ -61,30 +61,32 @@ class EventoController extends Controller
         $request->validate([
             'nombre'        => 'required|string|max:200',
             'descripcion'   => 'required',
-            'fecha'         => 'required|after:today',
+            'fecha'         => 'required|date|after_or_equal:today',
             'fechaFin'      => 'nullable|date|after_or_equal:fecha',
             'hora'          => 'required|date_format:H:i',
             'ubicacion'     => 'required',
-            'enlace'        => 'nullable|url',
+            'enlace'        => 'nullable|regex:/^https?:\/\/www\.[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/',
             'precio'        => 'required|min:0|numeric',
             'imagen'        => 'nullable|image|max:2048',
+            'categorias'    => 'required',
         ], [
             'nombre.required'       => 'El nombre del evento es obligatorio.',
             'nombre.max'            => 'El nombre no puede tener más de 200 caracteres.',
             'descripcion.required'  => 'La descripción es obligatoria.',
             'fecha.required'        => 'La fecha es obligatoria.',
-            'fecha.after'           => 'La fecha debe ser posterior a hoy.',
+            'fecha.after_or_equal'  => 'La fecha debe ser el dia actual o posterior.',
             'fechaFin.date'         => 'La fecha de fin debe ser una fecha válida.',
             'fechaFin.after_or_equal' => 'La fecha de fin debe ser igual o posterior a la fecha de inicio.',
             'hora.required'         => 'La hora es obligatoria.',
             'hora.date_format'      => 'La hora debe tener el formato HH:mm.',
             'ubicacion.required'    => 'La ubicación es obligatoria.',
-            'enlace.url'            => 'El enlace debe ser una URL válida.',
+            'enlace.regex'          => 'El enlace debe ser una URL válida (ej: https://www.google.com).',
             'precio.required'       => 'El precio es obligatorio.',
             'precio.numeric'        => 'El precio debe ser un número.',
             'precio.min'            => 'El precio no puede ser negativo.',
             'imagen.image'          => 'El archivo debe ser una imagen.',
             'imagen.max'            => 'La imagen no puede superar los 2MB.',
+            'categorias.required'   => 'Debe seleccionar minimo una categoria',
         ]);
 
 
@@ -195,7 +197,7 @@ class EventoController extends Controller
         }
 
         $eventos = $categoriaModel->eventos()
-        ->with('categorias:id,sigla') // 👈 Asegúrate de incluir esto
+        ->with('categorias:id,sigla') 
         ->where('estado', 'A')
         ->get();
         return response()->json($eventos);
