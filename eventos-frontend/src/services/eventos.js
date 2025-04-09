@@ -1,13 +1,12 @@
 import api from "./api";
 
 //Función para obtener eventos desde Laravel
-export const getEventos = async () => {
+export const getEventos = async (page = 1) => {
   try {
-    const response = await api.get("/eventos"); // Solicitud GET a Laravel
-    return response.data; // Devuelve los datos de la respuesta
+    const response = await api.get(`/eventos?page=${page}`);
+    return response.data;
   } catch (error) {
-    console.error("Error obteniendo eventos:", error);
-    return []; // Devuelve un array vacío en caso de error
+    return { data: [], last_page: 1 };
   }
 };
 

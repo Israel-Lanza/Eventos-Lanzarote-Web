@@ -11,15 +11,28 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\EventSubmitted;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 
 class EventoController extends Controller
 {
-    public function index()
+    //Para sacar los eventos de la semana desde el día actual
+    public function index(Request $request)
     {
-        $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace')
-            ->with(['categorias:id,sigla'])
-            ->where('estado', 'A')
-            ->get();
+        $hoy = now()->toDateString();
+        $sieteDiasDespues = now()->copy()->addDays(7)->toDateString();
+        $page = $request->get('page', 1);
+
+        $cacheKey = "eventos_semana_{$hoy}_pagina_{$page}";
+
+        $eventos = Cache::remember($cacheKey, now()->addMinutes(2), function () use ($hoy, $sieteDiasDespues) {
+            return Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace')
+                ->with(['categorias:id,sigla'])
+                ->where('estado', 'A')
+                ->whereDate('fecha', '>=', $hoy)
+                ->whereDate('fecha', '<=', $sieteDiasDespues)
+                ->orderBy('fecha', 'asc')
+                ->paginate(6);
+        });
 
         return response()->json($eventos);
     }
@@ -40,11 +53,12 @@ class EventoController extends Controller
         return response()->json($eventos);
     }
 
+    //¿¿¿¿¿¿???????
     public function show($nombre)
     {
         $nombre = str_replace('-', ' ', $nombre);
 
-        $evento = Evento::with(['categorias:id,sigla']) // 👈 Asegúrate de incluir "nombre"
+        $evento = Evento::with(['categorias:id,sigla']) //Asegúrate de incluir "nombre"
             ->where('nombre', $nombre)
             ->first(['id', 'nombre', 'imagen', 'ubicacion', 'fecha', 'precio', 'hora', 'descripcion', 'enlace', 'autor']);
 
@@ -196,6 +210,7 @@ class EventoController extends Controller
         return response()->json(['mensaje' => 'Evento eliminado correctamente']);
     }
 
+    //Filtrado por categorias
     public function filtrarPorCategoria($categoria)
     {
         $categoriaModel = Categoria::where('sigla', $categoria)->first();
@@ -269,6 +284,7 @@ class EventoController extends Controller
         ]);
     } */
 
+    //Para sacar los eventos pendientes, aprobados, denegados
     public function dashboardData(Request $request)
     {
         $usuario = $request->user();
@@ -292,4 +308,5 @@ class EventoController extends Controller
             'empresas' => User::role('empresa')->get(),
         ]);
     }
+
 }

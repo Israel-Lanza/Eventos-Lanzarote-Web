@@ -92,10 +92,11 @@ export default function ListadoEventos() {
     );
 
     useEffect(() => {
-        if (user && user.nombre) {
-            if (onActualizarDashboard) onActualizarDashboard();
+        const storedUser = localStorage.getItem("user");
+        if (storedUser && onActualizarDashboard) {
+            onActualizarDashboard();
         }
-    }, [user, onActualizarDashboard]);
+    }, []);
 
     const modalStyle = {
         position: 'absolute',
