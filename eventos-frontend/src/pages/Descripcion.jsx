@@ -174,7 +174,7 @@ const Descripcion = () => {
                                 <Business />
                                 <div>
                                     <p>
-                                        <b>{t('organizer')}: </b> 
+                                        <b>{t('form.organizer')}: </b> 
                                         {evento.autor === "admin" ? "Eventos Lanzarote" : evento.autor}
                                     </p>
                                 </div>
