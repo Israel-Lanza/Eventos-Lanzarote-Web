@@ -1,52 +1,36 @@
-import { Link, useNavigate } from "react-router-dom";
-import NavCategoria from "./NavCategoria";
-import { Search } from 'lucide-react';
-import { useEffect, useState, useRef } from "react";
-import api from "../services/api";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Menu, X, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from "react-router-dom";
+import api from "../services/api";
 
 const Header = () => {
   const [user, setUser] = useState(null);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState("");//Buscador
-  const location = useLocation();//Buscador
+  const location = useLocation();
   const { t, i18n } = useTranslation();
-
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  /*   const dropdownRef = useRef(null); */
   useEffect(() => {
-    setSearchTerm(""); //Limpiar el buscador en cada cambio de ruta
+    setSearchTerm("");
   }, [location.pathname]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-
     if (token) {
       api.get("/user")
-        .then(response => {
-          const userData = response.data;
-          setUser(userData);
-          localStorage.setItem("user", JSON.stringify(userData));
+        .then(res => {
+          setUser(res.data);
+          localStorage.setItem("user", JSON.stringify(res.data));
         })
         .catch(() => {
           localStorage.removeItem("token");
           localStorage.removeItem("user");
           setUser(null);
         });
-    } else {
-      setUser(null);
     }
-  }, []);
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleLogout = async () => {
@@ -62,51 +46,65 @@ const Header = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    const busqueda = e.target.search.value;
-    if (busqueda.trim()) {
-      navigate(`/buscar?query=${encodeURIComponent(busqueda)}`);
+    if (searchTerm.trim()) {
+      navigate(`/buscar?query=${encodeURIComponent(searchTerm)}`);
     }
   };
 
   const cambiarIdioma = (lang) => {
     i18n.changeLanguage(lang);
-    localStorage.setItem('lang', lang); 
+    localStorage.setItem('lang', lang);
   };
 
   return (
-    <header className="border-b py-3">
-      <div className="flex justify-between items-center">
-        {/* Enlace Sobre Nosotros */}
-        <div className="flex-1">
-          <Link to="/about" className="text-gray-600 hover:text-gray-900 transition">{t('about_us')}</Link>
-        </div>
+    <header className="border-b">
+      {/* Logo */}
+      <div className="flex justify-center py-4">
+        <Link to="/" className="inline-block">
+          <div className="logo w-24 h-10" />
+        </Link>
+      </div>
 
-        {/* Logo */}
-        <div className="flex-1 text-center">
-          <Link to="/" className="inline-block">
-            <div className="logo" />
-          </Link>
-        </div>
+      {/* Mobile Menu Toggle */}
+      <div className="flex justify-between items-center px-4 sm:hidden">
+        <button onClick={() => setMenuOpen(!menuOpen)}>
+          {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </div>
 
-        {/* Buscador y Usuario/Idioma */}
-        <div className="flex-1 flex justify-end items-center space-x-4 relative" ref={dropdownRef}>
-          <form onSubmit={handleSearchSubmit} className="flex items-center space-x-2">
-            <input
-              type="text"
-              name="search"
-              id="search"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="border border-gray-300 rounded-md px-6 py-2 text-base w-64 sm:w-72 md:w-80 lg:w-72 transition-all focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              placeholder={t("search_placeholder") || "Buscar por nombre de evento"}
-            />
-            <button
-              type="submit"
-              className="text-gray-600 hover:text-gray-900 transition"
-            >
-              <Search />
-            </button>
-          </form>
+      {/* Menu lateral mobile */}
+      {menuOpen && (
+        <div className="sm:hidden px-4 py-2 space-y-2">
+          <Link to="/about" className="block text-gray-700 mb-2">{t('about_us')}</Link>
+          {!user ? (
+            <Link to="/login" className="py-1 px-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">{t('login')}</Link>
+          ) : (
+            <div className="relative">
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="py-1 px-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+              >
+                {t("hello")}, {user.nombre}
+              </button>
+
+              {dropdownOpen && (
+                <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
+                  <Link
+                    to="/dashboard"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    {t('dashboard')}
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                  >
+                    {t('logout')}
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Botones de idioma */}
           <div className="flex items-center space-x-2">
@@ -127,14 +125,36 @@ const Header = () => {
             )}
           </div>
 
+        </div>
+      )}
+
+      {/* Desktop navbar */}
+      <nav className="hidden sm:flex justify-between items-center px-6 py-2 border-t">
+        <Link to="/about" className="text-gray-700 hover:text-gray-900">{t('about_us')}</Link>
+
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
+            {i18n.language === 'es' ? (
+              <button
+                onClick={() => cambiarIdioma('en')}
+                className="text-sm px-2 py-1 flex items-center gap-1"
+              >
+                🇬🇧 {t('english')}
+              </button>
+            ) : (
+              <button
+                onClick={() => cambiarIdioma('es')}
+                className="text-sm px-2 py-1 flex items-center gap-1"
+              >
+                🇪🇸 {t('spanish')}
+              </button>
+            )}
+          </div>
+
           {!user ? (
-            <Link
-              to="/login"
-              className="py-1 px-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
-            >
-              {t("login")}
-            </Link>
+            <Link to="/login" className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">{t('login')}</Link>
           ) : (
+
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -160,8 +180,27 @@ const Header = () => {
                 </div>
               )}
             </div>
+
+
           )}
         </div>
+      </nav>
+
+      {/* Buscador debajo */}
+      <div className="flex justify-center py-4 px-4">
+        <form onSubmit={handleSearchSubmit} className="flex items-center w-full max-w-2xl">
+          <input
+            type="text"
+            name="search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder={t("search_placeholder") || "Buscar eventos..."}
+            className="flex-grow border border-gray-300 rounded-l-md px-4 py-2 focus:outline-none"
+          />
+          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600">
+            <Search className="w-5 h-5" />
+          </button>
+        </form>
       </div>
     </header>
   );
