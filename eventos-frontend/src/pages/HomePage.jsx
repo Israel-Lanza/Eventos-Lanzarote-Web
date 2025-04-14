@@ -4,13 +4,13 @@ import TarjetaEvento from "../components/TarjetaEvento";
 import { Skeleton } from "@mui/material";
 import NavCategoria from "../components/NavCategoria";
 import { useTranslation } from 'react-i18next';
-
+import Paginacion from "../components/Paginacion";
 
 const HomePage = () => {
   const [eventos, setEventos] = useState([]);
- /*  const [loading, setLoading] = useState(true); */
+  /*  const [loading, setLoading] = useState(true); */
   const [isInitialLoading, setIsInitialLoading] = useState(true); // solo cuando arranca la página
-  const [isPageLoading, setIsPageLoading] = useState(false);  
+  const [isPageLoading, setIsPageLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const { t } = useTranslation();
@@ -22,7 +22,7 @@ const HomePage = () => {
       } else {
         setIsPageLoading(true); // cuando cambias de página
       }
-  
+
       try {
         const data = await getEventos(currentPage);
         setEventos(data.data);
@@ -34,7 +34,7 @@ const HomePage = () => {
         setIsPageLoading(false);
       }
     };
-  
+
     fetchEventos();
   }, [currentPage]);
 
@@ -45,7 +45,7 @@ const HomePage = () => {
         <h3 className="text-xl font-bold">{t("welcome")}</h3>
       </div>
 
-      <NavCategoria/>
+      <NavCategoria />
 
       {/* Eventos de esta semana */}
       <div className="mb-6">
@@ -79,23 +79,11 @@ const HomePage = () => {
           <p className="text-gray-500">{t("no_available")}</p>
         )}
       </div>
-      <div className="flex justify-center mt-6 space-x-4">
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-          className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-        >
-          Anterior
-        </button>
-        <span className="text-gray-700 pt-2">Página {currentPage} de {lastPage}</span>
-        <button
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, lastPage))}
-          disabled={currentPage === lastPage}
-          className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-        >
-          Siguiente
-        </button>
-      </div>
+      <Paginacion
+        currentPage={currentPage}
+        lastPage={lastPage}
+        onPageChange={setCurrentPage}
+      />
     </>
   );
 };

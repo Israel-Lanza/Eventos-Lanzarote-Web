@@ -9,6 +9,7 @@ import Breadcrumbs from "../components/Breadcrumbs";
 import { Link } from "react-router-dom";//Volver atras
 import { useTranslation } from 'react-i18next';
 import { ArrowBack } from "@mui/icons-material";
+import Paginacion from "../components/Paginacion";
 
 const Categoria = () => {
   const { nombreCategoria } = useParams();
@@ -20,7 +21,7 @@ const Categoria = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const eventosPorPagina = 6;
   const { t } = useTranslation();
-  
+
 
   useEffect(() => {
     if (sigla) {
@@ -37,27 +38,14 @@ const Categoria = () => {
   const indexOfFirstEvento = indexOfLastEvento - eventosPorPagina;
   const eventosActuales = eventos.slice(indexOfFirstEvento, indexOfLastEvento);
   const totalPages = Math.ceil(eventos.length / eventosPorPagina);
-
-  // Funciones de paginación
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
+  
   return (
-    
+
 
     <div className="container mx-auto px-4 py-6">
       <Link to="/" className="mb-4 flex items-center text-sm text-gray-600 hover:text-black">
-          <ArrowBack className="mr-1" />
-          {t("go_back")}
+        <ArrowBack className="mr-1" />
+        {t("go_back")}
       </Link>
       <Breadcrumbs
         rutas={[
@@ -65,7 +53,7 @@ const Categoria = () => {
           { label: displayName }
         ]}
       />
-      <NavCategoria/>
+      <NavCategoria />
       {/* Título de la Categoría */}
       <h1 className="text-3xl font-bold text-gray-800 mb-6">{t(displayName)}</h1>
 
@@ -86,26 +74,13 @@ const Categoria = () => {
               <TarjetaEvento key={evento.id} evento={evento} />
             ))}
           </div>
+
           {/* Paginación */}
-          <div className="flex justify-between items-center mt-4">
-            <Button 
-              variant="outlined" 
-              onClick={handlePreviousPage} 
-              disabled={currentPage === 1}
-            >
-              Anterior
-            </Button>
-
-            <span>Página {currentPage} de {totalPages}</span>
-
-            <Button 
-              variant="outlined" 
-              onClick={handleNextPage} 
-              disabled={currentPage === totalPages}
-            >
-              Siguiente
-            </Button>
-          </div>
+          <Paginacion
+            currentPage={currentPage}
+            lastPage={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </div>
       ) : (
         <p className="text-gray-500">No hay eventos disponibles.</p>

@@ -5,6 +5,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { deleteEmpresa } from "../services/empresas";
 import FormularioEmpresa from "./FormularioEmpresas";
+import Paginacion from "../components/Paginacion";
 
 
 export default function ListadoEmpresas() {
@@ -15,6 +16,9 @@ export default function ListadoEmpresas() {
     const [menuActivo, setMenuActivo] = useState(null);
     const [empresaAEliminar, setEmpresaAEliminar] = useState(null);
     const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
+    const [paginaActual, setPaginaActual] = useState(1);
+    const empresasPorPagina = 5;
+
 
     const menuRefs = useRef({});
 
@@ -59,6 +63,13 @@ export default function ListadoEmpresas() {
         overflowY: 'auto',
     };
 
+
+    const indiceInicio = (paginaActual - 1) * empresasPorPagina;
+    const indiceFin = indiceInicio + empresasPorPagina;
+    const empresasPaginadas = empresasFiltradas.slice(indiceInicio, indiceFin);
+
+    const totalPaginas = Math.ceil(empresasFiltradas.length / empresasPorPagina);
+
     return (
         <div className="bg-white shadow-lg rounded-lg p-6">
             <div className="mb-4 flex justify-between items-center">
@@ -88,8 +99,8 @@ export default function ListadoEmpresas() {
                         </tr>
                     </thead>
                     <tbody>
-                        {empresasFiltradas.length > 0 ? (
-                            empresasFiltradas.map((empresa) => (
+                        {empresasPaginadas.length > 0 ? (
+                            empresasPaginadas.map((empresa) => (
                                 <tr key={empresa.id} className="hover:bg-gray-100">
                                     <td className="py-2 px-4 font-medium">{empresa.nombre}</td>
                                     <td className="py-2 px-4">{empresa.email}</td>
@@ -138,6 +149,11 @@ export default function ListadoEmpresas() {
                         )}
                     </tbody>
                 </table>
+                <Paginacion
+                    currentPage={paginaActual}
+                    lastPage={totalPaginas}
+                    onPageChange={setPaginaActual}
+                />
             </div>
 
             {/* Modal agregar/editar empresa */}
@@ -151,11 +167,11 @@ export default function ListadoEmpresas() {
                             <X size={24} />
                         </button>
                     </div>
-                     <FormularioEmpresa
+                    <FormularioEmpresa
                         closeModal={handleClose}
                         empresaEditar={empresaEditar}
                         onActualizar={onActualizarDashboard}
-                    /> 
+                    />
                     <div className="flex justify-end mt-4">
                         <button
                             onClick={handleClose}

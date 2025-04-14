@@ -6,9 +6,10 @@ import Modal from '@mui/material/Modal';
 import { useOutletContext } from "react-router-dom";
 import Box from '@mui/material/Box';
 import { getEventoById } from "../services/eventos";
+import Paginacion from "../components/Paginacion";
+
 
 export default function ListadoEventos() {
-    /*     const [eventos, setEventos] = useState(eventosIniciales || []); */
     const [mostrarForm, setMostrarForm] = useState(false);
     const [editarEvento, setEditarEvento] = useState(null);
     const [menuActivo, setMenuActivo] = useState(null);
@@ -19,7 +20,9 @@ export default function ListadoEventos() {
     const [cargandoEvento, setCargandoEvento] = useState(false);
     const [cargandoId, setCargandoId] = useState(null);
     const [estadosActualizados, setEstadosActualizados] = useState({});
-    
+    const [paginaActual, setPaginaActual] = useState(1);
+    const eventosPorPagina = 5;
+
 
     const menuRefs = useRef({});
 
@@ -61,27 +64,27 @@ export default function ListadoEventos() {
     const handleEditar = async (evento) => {
         setEditarEvento(evento);
         setMostrarForm(true);
-      
+
         setCargandoEvento(true);
-      
+
         try {
-          const eventoCompleto = await getEventoById(evento.nombre);
-          if (eventoCompleto) {
-            setEditarEvento(prev => ({
-              ...prev,
-              ...eventoCompleto,
-              categorias: eventoCompleto.categorias || prev.categorias || [],
-            }));
-          } else {
-            console.warn("No se encontró evento completo, se mantiene el básico");
-          }
+            const eventoCompleto = await getEventoById(evento.nombre);
+            if (eventoCompleto) {
+                setEditarEvento(prev => ({
+                    ...prev,
+                    ...eventoCompleto,
+                    categorias: eventoCompleto.categorias || prev.categorias || [],
+                }));
+            } else {
+                console.warn("No se encontró evento completo, se mantiene el básico");
+            }
         } catch (error) {
-          console.error("Error al obtener el evento completo:", error);
+            console.error("Error al obtener el evento completo:", error);
         } finally {
-          setCargandoEvento(false);
+            setCargandoEvento(false);
         }
     };
-      
+
 
     const actualizarEventos = () => {
         if (user && user.nombre) {
@@ -92,6 +95,12 @@ export default function ListadoEventos() {
     const eventosFiltrados = eventos.filter(evento =>
         evento.nombre.toLowerCase().includes(busqueda.toLowerCase())
     );
+
+    const indiceInicio = (paginaActual - 1) * eventosPorPagina;
+    const indiceFin = indiceInicio + eventosPorPagina;
+    const eventosPaginados = eventosFiltrados.slice(indiceInicio, indiceFin);
+
+    const totalPaginas = Math.ceil(eventosFiltrados.length / eventosPorPagina);
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -143,8 +152,8 @@ export default function ListadoEventos() {
                         </tr>
                     </thead>
                     <tbody>
-                        {eventosFiltrados.length > 0 ? (
-                            eventosFiltrados.map(evento => (
+                        {eventosPaginados.length > 0 ? (
+                            eventosPaginados.map(evento => (
                                 <tr key={evento.id} className="hover:bg-gray-100">
                                     <td className="py-2 px-4 font-medium">{evento.nombre}</td>
                                     <td className="py-2 px-4">{evento.autor}</td>
@@ -153,57 +162,57 @@ export default function ListadoEventos() {
                                     <td className="py-2 px-4">
                                         {user?.roles?.includes("admin") ? (
                                             <select
-                                            value={estadosActualizados[evento.id] ?? evento.estado}
-                                            onChange={async (e) => {
-                                                const nuevoEstado = e.target.value;
-                                                setCargandoId(evento.id);
-                                            
-                                                //Cambiar visualmente el estado de inmediato
-                                                setEstadosActualizados(prev => ({
-                                                    ...prev,
-                                                    [evento.id]: nuevoEstado
-                                                }));
-                                            
-                                                const res = await cambiarEstadoEvento(evento.id, nuevoEstado);
-                                            
-                                                if (res && onActualizarDashboard) {
-                                                    onActualizarDashboard();
-                                                }
-                                            
-                                                setCargandoId(null);
-                                            }}
-                                            disabled={cargandoId === evento.id}
-                                            className={`
+                                                value={estadosActualizados[evento.id] ?? evento.estado}
+                                                onChange={async (e) => {
+                                                    const nuevoEstado = e.target.value;
+                                                    setCargandoId(evento.id);
+
+                                                    //Cambiar visualmente el estado de inmediato
+                                                    setEstadosActualizados(prev => ({
+                                                        ...prev,
+                                                        [evento.id]: nuevoEstado
+                                                    }));
+
+                                                    const res = await cambiarEstadoEvento(evento.id, nuevoEstado);
+
+                                                    if (res && onActualizarDashboard) {
+                                                        onActualizarDashboard();
+                                                    }
+
+                                                    setCargandoId(null);
+                                                }}
+                                                disabled={cargandoId === evento.id}
+                                                className={`
                                                 px-2 py-1 text-sm rounded-md cursor-pointer
                                                 border border-gray-300
                                                 focus:outline-none focus:ring-1 focus:ring-blue-300
                                                 transition
                                                 flex items-center
                                                 ${(
-                                                    estadosActualizados[evento.id] ?? evento.estado
-                                                ) === "A"
-                                                    ? "bg-green-100 text-green-800"
-                                                    : (estadosActualizados[evento.id] ?? evento.estado) === "P"
-                                                        ? "bg-yellow-100 text-yellow-800"
-                                                        : "bg-red-100 text-red-800"
-                                                }
+                                                        estadosActualizados[evento.id] ?? evento.estado
+                                                    ) === "A"
+                                                        ? "bg-green-100 text-green-800"
+                                                        : (estadosActualizados[evento.id] ?? evento.estado) === "P"
+                                                            ? "bg-yellow-100 text-yellow-800"
+                                                            : "bg-red-100 text-red-800"
+                                                    }
                                             `}
-                                        >
-                                            {cargandoId === evento.id ? (
-                                                <option>
-                                                    <span className="flex items-center">
-                                                        <Loader2 className="animate-spin w-4 h-4 mr-2 inline" />
-                                                        Guardando...
-                                                    </span>
-                                                </option>
-                                            ) : (
-                                                <>
-                                                    <option value="A">Aprobado</option>
-                                                    <option value="P">Pendiente</option>
-                                                    <option value="D">Denegado</option>
-                                                </>
-                                            )}
-                                        </select>
+                                            >
+                                                {cargandoId === evento.id ? (
+                                                    <option>
+                                                        <span className="flex items-center">
+                                                            <Loader2 className="animate-spin w-4 h-4 mr-2 inline" />
+                                                            Guardando...
+                                                        </span>
+                                                    </option>
+                                                ) : (
+                                                    <>
+                                                        <option value="A">Aprobado</option>
+                                                        <option value="P">Pendiente</option>
+                                                        <option value="D">Denegado</option>
+                                                    </>
+                                                )}
+                                            </select>
                                         ) : (
                                             <span
                                                 className={`
@@ -270,6 +279,11 @@ export default function ListadoEventos() {
                         )}
                     </tbody>
                 </table>
+                <Paginacion
+                    currentPage={paginaActual}
+                    lastPage={totalPaginas}
+                    onPageChange={setPaginaActual}
+                />
             </div>
 
             {/* Modal para agregar o editar evento */}
