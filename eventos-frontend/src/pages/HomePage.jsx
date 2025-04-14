@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 const HomePage = () => {
   const [eventos, setEventos] = useState([]);
-  const [loading, setLoading] = useState(true);
+ /*  const [loading, setLoading] = useState(true); */
   const [isInitialLoading, setIsInitialLoading] = useState(true); // solo cuando arranca la página
   const [isPageLoading, setIsPageLoading] = useState(false);  
   const [currentPage, setCurrentPage] = useState(1);
