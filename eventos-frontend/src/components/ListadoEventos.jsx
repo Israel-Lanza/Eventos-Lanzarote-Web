@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Edit, MoreVertical, Trash, X } from "lucide-react";
+import { Edit, MoreVertical, Trash, X, Loader2 } from "lucide-react";
 import { deleteEvento, cambiarEstadoEvento } from "../services/eventos";
 import Formulario2 from './Formulario';
 import Modal from '@mui/material/Modal';
@@ -17,6 +17,8 @@ export default function ListadoEventos() {
     const [user, setUser] = useState(null);
     const [busqueda, setBusqueda] = useState("");
     const [cargandoEvento, setCargandoEvento] = useState(false);
+    const [cargandoId, setCargandoId] = useState(null);
+    const [estadosActualizados, setEstadosActualizados] = useState({});
     
 
     const menuRefs = useRef({});
@@ -151,37 +153,57 @@ export default function ListadoEventos() {
                                     <td className="py-2 px-4">
                                         {user?.roles?.includes("admin") ? (
                                             <select
-                                                value={evento.estado}
-                                                onChange={async (e) => {
-                                                    const nuevoEstado = e.target.value;
-
-                                                    //Opcional: si quieres ver cambios al instante en UI (mejor experiencia)
-                                                    evento.estado = nuevoEstado;
-
-                                                    const res = await cambiarEstadoEvento(evento.id, nuevoEstado);
-
-                                                    if (!res && onActualizarDashboard) {
-                                                        onActualizarDashboard(); //solo si falla el guardado
-                                                    }
-                                                }}
-                                                className={`
-                                                custom-select
+                                            value={estadosActualizados[evento.id] ?? evento.estado}
+                                            onChange={async (e) => {
+                                                const nuevoEstado = e.target.value;
+                                                setCargandoId(evento.id);
+                                            
+                                                //Cambiar visualmente el estado de inmediato
+                                                setEstadosActualizados(prev => ({
+                                                    ...prev,
+                                                    [evento.id]: nuevoEstado
+                                                }));
+                                            
+                                                const res = await cambiarEstadoEvento(evento.id, nuevoEstado);
+                                            
+                                                if (res && onActualizarDashboard) {
+                                                    onActualizarDashboard();
+                                                }
+                                            
+                                                setCargandoId(null);
+                                            }}
+                                            disabled={cargandoId === evento.id}
+                                            className={`
                                                 px-2 py-1 text-sm rounded-md cursor-pointer
                                                 border border-gray-300
                                                 focus:outline-none focus:ring-1 focus:ring-blue-300
                                                 transition
-                                                ${evento.estado === "A"
-                                                        ? "bg-green-100 text-green-800"
-                                                        : evento.estado === "P"
-                                                            ? "bg-yellow-100 text-yellow-800"
-                                                            : "bg-red-100 text-red-800"
-                                                    }
+                                                flex items-center
+                                                ${(
+                                                    estadosActualizados[evento.id] ?? evento.estado
+                                                ) === "A"
+                                                    ? "bg-green-100 text-green-800"
+                                                    : (estadosActualizados[evento.id] ?? evento.estado) === "P"
+                                                        ? "bg-yellow-100 text-yellow-800"
+                                                        : "bg-red-100 text-red-800"
+                                                }
                                             `}
-                                            >
-                                                <option value="A">Aprobado</option>
-                                                <option value="P">Pendiente</option>
-                                                <option value="D">Denegado</option>
-                                            </select>
+                                        >
+                                            {cargandoId === evento.id ? (
+                                                <option>
+                                                    <span className="flex items-center">
+                                                        <Loader2 className="animate-spin w-4 h-4 mr-2 inline" />
+                                                        Guardando...
+                                                    </span>
+                                                </option>
+                                            ) : (
+                                                <>
+                                                    <option value="A">Aprobado</option>
+                                                    <option value="P">Pendiente</option>
+                                                    <option value="D">Denegado</option>
+                                                </>
+                                            )}
+                                        </select>
                                         ) : (
                                             <span
                                                 className={`
