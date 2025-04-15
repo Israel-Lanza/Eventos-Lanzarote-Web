@@ -22,6 +22,9 @@ import RutasProtegidas from "./components/RutasProtegidas";
 //Para rutas mp definidas
 import Error404 from "./pages/Error404";
 
+//Para rutas no definidas dentro del dashboard
+import Error404Dashboard from "./pages/Error404Dashboard";
+
 export default function Router() {
 
     return (
@@ -43,6 +46,7 @@ export default function Router() {
                 <Route path="/dashboard/*" element={<RutasProtegidas><AdminDashboard /></RutasProtegidas>}>
                     <Route index element={<ListadoEventos />} />
                     <Route path="empresas" element={<ListadoEmpresas />} />
+                    <Route path="*" element={<Error404Dashboard />} />
                 </Route>
 
                 {/* Para rutas no definidas */}
