@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Edit, MoreVertical, Trash, X, Loader2 } from "lucide-react";
 import { deleteEvento, cambiarEstadoEvento } from "../services/eventos";
-import Formulario2 from './Formulario';
+import Formulario from './Formulario';
 import Modal from '@mui/material/Modal';
 import { useOutletContext } from "react-router-dom";
 import Box from '@mui/material/Box';
@@ -304,20 +304,12 @@ export default function ListadoEventos({ eventosIniciales }) {
                     {cargandoEvento ? (
                         <div className="text-center text-gray-500 py-8">Cargando evento...</div>
                     ) : (
-                        <Formulario2
+                        <Formulario
                             closeModal={handleClose}
                             eventoEditar={editarEvento}
                             onActualizar={actualizarEventos}
                         />
                     )}
-                    <div className="flex justify-end mt-4">
-                        <button
-                            onClick={handleClose}
-                            className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
-                        >
-                            Cerrar
-                        </button>
-                    </div>
                 </Box>
             </Modal>
 
