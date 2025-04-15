@@ -124,6 +124,7 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
   };
 
   const siguientePaso = () => {
+    if (pasoActual === pasos.length - 1) return;
     if (validarPaso()) {
       setPasoActual((p) => Math.min(p + 1, pasos.length - 1));
       setPasosFallidos((prev) => {
@@ -140,6 +141,10 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validarPaso()) {
+      setPasosFallidos(prev => new Set(prev).add(pasoActual));
+      return;
+    }
     setErrores({});
     const data = new FormData();
     data.append("nombre", formData.nombre);
@@ -290,7 +295,11 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
           </button>
         ) : (
           !eventoCreado && (
-            <button type="submit" className="ml-auto px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="ml-auto px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+            >
               {eventoEditar ? 'Actualizar Evento' : 'Crear Evento'}
             </button>
           )
