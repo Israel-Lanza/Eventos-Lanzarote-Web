@@ -19,6 +19,9 @@ import ListadoEventos from "./components/ListadoEventos";
 import ListadoEmpresas from "./components/ListadoEmpresas";
 import RutasProtegidas from "./components/RutasProtegidas";
 
+//Para rutas mp definidas
+import Error404 from "./pages/Error404";
+
 export default function Router() {
 
     return (
@@ -41,6 +44,10 @@ export default function Router() {
                     <Route index element={<ListadoEventos />} />
                     <Route path="empresas" element={<ListadoEmpresas />} />
                 </Route>
+
+                {/* Para rutas no definidas */}
+                <Route path="*" element={<Error404 />} />
+
             </Routes>
         </BrowserRouter>
     );
