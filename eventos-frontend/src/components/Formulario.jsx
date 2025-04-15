@@ -35,6 +35,7 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
   const [errores, setErrores] = useState({});
   const [mostrarFechaFin, setMostrarFechaFin] = useState(false);
   const [eventoCreado, setEventoCreado] = useState(false);
+  
   const inputRef = useRef(null);
 
   useEffect(() => {
