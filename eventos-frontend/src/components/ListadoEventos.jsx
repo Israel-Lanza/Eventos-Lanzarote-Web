@@ -9,7 +9,7 @@ import { getEventoById } from "../services/eventos";
 import Paginacion from "../components/Paginacion";
 
 
-export default function ListadoEventos() {
+export default function ListadoEventos({ eventosIniciales }) {
     const [mostrarForm, setMostrarForm] = useState(false);
     const [editarEvento, setEditarEvento] = useState(null);
     const [menuActivo, setMenuActivo] = useState(null);
@@ -22,11 +22,13 @@ export default function ListadoEventos() {
     const [estadosActualizados, setEstadosActualizados] = useState({});
     const [paginaActual, setPaginaActual] = useState(1);
     const eventosPorPagina = 5;
-
-
     const menuRefs = useRef({});
 
-    const { eventos, onActualizarDashboard } = useOutletContext();
+    const outletContext = useOutletContext() || {};
+    const eventosDesdeOutlet = outletContext.eventos;
+    const onActualizarDashboard = outletContext.onActualizarDashboard;
+
+    const eventos = eventosDesdeOutlet || eventosIniciales || [];
 
     const handleMostrarForm = () => setMostrarForm(true);
     const handleClose = () => {
@@ -108,6 +110,8 @@ export default function ListadoEventos() {
             onActualizarDashboard();
         }
     }, []);
+
+   
 
     const modalStyle = {
         position: 'absolute',

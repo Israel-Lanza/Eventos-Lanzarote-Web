@@ -35,8 +35,10 @@ Route::middleware(['auth:sanctum', 'role:admin|empresa'])->group(function () {
     Route::post('/eventos', [EventoController::class, 'store']); //Crear un evento DASHBOARD (ROL ADMIN/EMPRESA)
     Route::put('/eventos/{id}', [EventoController::class, 'update']); //Actualizar evento DASHBOARD (ROL ADMIN/EMPRESA)
     Route::delete('/eventos/{id}', [EventoController::class, 'destroy']); //Eliminar evento DASHBOARD (ROL ADMIN/EMPRESA)
-    Route::get('/eventos/resumen/{autor}', [EventoController::class, 'resumen']);
+    //Route::get('/eventos/resumen/{autor}', [EventoController::class, 'resumen']);
+    Route::get('/dashboard-data', [EventoController::class, 'dashboardData']);//Que se muestre el dashboard para todos los usuarios
 });
+
 
 Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     // Rutas para gestión de empresas (Usuarios)
@@ -47,7 +49,6 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 
     //Cambiar estado del evento DASHBOARD (ROL ADMIN)
     Route::patch('/eventos/{id}/estado', [EventoController::class, 'cambiarEstado']);
-    Route::get('/dashboard-data', [EventoController::class, 'dashboardData']);
 
 });
 

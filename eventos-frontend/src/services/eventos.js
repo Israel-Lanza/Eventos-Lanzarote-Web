@@ -112,7 +112,7 @@ export const cambiarEstadoEvento = async (id, estado) => {
 };
 
 
-export const getResumenEventos = async (autor) => {
+/* export const getResumenEventos = async (autor) => {
   try {
     const response = await api.get(`/eventos/resumen/${autor}`);
     return response.data;
@@ -120,7 +120,7 @@ export const getResumenEventos = async (autor) => {
     console.error("Error obteniendo el resumen de eventos:", error);
     return { total: 0, activos: 0, pendientes: 0, denegados: 0 };
   }
-};
+}; */
 
 export const getDashboardData = async () => {
   try {
@@ -131,6 +131,5 @@ export const getDashboardData = async () => {
       return null;
   }
 };
-
 
   

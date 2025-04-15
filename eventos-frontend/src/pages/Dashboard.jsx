@@ -34,7 +34,7 @@ export default function AdminDashboard() {
                 <div className="text-center mb-6">
                     <h2 className="text-2xl font-bold text-gray-800">{t('dashboard')}</h2>
                 </div>
-
+       
                 {/* ✅ Solo renderiza si data existe */}
                 {data ? (
                     <div className="mb-6 flex flex-col gap-6 min-h-[100vh]">

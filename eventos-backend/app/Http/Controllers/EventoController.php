@@ -38,7 +38,7 @@ class EventoController extends Controller
     }
 
     //Para sacar todos los eventos sin tener en cuenta el estado
-    public function getAllEvents($autor)
+    /*public function getAllEvents($autor)
     {
         if ($autor == 'admin') {
             $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace')
@@ -51,7 +51,7 @@ class EventoController extends Controller
                 ->get();
         }
         return response()->json($eventos);
-    }
+    }*/
 
     //¿¿¿¿¿¿???????
     public function show($nombre)
@@ -287,12 +287,14 @@ class EventoController extends Controller
     //Para sacar los eventos pendientes, aprobados, denegados
     public function dashboardData(Request $request)
     {
+
         $usuario = $request->user();
 
         if ($usuario->nombre === 'admin') {
             $eventos = Evento::all();
         } else {
             $eventos = Evento::where('autor', $usuario->nombre)->get();
+            
         }
 
         $resumen = [
@@ -301,6 +303,8 @@ class EventoController extends Controller
             'pendientes' => $eventos->where('estado', 'P')->count(),
             'denegados' => $eventos->where('estado', 'D')->count(),
         ];
+
+        
 
         return response()->json([
             'resumen' => $resumen,
