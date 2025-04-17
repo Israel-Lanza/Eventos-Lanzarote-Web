@@ -71,10 +71,10 @@ const Descripcion = () => {
                             className="w-full h-96 object-cover rounded-lg"
                         /> */}
                         <img
-                            src="https://inkscape.app/wp-content/uploads/imagen-vectorial.webp"
-                            alt="lanzarote"
+                            src={`http://localhost:8000${evento.imagen}`}
+                            alt={evento.nombre}
                             className="w-full h-full object-cover"
-                        />
+                        /> 
                     </div>
 
                     <Tabs value={tabValue} onChange={handleTabChange} aria-label={t('event_details')}>
