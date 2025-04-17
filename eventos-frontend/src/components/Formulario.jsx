@@ -169,6 +169,7 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
       if (resultado) {
         setEventoCreado(true);
         if (onActualizar) onActualizar();
+        closeModal();
       }
     } catch (error) {
       if (error.response && error.response.status === 422) {

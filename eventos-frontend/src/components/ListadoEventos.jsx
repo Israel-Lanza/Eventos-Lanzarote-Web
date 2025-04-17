@@ -23,6 +23,7 @@ export default function ListadoEventos({ eventosIniciales }) {
     const [paginaActual, setPaginaActual] = useState(1);
     const eventosPorPagina = 5;
     const menuRefs = useRef({});
+    
 
     const outletContext = useOutletContext() || {};
     const eventosDesdeOutlet = outletContext.eventos;
