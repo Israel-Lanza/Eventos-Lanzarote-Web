@@ -10,6 +10,7 @@ import Breadcrumbs from "../components/Breadcrumbs";
 import { useTranslation } from 'react-i18next';
 import { useLocation } from "react-router-dom";
 import categorias from "../constantes/categorias";
+import { FaWhatsapp, FaFacebookF, FaXTwitter } from "react-icons/fa6";
 
 const Descripcion = () => {
     const { nombreEvento } = useParams();
@@ -19,6 +20,22 @@ const Descripcion = () => {
     const location = useLocation();//Para el breadcrum
     const { query, categoria } = location.state || {};//Para el breadcrum
     const { t } = useTranslation();
+    const [openDialog, setOpenDialog] = useState(false);
+    const [copied, setCopied] = useState(false);
+    
+    const handleOpenDialog = () => setOpenDialog(true);
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+        setCopied(false); // reseteamos al cerrar el modal
+    };
+
+    const currentUrl = window.location.href;
+
+    const handleCopyLink = () => {
+        navigator.clipboard.writeText(currentUrl);
+        setCopied(true); // queda activo hasta que el usuario cierre
+    };
+
 
     useEffect(() => {
         setLoading(true);
@@ -36,6 +53,8 @@ const Descripcion = () => {
     const handleTabChange = (event, newValue) => {
         setTabValue(newValue);
     };
+
+
     {/*{t("go_back")}*/}//Esto es para las traducciones
     return (
         <div className="container mx-auto px-4 py-8">
@@ -58,8 +77,76 @@ const Descripcion = () => {
             />
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <h1 className="text-3xl font-bold">{evento.nombre}</h1>
-                    <Button variant="outlined" startIcon={<Share />}>{t("share")}</Button>
+                    <Button variant="outlined" startIcon={<Share />} onClick={handleOpenDialog}>
+                        {t("share")}
+                    </Button>
                 </div>
+                {openDialog && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                        <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md relative">
+                        <h2 className="text-xl font-bold mb-4">Compartir evento</h2>
+
+                        <div className="flex items-center mb-4">
+                            <input
+                            type="text"
+                            readOnly
+                            value={currentUrl}
+                            className="flex-grow border rounded-l px-4 py-2"
+                            />
+                            <button
+                            onClick={handleCopyLink}
+                            className="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600"
+                            >
+                            {copied ? "¡Copiado!" : "Copiar"}
+                            </button>
+                        </div>
+
+                        <div className="flex justify-center space-x-4 mt-4">
+                            {/* WhatsApp */}
+                            <a
+                            href={`https://wa.me/?text=${encodeURIComponent(currentUrl)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-green-500 hover:text-green-600 text-2xl"
+                            title="Compartir en WhatsApp"
+                            >
+                                <FaWhatsapp />
+                            </a>
+
+                            {/* Facebook */}
+                            <a
+                            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-700 text-2xl"
+                            title="Compartir en Facebook"
+                            >
+                             <FaFacebookF />
+                            </a>
+
+                            {/* X (Twitter) */}
+                            <a
+                            href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-black hover:text-gray-800 text-2xl"
+                            title="Compartir en X"
+                            >
+                             <FaXTwitter />
+                            </a>
+                        </div>
+
+                        <button
+                            onClick={handleCloseDialog}
+                            className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl"
+                            title="Cerrar"
+                        >
+                            ✖
+                        </button>
+                        </div>
+                    </div>
+                )}
+
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
