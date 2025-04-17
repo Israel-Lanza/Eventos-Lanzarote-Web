@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Calendar, Home, LogOut, Users, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
@@ -41,18 +41,47 @@ export default function Sidebar() {
             <h5 className="text-xl font-bold">{t('dashboard')}</h5>
           </div>
           <div className="space-y-3">
-            <Link to="/" className="flex items-center text-gray-300 hover:text-white transition">
+            <NavLink
+              to="/"
+              end
+              className={({ isActive }) =>
+                `flex items-center px-3 py-2 rounded-md transition ${
+                  isActive
+                    ? 'bg-gray-800 border-l-4 border-blue-400 text-white font-semibold'
+                    : 'text-gray-300 hover:text-white'
+                }`
+              }
+            >
               <Home size={18} className="mr-2" /> {t('menu.home')}
-            </Link>
+            </NavLink>
 
-            <Link to="/dashboard" className="flex items-center text-gray-300 hover:text-white transition">
+            <NavLink
+              to="/dashboard"
+              end
+              className={({ isActive }) =>
+                `flex items-center px-3 py-2 rounded-md transition ${
+                  isActive
+                    ? 'bg-gray-800 border-l-4 border-blue-400 text-white font-semibold'
+                    : 'text-gray-300 hover:text-white'
+                }`
+              }
+            >
               <Calendar size={18} className="mr-2" /> {t('menu.events')}
-            </Link>
+            </NavLink>
 
             {admin && (
-              <Link to="/dashboard/empresas" className="flex items-center text-gray-300 hover:text-white transition">
+              <NavLink
+                to="/dashboard/empresas"
+                className={({ isActive }) =>
+                  `flex items-center px-3 py-2 rounded-md transition ${
+                    isActive
+                      ? 'bg-gray-800 border-l-4 border-blue-400 text-white font-semibold'
+                      : 'text-gray-300 hover:text-white'
+                  }`
+                }
+              >
                 <Users size={18} className="mr-2" /> {t('menu.business')}
-              </Link>
+              </NavLink>
             )}
           </div>
         </div>
