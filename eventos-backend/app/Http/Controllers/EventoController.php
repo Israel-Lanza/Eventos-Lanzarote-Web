@@ -112,14 +112,22 @@ class EventoController extends Controller
         $evento->ubicacion = $request->ubicacion;
         $evento->enlace = $request->enlace;
         $evento->precio = $request->precio;
-        $evento->fechaFin = $request->fechaFin ?? null;
+        $evento->fechaFin = $request->fechaFin;
         $evento->autor = Auth::user()->nombre;
 
-        if ($request->hasFile('imagen')) {
+        /*if ($request->hasFile('imagen')) {
             $nombreImagen = str_replace(' ', '', $request->nombre . '.' . $request->file('imagen')->getClientOriginalExtension());
             $path = $request->file('imagen')->storeAs('imgEventos', $nombreImagen);
             $evento->imagen = Storage::url($path);
+        }*/
+        if ($request->hasFile('imagen')) {
+            $extension = $request->file('imagen')->getClientOriginalExtension();
+            $nombreNormalizado = preg_replace('/[^A-Za-z0-9]/', '', str_replace(' ', '', $request->nombre));
+            $nombreImagen = $nombreNormalizado . '.' . $extension;
+            $request->file('imagen')->move(public_path('imgEventos'), $nombreImagen);
+            $evento->imagen = '/imgEventos/' . $nombreImagen;
         }
+        
 
         $evento->save();
 

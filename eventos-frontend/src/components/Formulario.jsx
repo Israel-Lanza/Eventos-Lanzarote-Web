@@ -8,6 +8,7 @@ import {
   Euro,
   Link as LinkIcon,
   CheckCircle,
+  HelpCircle,
 } from "lucide-react";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -151,7 +152,7 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
     data.append("nombre", formData.nombre);
     data.append("descripcion", formData.descripcion);
     data.append("fecha", formData.fecha);
-    if (mostrarFechaFin && formData.fechaFin) data.append("fechaFin", formData.fechaFin);
+    data.append("fechaFin", formData.fechaFin);
     data.append("hora", formData.hora);
     data.append("precio", formData.precio);
     data.append("ubicacion", formData.ubicacion);
@@ -226,7 +227,7 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
             {errores.hora && <p className="text-red-600 text-sm">{errores.hora[0]}</p>}
           </div>
           <div>
-            <label className="block font-bold mb-2">Precio</label>
+            <label className="font-bold mb-2 flex items-center gap-2">Precio<span title="Introduce el precio del evento. Usa 0 si es gratutito"><HelpCircle size={18} className="text-gray-500 cursor-pointer"/></span> </label>
             <input type="number" name="precio" value={formData.precio} min="0" step="0.01" className="w-full border rounded px-4 py-2" onChange={handleChange} disabled={eventoCreado} />
             {errores.precio && <p className="text-red-600 text-sm">{errores.precio[0]}</p>}
           </div>

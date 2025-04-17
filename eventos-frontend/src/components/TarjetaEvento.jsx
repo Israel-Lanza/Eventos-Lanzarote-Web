@@ -39,16 +39,16 @@ const TarjetaEvento = ({ evento }) => {
 
                 {/* Imagen del evento */}
                 <div className="h-48 w-full overflow-hidden">
-                    {/* <img
-                        src={evento.imagen ? `http://api-eventoslanzarote.api/${evento.imagen}` : "https://via.placeholder.com/300x200"}
+                    <img
+                        src={`http://localhost:8000${evento.imagen}`}
                         alt={evento.nombre}
                         className="w-full h-full object-cover"
-                    /> */}
-                    <img
+                    /> 
+                    {/*<img
                         src="https://inkscape.app/wp-content/uploads/imagen-vectorial.webp"
                         alt="lanzarote"
                         className="w-full h-full object-cover"
-                    />
+                    />*/}
                 </div>
 
                 {/* Contenido del evento */}
