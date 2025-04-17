@@ -129,7 +129,7 @@ const Header = () => {
       )}
 
       {/* Desktop navbar */}
-      <nav className="hidden sm:flex justify-between items-center px-6 py-2 border-t">
+      <nav className="hidden sm:flex justify-between items-center px-6 py-2">
         <Link to="/about" className="text-gray-700 hover:text-gray-900">{t('about_us')}</Link>
 
         <div className="flex items-center space-x-4">

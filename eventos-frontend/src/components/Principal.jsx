@@ -14,7 +14,8 @@ const Principal = () => {
         <main>
           <Outlet /> 
         </main>
-
+        
+        <hr className="mt-5"/>
         <Footer />
       </div>
     </div>

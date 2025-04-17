@@ -88,7 +88,7 @@ export default function ListadoEmpresas() {
                 </button>
             </div>
 
-            <div className="overflow-visible h-96 mb-3">
+            <div className="overflow-visible h-96 mb-3 flex flex-col justify-between">
                 <table className="w-full text-left border-collapse">
                     <thead>
                         <tr>
@@ -149,11 +149,14 @@ export default function ListadoEmpresas() {
                         )}
                     </tbody>
                 </table>
-                <Paginacion
-                    currentPage={paginaActual}
-                    lastPage={totalPaginas}
-                    onPageChange={setPaginaActual}
-                />
+                <div className="sticky bottom-0">
+                    <Paginacion
+                        currentPage={paginaActual}
+                        lastPage={totalPaginas}
+                        onPageChange={setPaginaActual}
+                    />
+                </div>
+
             </div>
 
             {/* Modal agregar/editar empresa */}
