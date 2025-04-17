@@ -7,17 +7,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
-Route::get('/usuarios', function () {
-    $users = User::all();
-    return response()->json($users);
-});*/
-
 //Ruta para el login (visualizacion del login)
 Route::post('/login', [AutenticationController::class, 'login']);
+Route::post('/empresas', [UserController::class, 'store']);
 
 //Ruta para el deslogearse (tiene que estar autenticado para deslogearse)
 Route::post('/logout', [AutenticationController::class, 'logout'])->middleware('auth:sanctum');
@@ -43,8 +35,8 @@ Route::middleware(['auth:sanctum', 'role:admin|empresa'])->group(function () {
 Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     // Rutas para gestión de empresas (Usuarios)
     Route::get('/empresas', [UserController::class, 'index']); //Mostrar los datos de las empresas para rol ADMIN
-    Route::post('/empresas', [UserController::class, 'store']); //Crear un usuario (empresa) para rol ADMIN
-    Route::put('/empresas/{id}', [UserController::class, 'update']); //Actualizar los datos del usuario (empresa) para rol ADMIN
+/*     Route::post('/empresas', [UserController::class, 'store']); //Crear un usuario (empresa) para rol ADMIN
+ */    Route::put('/empresas/{id}', [UserController::class, 'update']); //Actualizar los datos del usuario (empresa) para rol ADMIN
     Route::delete('/empresas/{id}', [UserController::class, 'destroy']); //Eliminar usuario (empresa) DASHBOARD para rol ADMIN
 
     //Cambiar estado del evento DASHBOARD (ROL ADMIN)

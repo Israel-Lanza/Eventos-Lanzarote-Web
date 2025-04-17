@@ -11,7 +11,9 @@ import Descripcion from "./pages/Descripcion";
 import Buscar from "./pages/Buscador";
 
 //Autenticación
-import LoginPage from "./auth/Login";
+import Login from "./auth/Login";
+
+import Register from "./auth/Register";
 
 //Dashboard y componentes protegidos
 import AdminDashboard from "./pages/Dashboard";
@@ -39,8 +41,9 @@ export default function Router() {
                     <Route path="eventos/:nombreEvento" element={<Descripcion/>}/>
                     <Route path="/buscar" element={<Buscar />} />
                 </Route>
-                {/* Ruta de login */}
-                <Route path="/login" element={<LoginPage/>}/>
+                {/* Ruta de Auth */}
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/register" element={<Register/>}/>
 
                 {/* Rutas protegidas para el dashboard */}
                 <Route path="/dashboard/*" element={<RutasProtegidas><AdminDashboard /></RutasProtegidas>}>

@@ -9,7 +9,14 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
+
+export const getCsrfCookie = () => {
+  return axios.get("http://localhost:8000/sanctum/csrf-cookie", {
+    withCredentials: true,
+  });
+};
 
 // Interceptor para incluir el token de autenticación si existe
 api.interceptors.request.use((config) => {

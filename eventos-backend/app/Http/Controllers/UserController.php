@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Log;
 
 
 class UserController extends Controller
@@ -35,28 +36,29 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre'    => 'required|string|max:200',
-            'email'     => 'required|email|unique:users,email',
-            'password'  => 'required|string|min:8',
-            'cif'       => 'required|max:9|regex:/^[A-Z]\d{7}[A-Z0-9]$/',
-        ], [
-            'nombre.required'       => 'El nombre es obligatorio.',
-            'nombre.string'         => 'El nombre debe ser una cadena de texto.',
-            'nombre.max'            => 'El nombre no puede tener más de 200 caracteres.',
-        
-            'email.required'        => 'El correo electrónico es obligatorio.',
-            'email.email'           => 'El formato del correo no es válido.',
-            'email.unique'          => 'Este correo ya está en uso.',
-        
-            'password.required'     => 'La contraseña es obligatoria.',
-            'password.string'       => 'La contraseña debe ser una cadena de texto.',
-            'password.min'          => 'La contraseña debe tener al menos 8 caracteres.',
-        
-            'cif.required'          => 'El CIF es obligatorio.',
-            'cif.max'               => 'El CIF no puede tener más de 9 caracteres.',
-            'cif.regex'             => 'El CIF debe tener un formato válido (Ej: A1234567Z).',
-        ]);
+
+        Log::info('Datos del registro:', $request->all());
+
+     /*   $request->merge([
+        'cif' => is_array($request->cif) ? $request->cif[0] : $request->cif,
+    ]); */
+    
+    $request->validate([
+        'nombre'    => 'required|string|max:200',
+        'email'     => 'required|email|unique:users,email',
+        'password'  => 'required|string|min:8',
+        'cif'       => ['required', 'string', 'max:9', 'regex:/^([0-9]{8}[A-Z]|[A-Z][0-9]{7}[A-Z0-9])$/'],
+    ], [
+        'nombre.required'   => 'El nombre es obligatorio.',
+        'email.required'    => 'El correo electrónico es obligatorio.',
+        'email.unique'      => 'Este correo ya está en uso.',
+        'password.required' => 'La contraseña es obligatoria.',
+        'cif.required'      => 'El número de identificación es obligatorio.',
+        'cif.required'      => 'El número de identificación es obligatorio.',
+        'cif.max'           => 'El número de identificación no puede tener más de 9 caracteres.',
+        'cif.regex'         => 'El número de identificación debe tener un formato válido (Ej: A1234567Z).',
+    ]);
+    
 
         $user = new User();
         $user->nombre = $request->nombre;
@@ -82,7 +84,7 @@ class UserController extends Controller
             'nombre'    => 'string|max:200',
             'email'     => 'email|unique:users,email,' . $id,
             'password'  => 'nullable|string|min:8',
-            'cif'       => 'required|max:9|regex:/^[A-Z]\d{7}[A-Z0-9]$/',
+            'cif'       => ['required', 'string', 'max:9', 'regex:/^([0-9]{8}[A-Z]|[A-Z][0-9]{7}[A-Z0-9])$/'],
         ], [
             'nombre.string'         => 'El nombre debe ser una cadena de texto.',
             'nombre.max'            => 'El nombre no puede tener más de 200 caracteres.',
@@ -93,9 +95,9 @@ class UserController extends Controller
             'password.string'       => 'La contraseña debe ser una cadena de texto.',
             'password.min'          => 'La contraseña debe tener al menos 8 caracteres.',
         
-            'cif.required'          => 'El CIF es obligatorio.',
-            'cif.max'               => 'El CIF no puede tener más de 9 caracteres.',
-            'cif.regex'             => 'El CIF debe tener un formato válido (Ej: A1234567Z).',
+            'cif.required'          => 'El número de identificación es obligatorio.',
+            'cif.max'               => 'El número de identificación no puede tener más de 9 caracteres.',
+            'cif.regex'             => 'El número de identificación debe tener un formato válido (Ej: A1234567Z).',
         ]);
 
         $user->nombre = $request->nombre ?? $user->nombre;

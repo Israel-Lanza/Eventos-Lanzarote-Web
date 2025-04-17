@@ -134,7 +134,7 @@ function FormularioEmpresa({ closeModal, empresaEditar = null, onActualizar }) {
 
       {/* CIF */}
       <div>
-        <label className="block text-gray-700 font-bold mb-2">CIF</label>
+        <label className="block text-gray-700 font-bold mb-2">CIF / DNI</label>
         <input
           type="text"
           name="cif"

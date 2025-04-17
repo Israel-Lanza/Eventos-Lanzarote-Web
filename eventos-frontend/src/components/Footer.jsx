@@ -44,7 +44,7 @@ const Footer = () => {
                 </p>
                 
                 <Link
-                    to="/registro"
+                    to="/register"
                     className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded-md transition"
                 >
                     Regístrate
