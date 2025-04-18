@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Auth from "./Auth";
 import { createEmpresa } from "../services/empresas";
 import { getCsrfCookie } from "../services/api";
+import toast from 'react-hot-toast';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -87,7 +88,11 @@ const Register = () => {
         email: formData.email,
         password: formData.password,
       });
-      navigate("/login");
+      toast.success('Usuario registrado correctamente. Revisa tu correo para verificar la cuenta.');
+      setTimeout(() => {
+        navigate("/login");
+      }, 400);
+
     } catch (error) {
       if (error.response && error.response.status === 422) {
         setErrores(error.response.data.errors || {});
@@ -111,9 +116,8 @@ const Register = () => {
             value={formData.nombre}
             onChange={handleChange}
             onBlur={(e) => validarCampoVacio("nombre", e.target.value)}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-              errores.nombre ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
-            }`}
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${errores.nombre ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
+              }`}
           />
           {errores.nombre && <p className="text-red-500 text-sm mt-1">{errores.nombre[0]}</p>}
         </div>
@@ -127,9 +131,8 @@ const Register = () => {
             value={formData.email}
             onChange={handleChange}
             onBlur={(e) => validarCampoVacio("email", e.target.value)}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-              errores.email ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
-            }`}
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${errores.email ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
+              }`}
           />
           {errores.email && <p className="text-red-500 text-sm mt-1">{errores.email[0]}</p>}
         </div>
@@ -143,9 +146,8 @@ const Register = () => {
             value={formData.cif}
             onChange={handleChange}
             onBlur={(e) => validarCampoVacio("cif", e.target.value)}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-              errores.cif ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
-            }`}
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${errores.cif ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
+              }`}
           />
           {errores.cif && <p className="text-red-500 text-sm mt-1">{errores.cif[0]}</p>}
         </div>
@@ -162,9 +164,8 @@ const Register = () => {
               validarCampoVacio("password", e.target.value);
               validarConfirmacionContraseña();
             }}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-              errores.password ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
-            }`}
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${errores.password ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
+              }`}
           />
           {errores.password && <p className="text-red-500 text-sm mt-1">{errores.password[0]}</p>}
         </div>
@@ -181,9 +182,8 @@ const Register = () => {
               validarCampoVacio("password_confirmation", e.target.value);
               validarConfirmacionContraseña();
             }}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-              errores.password_confirmation ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
-            }`}
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${errores.password_confirmation ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
+              }`}
           />
           {errores.password_confirmation && (
             <p className="text-red-500 text-sm mt-1">{errores.password_confirmation[0]}</p>
