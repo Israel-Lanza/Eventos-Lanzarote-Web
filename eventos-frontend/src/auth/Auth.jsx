@@ -1,11 +1,17 @@
 
-import { Outlet } from "react-router-dom";
+import teguiseImg from '../assets/teguise.jpg';
 
 const Auth = ({ children }) => {
     return (
-        <div className="min-h-screen flex flex-col md:flex-row">
-            <div className="hidden md:flex md:w-1/2 bg-cover bg-center" style={{ backgroundImage: "url('https://hips.hearstapps.com/hmg-prod/images/carretera-de-lanzarote-parque-timanfaya-canarias-1621531417.jpg?crop=1.00xw:1.00xh;0,0&resize=1024:*')" }} />
-            <div className="flex flex-col justify-center items-center md:w-1/2 p-8 bg-white">
+        <div className="h-screen flex flex-col md:flex-row">
+            <div className="hidden md:flex md:w-1/2 h-full">
+                <img
+                    src={teguiseImg}
+                    alt="Paisaje de Teguise"
+                    className="w-full h-full object-cover object-top"
+                />
+            </div>
+            <div className="flex flex-col justify-center items-center md:w-1/2 p-8 bg-white h-full">
                 <div className="w-full max-w-md">
                     {children}
                 </div>
