@@ -114,83 +114,90 @@ function FormularioEmpresa({ closeModal, empresaEditar = null, onActualizar }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="container mx-auto p-6 bg-white rounded-lg shadow-lg space-y-6">
-      {/* NOMBRE */}
-      <div>
-        <label className="block text-gray-700 font-bold mb-2">Nombre</label>
-        <input
-          type="text"
-          name="nombre"
-          value={formData.nombre}
-          className="w-full px-4 py-2 border rounded-md"
-          placeholder="Nombre de la empresa"
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        {touched.nombre && errors.nombre && (
-          <p className="text-red-500 text-sm mt-1">{errors.nombre}</p>
-        )}
-      </div>
-
-      {/* CIF */}
-      <div>
-        <label className="block text-gray-700 font-bold mb-2">CIF / DNI</label>
-        <input
-          type="text"
-          name="cif"
-          value={formData.cif}
-          className="w-full px-4 py-2 border rounded-md"
-          placeholder="CIF / DNI"
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        {touched.cif && errors.cif && (
-          <p className="text-red-500 text-sm mt-1">{errors.cif}</p>
-        )}
-      </div>
-
-      {/* EMAIL */}
-      <div>
-        <label className="block text-gray-700 font-bold mb-2">Email</label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          className="w-full px-4 py-2 border rounded-md"
-          placeholder="Email"
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        {touched.email && errors.email && (
-          <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-        )}
-      </div>
-
-      {/* PASSWORD */}
-      <div>
-        <label className="block text-gray-700 font-bold mb-2">Contraseña</label>
-        <input
-          type="password"
-          name="password"
-          value={formData.password}
-          className="w-full px-4 py-2 border rounded-md"
-          placeholder="Contraseña"
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        {touched.password && errors.password && (
-          <p className="text-red-500 text-sm mt-1">{errors.password}</p>
-        )}
-      </div>
-
-      <button
-        type="submit"
-        className="w-full py-2 px-4 text-white bg-blue-500 rounded-md hover:bg-blue-600 transition"
+    <div className="w-full px-4 sm:px-6 md:px-8 py-6 flex justify-center">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-screen-sm bg-white rounded-lg shadow-md p-4 sm:p-6 md:p-8 space-y-5"
       >
-        {empresaEditar ? 'Actualizar Empresa' : 'Alta Empresa'}
-      </button>
-    </form>
+        {/* NOMBRE */}
+        <div className="flex flex-col">
+          <label className="text-gray-700 font-medium text-sm mb-1">Nombre</label>
+          <input
+            type="text"
+            name="nombre"
+            value={formData.nombre}
+            className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            placeholder="Nombre de la empresa"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          {touched.nombre && errors.nombre && (
+            <p className="text-red-500 text-xs mt-1">{errors.nombre}</p>
+          )}
+        </div>
+  
+        {/* CIF */}
+        <div className="flex flex-col">
+          <label className="text-gray-700 font-medium text-sm mb-1">CIF / DNI</label>
+          <input
+            type="text"
+            name="cif"
+            value={formData.cif}
+            className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            placeholder="CIF / DNI"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          {touched.cif && errors.cif && (
+            <p className="text-red-500 text-xs mt-1">{errors.cif}</p>
+          )}
+        </div>
+  
+        {/* EMAIL */}
+        <div className="flex flex-col">
+          <label className="text-gray-700 font-medium text-sm mb-1">Email</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            placeholder="Email"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          {touched.email && errors.email && (
+            <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+          )}
+        </div>
+  
+        {/* PASSWORD */}
+        <div className="flex flex-col">
+          <label className="text-gray-700 font-medium text-sm mb-1">Contraseña</label>
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            placeholder="Contraseña"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          {touched.password && errors.password && (
+            <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+          )}
+        </div>
+  
+        {/* BOTÓN */}
+        <button
+          type="submit"
+          className="w-full py-2 px-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+        >
+          {empresaEditar ? "Actualizar Empresa" : "Alta Empresa"}
+        </button>
+      </form>
+    </div>
   );
+  
 }
 
 export default FormularioEmpresa;
