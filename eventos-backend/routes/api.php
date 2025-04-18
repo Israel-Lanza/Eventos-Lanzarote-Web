@@ -16,11 +16,20 @@ Route::post('/empresas', [UserController::class, 'store']);
 Route::post('/logout', [AutenticationController::class, 'logout'])->middleware('auth:sanctum');
 
 //Email de verificación
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
+Route::get('/verificar-email/{id}/{hash}', function (Request $request, $id, $hash) {
+    $user = User::findOrFail($id);
 
-    return redirect('/login?verificado=1');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+    if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+        return response()->json(['message' => 'Enlace de verificación inválido.'], 403);
+    }
+
+    if (! $user->hasVerifiedEmail()) {
+        $user->markEmailAsVerified();
+    }
+
+    return redirect(env('FRONTEND_URL') . '/login');
+})->name('verification.verify');
+
 
 
 //Rutas para eventos en el INDEX

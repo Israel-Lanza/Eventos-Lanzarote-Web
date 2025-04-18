@@ -7,7 +7,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
+use App\Mail\VerificacionEmailMailable;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Log;
+
 
 
 class UserController extends Controller
@@ -61,10 +65,23 @@ class UserController extends Controller
 
         $user->save();
         $user->assignRole('empresa');
-        
-        $user->sendEmailVerificationNotification();
 
-        return response()->json(['mensaje' => 'Usuario creado correctamente', 'usuario' => $user], 201);
+        $url = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            [
+                'id' => $user->id,
+                'hash' => sha1($user->getEmailForVerification()),
+            ]
+        );
+
+        Mail::to($user->email)->send(new VerificacionEmailMailable($user, $url));
+/*         return response()->json(['mensaje' => 'Usuario creado correctamente', 'usuario' => $user], 201); */        
+            return response()->json([
+            'message' => 'Usuario registrado correctamente.',
+            'verificacion_url' => $url, // 👈 aquí podrás verla desde el frontend o en Postman
+        ]);
+
     }
 
     public function update(Request $request, $id)
