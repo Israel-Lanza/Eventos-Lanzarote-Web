@@ -13,35 +13,32 @@ export const getEmpresas = async () => {
 
 //Función para obtener una empresa por ID
 export const getEmpresaById = async (id) => {
-    try {
-      const response = await api.get(`/empresas/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error("Error obteniendo la empresa:", error);
-      return null; //Retorna null si hay error
-    }
-};
-  
-//Función para crear una nueva empresa
-export const createEmpresa = async (empresaData) => {
   try {
-    const response = await api.post("/empresas", empresaData);
+    const response = await api.get(`/empresas/${id}`);
     return response.data;
   } catch (error) {
-    console.error("Error creando la empresa:", error);
-    return null;
+    console.error("Error obteniendo la empresa:", error);
+    return null; //Retorna null si hay error
   }
 };
-  
+
+//Función para crear una nueva empresa
+export const createEmpresa = async (empresaData) => {
+  const response = await api.post("/empresas", empresaData);
+  return response.data;
+};
+
 //Función para actualizar una empresa existente
 export const updateEmpresa = async (id, empresaData) => {
-  try {
-    const response = await api.put(`/empresas/${id}`, empresaData);
-    return response.data;
+  const response = await api.put(`/empresas/${id}`, empresaData);
+  return response.data;
+  
+  /* try {
+    
   } catch (error) {
     console.error("Error actualizando la empresa:", error);
     return null;
-  }
+  } */
 };
 
 //Función para eliminar una empresa

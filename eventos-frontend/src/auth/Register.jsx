@@ -10,97 +10,99 @@ const Register = () => {
     cif: "",
     email: "",
     password: "",
+    password_confirmation: "",
   });
 
-  const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState({});
+  const [errores, setErrores] = useState({});
   const navigate = useNavigate();
 
-  const validate = (fieldValues = formData) => {
-    let temp = { ...errors };
-
-    if ("nombre" in fieldValues)
-      temp.nombre = fieldValues.nombre ? "" : "El nombre es obligatorio";
-
-    if ("cif" in fieldValues)
-      temp.cif = /^[A-Za-z0-9]{8,10}$/.test(fieldValues.cif)
-        ? ""
-        : "El CIF debe tener entre 8 y 10 caracteres alfanuméricos";
-
-    if ("email" in fieldValues)
-      temp.email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fieldValues.email)
-        ? ""
-        : "Email no válido";
-
-    if ("password" in fieldValues)
-      temp.password = fieldValues.password.length >= 6
-        ? ""
-        : "La contraseña debe tener al menos 6 caracteres";
-
-    setErrors({
-      ...temp,
-    });
-
-    return Object.values(temp).every((x) => x === "");
-  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
     });
+  };
 
-    if (touched[name]) {
-      validate({ [name]: value });
+  const validarCampoVacio = (nombreCampo, valor) => {
+    if (!valor.trim()) {
+      setErrores((prev) => ({
+        ...prev,
+        [nombreCampo]: ["Este campo es obligatorio."],
+      }));
+    } else {
+      setErrores((prev) => {
+        const nuevos = { ...prev };
+        delete nuevos[nombreCampo];
+        return nuevos;
+      });
     }
   };
 
-  const handleBlur = (e) => {
-    const { name } = e.target;
-    setTouched({
-      ...touched,
-      [name]: true,
-    });
-    validate({ [name]: formData[name] });
+  const validarConfirmacionContraseña = () => {
+    if (
+      formData.password &&
+      formData.password_confirmation &&
+      formData.password !== formData.password_confirmation
+    ) {
+      setErrores((prev) => ({
+        ...prev,
+        password_confirmation: ["Las contraseñas no coinciden."],
+      }));
+    } else {
+      setErrores((prev) => {
+        const nuevos = { ...prev };
+        delete nuevos.password_confirmation;
+        return nuevos;
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    setErrores({});
 
-    const data = {
-      nombre: formData.nombre,
-      cif: formData.cif,
-      email: formData.email,
-      password: formData.password,
-    };
+    // Validaciones básicas antes de enviar
+    if (!formData.nombre.trim() || !formData.email.trim() || !formData.cif.trim() || !formData.password.trim() || !formData.password_confirmation.trim()) {
+      setErrores((prev) => ({
+        ...prev,
+        general: "Rellena todos los campos obligatorios.",
+      }));
+      return;
+    }
+
+    if (formData.password !== formData.password_confirmation) {
+      setErrores((prev) => ({
+        ...prev,
+        password_confirmation: ["Las contraseñas no coinciden."],
+      }));
+      return;
+    }
 
     try {
       await getCsrfCookie();
-      
-      await createEmpresa(data);
+      await createEmpresa({
+        nombre: formData.nombre,
+        cif: formData.cif,
+        email: formData.email,
+        password: formData.password,
+      });
       navigate("/login");
     } catch (error) {
       if (error.response && error.response.status === 422) {
-        setErrors((prev) => ({
-          ...prev,
-          general: error.response.data.message || "Error al registrarse",
-        }));
+        setErrores(error.response.data.errors || {});
       } else {
-        setErrors((prev) => ({
-          ...prev,
-          general: "Error de red. Intenta más tarde.",
-        }));
+        setErrores({ general: "Error de red. Intenta más tarde." });
       }
     }
   };
-
 
   return (
     <Auth>
       <h2 className="text-3xl font-bold text-center text-indigo-700 mb-6">Registrarse</h2>
 
       <form onSubmit={handleSubmit}>
+        {/* Nombre */}
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-1">Nombre</label>
           <input
@@ -108,15 +110,15 @@ const Register = () => {
             name="nombre"
             value={formData.nombre}
             onChange={handleChange}
-            onBlur={handleBlur}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${errors.nombre ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
-              }`}
+            onBlur={(e) => validarCampoVacio("nombre", e.target.value)}
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+              errores.nombre ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
+            }`}
           />
-          {touched.nombre && errors.nombre && (
-            <p className="text-red-500 text-sm mt-1">{errors.nombre}</p>
-          )}
+          {errores.nombre && <p className="text-red-500 text-sm mt-1">{errores.nombre[0]}</p>}
         </div>
 
+        {/* Email */}
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-1">Email</label>
           <input
@@ -124,15 +126,15 @@ const Register = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            onBlur={handleBlur}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${errors.email ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
-              }`}
+            onBlur={(e) => validarCampoVacio("email", e.target.value)}
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+              errores.email ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
+            }`}
           />
-          {touched.email && errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-          )}
+          {errores.email && <p className="text-red-500 text-sm mt-1">{errores.email[0]}</p>}
         </div>
 
+        {/* CIF */}
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-1">CIF / DNI</label>
           <input
@@ -140,15 +142,15 @@ const Register = () => {
             name="cif"
             value={formData.cif}
             onChange={handleChange}
-            onBlur={handleBlur}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${errors.cif ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
-              }`}
+            onBlur={(e) => validarCampoVacio("cif", e.target.value)}
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+              errores.cif ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
+            }`}
           />
-          {touched.cif && errors.cif && (
-            <p className="text-red-500 text-sm mt-1">{errors.cif}</p>
-          )}
+          {errores.cif && <p className="text-red-500 text-sm mt-1">{errores.cif[0]}</p>}
         </div>
 
+        {/* Contraseña */}
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-1">Contraseña</label>
           <input
@@ -156,16 +158,42 @@ const Register = () => {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            onBlur={handleBlur}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${errors.password ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
-              }`}
+            onBlur={(e) => {
+              validarCampoVacio("password", e.target.value);
+              validarConfirmacionContraseña();
+            }}
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+              errores.password ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
+            }`}
           />
-          {touched.password && errors.password && (
-            <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+          {errores.password && <p className="text-red-500 text-sm mt-1">{errores.password[0]}</p>}
+        </div>
+
+        {/* Repetir contraseña */}
+        <div className="mb-4">
+          <label className="block text-sm font-semibold mb-1">Repetir contraseña</label>
+          <input
+            type="password"
+            name="password_confirmation"
+            value={formData.password_confirmation}
+            onChange={handleChange}
+            onBlur={(e) => {
+              validarCampoVacio("password_confirmation", e.target.value);
+              validarConfirmacionContraseña();
+            }}
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+              errores.password_confirmation ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
+            }`}
+          />
+          {errores.password_confirmation && (
+            <p className="text-red-500 text-sm mt-1">{errores.password_confirmation[0]}</p>
           )}
         </div>
 
-        {errors.general && <p className="text-center text-sm text-red-600 mb-4">{errors.general}</p>}
+        {/* Error general */}
+        {errores.general && (
+          <p className="text-center text-sm text-red-600 mb-4">{errores.general}</p>
+        )}
 
         <button
           type="submit"
