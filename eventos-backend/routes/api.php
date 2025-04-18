@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 //Ruta para el login (visualizacion del login)
 Route::post('/login', [AutenticationController::class, 'login']);
@@ -13,6 +14,13 @@ Route::post('/empresas', [UserController::class, 'store']);
 
 //Ruta para el deslogearse (tiene que estar autenticado para deslogearse)
 Route::post('/logout', [AutenticationController::class, 'logout'])->middleware('auth:sanctum');
+
+//Email de verificación
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect('/login?verificado=1');
+})->middleware(['auth', 'signed'])->name('verification.verify');
 
 
 //Rutas para eventos en el INDEX

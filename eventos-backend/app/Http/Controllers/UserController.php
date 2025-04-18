@@ -61,7 +61,8 @@ class UserController extends Controller
 
         $user->save();
         $user->assignRole('empresa');
-
+        
+        $user->sendEmailVerificationNotification();
 
         return response()->json(['mensaje' => 'Usuario creado correctamente', 'usuario' => $user], 201);
     }

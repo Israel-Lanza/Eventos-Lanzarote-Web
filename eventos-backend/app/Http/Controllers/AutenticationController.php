@@ -8,13 +8,6 @@ use Illuminate\Support\Facades\Hash;
 
 class AutenticationController extends Controller
 {
-
-    //El registro de usuarios (empresas) irá aqui 
-    public function register(Request $request)
-    {
-
-    }
-
     //Para verificar los usuarios que se pueden logear si existen en la base de datos y creacion del token personal para cada usuario
     public function login(Request $request)
     {
