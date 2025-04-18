@@ -6,7 +6,6 @@ import { getDashboardData } from "../services/eventos";
 import { Outlet } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 
-
 export default function AdminDashboard() {
     const [data, setData] = useState(null);
     const { t } = useTranslation();
@@ -26,18 +25,17 @@ export default function AdminDashboard() {
         });
     }, []);
 
-
     return (
-        <div className="flex min-h-screen">
+        <div className="flex min-h-screen bg-gray-100">
             <Sidebar />
-            <div className="flex-grow p-6 bg-gray-100">
+
+            <div className="flex-grow p-4 sm:p-6 md:p-8 transition-all duration-300 w-full">
                 <div className="text-center mb-6">
-                    <h2 className="text-2xl font-bold text-gray-800">{t('dashboard')}</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800">{t('dashboard')}</h2>
                 </div>
-       
-                {/* ✅ Solo renderiza si data existe */}
+
                 {data ? (
-                    <div className="mb-6 flex flex-col gap-6 min-h-[100vh]">
+                    <div className="mb-6 flex flex-col gap-6">
                         <Resumen resumen={data.resumen} />
                         {admin && (
                             <Outlet context={{
