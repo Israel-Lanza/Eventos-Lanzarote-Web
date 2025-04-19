@@ -16,13 +16,13 @@
         <h2 style="color: #333;">¡Hola {{ $user->nombre }}!</h2>
 
         <p style="font-size: 16px; color: #555;">
-            Gracias por registrarte. Haz clic en el botón de abajo para verificar tu dirección de correo electrónico.
+            Gracias por registrarte. Haz clic en el botón para verificar tu dirección de correo electrónico.
         </p>
 
         <div style="text-align: center; margin: 40px 0;">
             <a href="{{ $url }}"
                style="background-color: #6366F1; color: white; padding: 12px 24px; border-radius: 5px; text-decoration: none; font-size: 16px;">
-                Verificar correo
+                Verificar
             </a>
         </div>
 

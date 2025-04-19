@@ -5,7 +5,7 @@ const categorias = {
     gastrononicos: { display: "Gastronómicos", sigla: "GA" },
     infantiles: { display: "Infantiles", sigla: "IN" },
     tradicionales: { display: "Tradicionales", sigla: "TR" },
-    "ferias&galas&festivales": { display: "Ferias, galas y festivales", sigla: "FE" },
+    "ferias&festivales": { display: "Ferias y festivales", sigla: "FE" },
     "artes-escenicas": { display: "Artes Escénicas", sigla: "AE" },
     deportivos: { display: "Deportivos", sigla: "DE" }
 };

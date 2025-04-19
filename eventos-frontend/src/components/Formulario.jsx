@@ -34,7 +34,6 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
   });
 
   const [errores, setErrores] = useState({});
-  const [mostrarFechaFin, setMostrarFechaFin] = useState(false);
   const [eventoCreado, setEventoCreado] = useState(false);
   
   const inputRef = useRef(null);
@@ -53,7 +52,6 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
         imagen: null,
         categorias: eventoEditar.categorias?.map(c => c.sigla) || [],
       });
-      if (eventoEditar.fechaFin) setMostrarFechaFin(true);
     }
   }, [eventoEditar]);
 

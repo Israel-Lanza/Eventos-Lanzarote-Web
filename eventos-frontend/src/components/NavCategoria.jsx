@@ -15,7 +15,7 @@ const NavCategoria = () => {
     { nombre: 'Gastronómicos', icon: Utensils, link: '/eventos/categoria/gastrononicos' },
     { nombre: 'Infantiles', icon: Smile, link: '/eventos/categoria/infantiles' },
     { nombre: 'Tradicionales', icon: Feather, link: '/eventos/categoria/tradicionales' },
-    { nombre: 'Ferias, galas y festivales', icon: FestivalIcon, link: '/eventos/categoria/ferias&galas&festivales' },
+    { nombre: 'Ferias y festivales', icon: FestivalIcon, link: '/eventos/categoria/ferias&festivales' },
     { nombre: 'Artes Escénicas', icon: TheaterComedyIcon, link: '/eventos/categoria/artes-escenicas' },
     { nombre: 'Deportivos', icon: Volleyball, link: '/eventos/categoria/deportivos' }
   ];

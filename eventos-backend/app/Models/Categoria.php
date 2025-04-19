@@ -14,7 +14,7 @@ class Categoria extends Model
         'GA' => 'Gastronómicos',
         'IN' => 'Infantiles',
         'TR' => 'Tradicionales',
-        'FE' => 'Ferias, galas y festivales',
+        'FE' => 'Ferias y festivales',
         'AE' => 'Artes Escénicas',
         'DE' => 'Deportivos'
     ]; 
