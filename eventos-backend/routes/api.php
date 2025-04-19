@@ -27,7 +27,7 @@ Route::get('/verificar-email/{id}/{hash}', function (Request $request, $id, $has
         $user->markEmailAsVerified();
     }
 
-    return redirect(env('FRONTEND_URL') . '/login');
+    return redirect('http://eventoslanzarote.es/login');
 })->name('verification.verify');
 
 
