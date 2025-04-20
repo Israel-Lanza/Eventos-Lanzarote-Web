@@ -1,6 +1,7 @@
 {
     "login": "Log In",
     "logout": "Log Out",
+    "signup": "Sign Up",
     "dashboard": "Dashboard",
     "search_placeholder": "Search by event name",
     "hello": "Hello",
@@ -28,7 +29,10 @@
         "date": "Date",
         "time": "Hour",
         "price": "Price",
-        "organizer": "Organizer"
+        "organizer": "Organizer",
+        "password": "Password",
+        "repeat": "Repeat password",
+        "name": "Name"
     },
     "free": "Free entry",
     "more": "More information",
@@ -42,5 +46,18 @@
     "Tradicionales": "Traditional",
     "Ferias y festivales": "Fairs & Festivals",
     "Artes Escénicas": "Performing Arts",
-    "Deportivos": "Sports"
+    "Deportivos": "Sports",
+    "mail_verified": "Email verified successfully!",
+    "errors": {
+        "field": "Please review the fields and try again.",
+        "network": "Network error. Please try again later.",
+        "required": "Please fill in all required fields.",
+        "not_match": "The passwords do not match."
+    },
+    "no-account": "Don't have an account?",
+    "have-account": "Already have an account?",
+    "register_here": "Sign up here",
+    "success": {
+        "registered": "User successfully registered. Check your email to verify your account."
+    }
 }

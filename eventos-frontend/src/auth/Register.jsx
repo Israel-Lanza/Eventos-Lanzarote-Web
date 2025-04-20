@@ -4,6 +4,8 @@ import Auth from "./Auth";
 import { createEmpresa } from "../services/empresas";
 import { getCsrfCookie } from "../services/api";
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +18,7 @@ const Register = () => {
 
   const [errores, setErrores] = useState({});
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,6 +72,7 @@ const Register = () => {
         ...prev,
         general: "Rellena todos los campos obligatorios.",
       }));
+      toast.error(t("errors.required"));
       return;
     }
 
@@ -77,6 +81,7 @@ const Register = () => {
         ...prev,
         password_confirmation: ["Las contraseñas no coinciden."],
       }));
+      toast.error(t("errors.not_match"));
       return;
     }
 
@@ -88,10 +93,10 @@ const Register = () => {
         email: formData.email,
         password: formData.password,
       });
-      toast.success('Usuario registrado correctamente. Revisa tu correo para verificar la cuenta.');
+      toast.success(t('success.registered'));
       setTimeout(() => {
         navigate("/login");
-      }, 400);
+      }, 800);
 
     } catch (error) {
       if (error.response && error.response.status === 422) {
@@ -104,12 +109,12 @@ const Register = () => {
 
   return (
     <Auth>
-      <h2 className="text-3xl font-bold text-center text-indigo-700 mb-6">Registrarse</h2>
+      <h2 className="text-3xl font-bold text-center text-indigo-700 mb-6">{t('signup')}</h2>
 
       <form onSubmit={handleSubmit}>
         {/* Nombre */}
         <div className="mb-4">
-          <label className="block text-sm font-semibold mb-1">Nombre</label>
+          <label className="block text-sm font-semibold mb-1">{t('form.name')}</label>
           <input
             type="text"
             name="nombre"
@@ -154,7 +159,7 @@ const Register = () => {
 
         {/* Contraseña */}
         <div className="mb-4">
-          <label className="block text-sm font-semibold mb-1">Contraseña</label>
+          <label className="block text-sm font-semibold mb-1">{t('form.password')}</label>
           <input
             type="password"
             name="password"
@@ -172,7 +177,7 @@ const Register = () => {
 
         {/* Repetir contraseña */}
         <div className="mb-4">
-          <label className="block text-sm font-semibold mb-1">Repetir contraseña</label>
+          <label className="block text-sm font-semibold mb-1">{t('form.repeat')}</label>
           <input
             type="password"
             name="password_confirmation"
@@ -199,25 +204,18 @@ const Register = () => {
           type="submit"
           className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition"
         >
-          Registrarse
+          {t('signup')}
         </button>
       </form>
 
       <div className="mt-6 text-sm text-center text-gray-600">
-        ¿Ya tienes cuenta?{" "}
+        {t('have-account')}{" "}
         <Link to="/login" className="text-indigo-600 hover:underline">
-          Iniciar Sesión
+          {t('login')}
         </Link>
       </div>
 
-      <div className="mt-4 text-center">
-        <button
-          onClick={() => navigate('/')}
-          className="text-sm text-gray-500 hover:text-gray-700 underline"
-        >
-          ← Volver atrás
-        </button>
-      </div>
+      
     </Auth>
   );
 };

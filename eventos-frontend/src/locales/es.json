@@ -1,6 +1,7 @@
 {
     "login": "Iniciar Sesión",
     "logout": "Cerrar sesión",
+    "signup": "Registrarse",
     "dashboard": "Panel de administración",
     "search_placeholder": "Buscar por nombre de evento",
     "hello": "Hola",
@@ -27,7 +28,10 @@
         "date": "Fecha",
         "time": "Hora",
         "price": "Precio",
-        "organizer": "Organizador"
+        "organizer": "Organizador",
+        "password": "Contraseña",
+        "repeat": "Repetir contraseña",
+        "name": "Nombre"
     },
     "free": "Entrada gratuita",
     "more": "Más información",
@@ -41,5 +45,18 @@
     "Tradicionales": "Tradicionales",
     "Ferias y festivales": "Ferias y festivales",
     "Artes Escénicas": "Artes Escénicas",
-    "Deportivos": "Deportivos" 
+    "Deportivos": "Deportivos",
+    "mail_verified": "¡Correo verificado correctamente!",
+    "errors": {
+        "field": "Revisa los campos e inténtalo de nuevo.",
+        "network": "Error de red. Intenta más tarde.",
+        "required": "Rellena todos los campos obligatorios.",
+        "not_match": "Las contraseñas no coinciden."
+    },
+    "no-account": "¿No tienes cuenta?",
+    "have-account": "¿Ya tienes cuenta?",
+    "register_here": "Regístrate aquí",
+    "success": {
+        "registered": "Usuario registrado correctamente. Revisa tu correo para verificar la cuenta."
+    }
 }

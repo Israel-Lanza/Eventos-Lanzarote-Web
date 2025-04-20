@@ -3,6 +3,8 @@ import { useNavigate, Link, useLocation } from "react-router-dom";
 import api from "../services/api";
 import Auth from "./Auth";
 import toast from "react-hot-toast";
+import { useTranslation } from 'react-i18next';
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -10,11 +12,13 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
+
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.get("verificado")) {
-      toast.success("¡Correo verificado correctamente!");
+      toast.success(t("mail_verified"));
 
       // Limpiar URL
       params.delete("verificado");
@@ -43,13 +47,13 @@ const Login = () => {
     } catch (error) {
       if (error.response?.data?.errors) {
         setErrors(error.response.data.errors);
-        toast.error("Revisa los campos e inténtalo de nuevo.");
+        toast.error(t("errors.field"));
       } else if (error.response?.data?.message) {
         setErrors({ general: error.response.data.message });
         toast.error(error.response.data.message);
       } else {
         setErrors({ general: "Error desconocido. Intenta más tarde." });
-        toast.error("Error de red. Intenta más tarde.");
+        toast.error(t("errors.network"));
       }
     }
   };
@@ -75,7 +79,7 @@ const Login = () => {
 
         {/* Contraseña */}
         <div className="mb-4">
-          <label className="block text-sm font-semibold mb-1">Contraseña</label>
+          <label className="block text-sm font-semibold mb-1">{t('form.password')}</label>
           <input
             type="password"
             value={password}
@@ -94,24 +98,15 @@ const Login = () => {
           type="submit"
           className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition"
         >
-          Entrar
+          {t("login")}
         </button>
       </form>
 
       <div className="mt-6 text-sm text-center text-gray-600">
-        ¿No tienes cuenta?{" "}
+        {t('no-account')}{" "}
         <Link to="/register" className="text-indigo-600 hover:underline">
-          Regístrate aquí
+          {t('register_here')}
         </Link>
-      </div>
-
-      <div className="mt-4 text-center">
-        <button
-          onClick={() => navigate('/')}
-          className="text-sm text-gray-500 hover:text-gray-700 underline"
-        >
-          ← Volver atrás
-        </button>
       </div>
     </Auth>
   );
