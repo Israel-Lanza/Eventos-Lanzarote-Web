@@ -5,6 +5,7 @@ import { createEmpresa } from "../services/empresas";
 import { getCsrfCookie } from "../services/api";
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { HiEye, HiEyeOff } from "react-icons/hi";
 
 
 const Register = () => {
@@ -19,6 +20,8 @@ const Register = () => {
   const [errores, setErrores] = useState({});
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -158,10 +161,10 @@ const Register = () => {
         </div>
 
         {/* Contraseña */}
-        <div className="mb-4">
+        <div className="mb-4 relative">
           <label className="block text-sm font-semibold mb-1">{t('form.password')}</label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
             value={formData.password}
             onChange={handleChange}
@@ -172,14 +175,21 @@ const Register = () => {
             className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${errores.password ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
               }`}
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-10 text-gray-600 hover:text-indigo-600 focus:outline-none"
+          >
+            {showPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
+          </button>
           {errores.password && <p className="text-red-500 text-sm mt-1">{errores.password[0]}</p>}
         </div>
 
         {/* Repetir contraseña */}
-        <div className="mb-4">
+        <div className="mb-4 relative">
           <label className="block text-sm font-semibold mb-1">{t('form.repeat')}</label>
           <input
-            type="password"
+            type={showRepeatPassword ? "text" : "password"}
             name="password_confirmation"
             value={formData.password_confirmation}
             onChange={handleChange}
@@ -190,6 +200,13 @@ const Register = () => {
             className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${errores.password_confirmation ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
               }`}
           />
+          <button
+            type="button"
+            onClick={() => setShowRepeatPassword(!showRepeatPassword)}
+            className="absolute right-3 top-9 text-gray-600 hover:text-indigo-600 focus:outline-none"
+          >
+            {showRepeatPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
+          </button>
           {errores.password_confirmation && (
             <p className="text-red-500 text-sm mt-1">{errores.password_confirmation[0]}</p>
           )}
@@ -215,7 +232,7 @@ const Register = () => {
         </Link>
       </div>
 
-      
+
     </Auth>
   );
 };

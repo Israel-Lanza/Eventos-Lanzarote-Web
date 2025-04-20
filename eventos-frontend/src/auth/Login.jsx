@@ -4,23 +4,21 @@ import api from "../services/api";
 import Auth from "./Auth";
 import toast from "react-hot-toast";
 import { useTranslation } from 'react-i18next';
-
+import { HiEye, HiEyeOff } from "react-icons/hi"; 
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // 👁️
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
 
-
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.get("verificado")) {
       toast.success(t("mail_verified"));
-
-      // Limpiar URL
       params.delete("verificado");
       navigate({ pathname: location.pathname, search: params.toString() }, { replace: true });
     }
@@ -77,21 +75,29 @@ const Login = () => {
           {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
         </div>
 
-        {/* Contraseña */}
-        <div className="mb-4">
+        {/* Contraseña con ícono de ojo */}
+        <div className="mb-4 relative">
           <label className="block text-sm font-semibold mb-1">{t('form.password')}</label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+            className={`w-full px-4 py-2 pr-10 border rounded-lg focus:outline-none focus:ring-2 ${
               errors.password ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
             }`}
           />
+          {/* Ícono ojo/oculto */}
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-9 text-gray-600 hover:text-indigo-600 focus:outline-none"
+          >
+            {showPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
+          </button>
+
           {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password}</p>}
         </div>
 
-        {/* Error general */}
         {errors.general && <p className="text-center text-sm text-red-600 mb-4">{errors.general}</p>}
 
         <button
