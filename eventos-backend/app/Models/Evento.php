@@ -12,23 +12,9 @@ class Evento extends Model
         'D' => 'Denegado'
     ];
 
-    const MESES = [
-        '01' => 'enero',
-        '02' => 'febrero',
-        '03' => 'marzo',
-        '04' => 'abril',
-        '05' => 'mayo',
-        '06' => 'junio',
-        '07' => 'julio',
-        '08' => 'agosto',
-        '09' => 'septiembre',
-        '10' => 'octubre',
-        '11' => 'noviembre',
-        '12' => 'diciembre'
-    ];//Se puede quitar hasta que se implemente lo de utils de js
-
 
     public function categorias(){
         return $this->belongsToMany(Categoria::class, 'eventos_categorias');
     }
+    
 }

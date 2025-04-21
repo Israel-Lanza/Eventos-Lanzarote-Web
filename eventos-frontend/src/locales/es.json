@@ -58,5 +58,6 @@
     "register_here": "Regístrate aquí",
     "success": {
         "registered": "Usuario registrado correctamente. Revisa tu correo para verificar la cuenta."
-    }
+    },
+    "category": "categoría"
 }

@@ -1,10 +1,10 @@
 
 import teguiseImg from '../assets/teguise.jpg';
 import { useTranslation } from 'react-i18next';
-
+import { useNavigate } from "react-router-dom";
 
 const Auth = ({ children }) => {
-
+    const navigate = useNavigate();
     const { t } = useTranslation();
     return (
         <div className="h-screen flex flex-col md:flex-row">
@@ -20,10 +20,10 @@ const Auth = ({ children }) => {
                     {children}
                     <div className="mt-4 text-center">
                         <button
-                        onClick={() => navigate('/')}
-                        className="text-sm text-gray-500 hover:text-gray-700 underline"
+                            onClick={() => navigate('/')}
+                            className="text-sm text-gray-500 hover:text-gray-700 underline"
                         >
-                        ← {t('go_back')}
+                            ← {t('go_back')}
                         </button>
                     </div>
                 </div>

@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\EventSubmitted;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
+use App\Mail\EventoEstadoCambiadoMailable;
+use Illuminate\Support\Facades\Log;
 
 class EventoController extends Controller
 {
@@ -127,7 +131,7 @@ class EventoController extends Controller
             $request->file('imagen')->move(public_path('imgEventos'), $nombreImagen);
             $evento->imagen = '/imgEventos/' . $nombreImagen;
         }
-        
+
 
         $evento->save();
 
@@ -227,9 +231,9 @@ class EventoController extends Controller
         }
 
         $eventos = $categoriaModel->eventos()
-        ->with('categorias:id,sigla') 
-        ->where('estado', 'A')
-        ->get();
+            ->with('categorias:id,sigla')
+            ->where('estado', 'A')
+            ->get();
         return response()->json($eventos);
     }
 
@@ -245,10 +249,25 @@ class EventoController extends Controller
             'estado' => 'required|string|in:A,D,P'
         ]);
 
+        $estadoAnterior = $evento->estado;
         $evento->estado = $request->estado;
         $evento->save();
 
-        return response()->json(['mensaje' => 'Estado actualizado correctamente', 'evento' => $evento]);
+        // Solo enviar correo si el estado cambió
+        if ($estadoAnterior !== $evento->estado) {
+            $usuario = User::where('nombre', $evento->autor)->first();
+
+            if ($usuario && $usuario->email) {
+                Mail::to($usuario->email)->send(new EventoEstadoCambiadoMailable($evento));
+            } else {
+                Log::warning("No se encontró usuario con nombre: {$evento->autor}");
+            }
+        }
+
+        return response()->json([
+            'mensaje' => 'Estado actualizado correctamente',
+            'evento' => $evento,
+        ]);
     }
 
 
@@ -302,7 +321,6 @@ class EventoController extends Controller
             $eventos = Evento::all();
         } else {
             $eventos = Evento::where('autor', $usuario->nombre)->get();
-            
         }
 
         $resumen = [
@@ -312,7 +330,7 @@ class EventoController extends Controller
             'denegados' => $eventos->where('estado', 'D')->count(),
         ];
 
-        
+
 
         return response()->json([
             'resumen' => $resumen,
@@ -320,5 +338,4 @@ class EventoController extends Controller
             'empresas' => User::role('empresa')->get(),
         ]);
     }
-
 }

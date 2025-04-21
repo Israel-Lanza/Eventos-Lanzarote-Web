@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from "react-router-dom";
 import categorias from "../constantes/categorias";
 import { FaWhatsapp, FaFacebookF, FaXTwitter } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 const Descripcion = () => {
     const { nombreEvento } = useParams();
@@ -22,7 +23,8 @@ const Descripcion = () => {
     const { t } = useTranslation();
     const [openDialog, setOpenDialog] = useState(false);
     const [copied, setCopied] = useState(false);
-    
+    const navigate = useNavigate();
+
     const handleOpenDialog = () => setOpenDialog(true);
     const handleCloseDialog = () => {
         setOpenDialog(false);
@@ -55,26 +57,29 @@ const Descripcion = () => {
     };
 
 
-    {/*{t("go_back")}*/}//Esto es para las traducciones
+    {/*{t("go_back")}*/ }//Esto es para las traducciones
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="mb-6">
-            <Link to="/" className="mb-4 flex items-center text-sm text-gray-600 hover:text-black">
-                <ArrowBack className="mr-1" />
-                {t("go_back")}
-            </Link>
-            <Breadcrumbs
-                rutas={[
-                    { to: "/", label: "Inicio" },
-                    ...(categoria ? [
-                    { to: `/categoria/${categoria}`, label: categorias[categoria]?.display || categoria }
-                    ] : []),
-                    ...(query ? [
-                    { to: `/buscar?query=${query}`, label: `Resultados de "${query}"` }
-                    ] : []),
-                    { label: evento.nombre }
-                ]}
-            />
+                <button
+                    onClick={() => navigate(-1)}
+                    className="mb-4 flex items-center text-sm text-gray-600 hover:text-black"
+                >
+                    <ArrowBack className="mr-1" />
+                    {t("go_back")}
+                </button>
+                <Breadcrumbs
+                    rutas={[
+                        { to: "/", label: t('menu.home') },
+                        ...(categoria ? [
+                            { to: `/categoria/${categoria}`, label: categorias[categoria]?.display || categoria }
+                        ] : []),
+                        ...(query ? [
+                            { to: `/buscar?query=${query}`, label: `Resultados de "${query}"` }
+                        ] : []),
+                        { label: evento.nombre }
+                    ]}
+                />
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <h1 className="text-3xl font-bold">{evento.nombre}</h1>
                     <Button variant="outlined" startIcon={<Share />} onClick={handleOpenDialog}>
@@ -84,65 +89,65 @@ const Descripcion = () => {
                 {openDialog && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                         <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md relative">
-                        <h2 className="text-xl font-bold mb-4">Compartir evento</h2>
+                            <h2 className="text-xl font-bold mb-4">Compartir evento</h2>
 
-                        <div className="flex items-center mb-4">
-                            <input
-                            type="text"
-                            readOnly
-                            value={currentUrl}
-                            className="flex-grow border rounded-l px-4 py-2"
-                            />
+                            <div className="flex items-center mb-4">
+                                <input
+                                    type="text"
+                                    readOnly
+                                    value={currentUrl}
+                                    className="flex-grow border rounded-l px-4 py-2"
+                                />
+                                <button
+                                    onClick={handleCopyLink}
+                                    className="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600"
+                                >
+                                    {copied ? "¡Copiado!" : "Copiar"}
+                                </button>
+                            </div>
+
+                            <div className="flex justify-center space-x-4 mt-4">
+                                {/* WhatsApp */}
+                                <a
+                                    href={`https://wa.me/?text=${encodeURIComponent(currentUrl)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-green-500 hover:text-green-600 text-2xl"
+                                    title="Compartir en WhatsApp"
+                                >
+                                    <FaWhatsapp />
+                                </a>
+
+                                {/* Facebook */}
+                                <a
+                                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-600 hover:text-blue-700 text-2xl"
+                                    title="Compartir en Facebook"
+                                >
+                                    <FaFacebookF />
+                                </a>
+
+                                {/* X (Twitter) */}
+                                <a
+                                    href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-black hover:text-gray-800 text-2xl"
+                                    title="Compartir en X"
+                                >
+                                    <FaXTwitter />
+                                </a>
+                            </div>
+
                             <button
-                            onClick={handleCopyLink}
-                            className="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600"
+                                onClick={handleCloseDialog}
+                                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl"
+                                title="Cerrar"
                             >
-                            {copied ? "¡Copiado!" : "Copiar"}
+                                ✖
                             </button>
-                        </div>
-
-                        <div className="flex justify-center space-x-4 mt-4">
-                            {/* WhatsApp */}
-                            <a
-                            href={`https://wa.me/?text=${encodeURIComponent(currentUrl)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-green-500 hover:text-green-600 text-2xl"
-                            title="Compartir en WhatsApp"
-                            >
-                                <FaWhatsapp />
-                            </a>
-
-                            {/* Facebook */}
-                            <a
-                            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-700 text-2xl"
-                            title="Compartir en Facebook"
-                            >
-                             <FaFacebookF />
-                            </a>
-
-                            {/* X (Twitter) */}
-                            <a
-                            href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-black hover:text-gray-800 text-2xl"
-                            title="Compartir en X"
-                            >
-                             <FaXTwitter />
-                            </a>
-                        </div>
-
-                        <button
-                            onClick={handleCloseDialog}
-                            className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl"
-                            title="Cerrar"
-                        >
-                            ✖
-                        </button>
                         </div>
                     </div>
                 )}
@@ -161,7 +166,7 @@ const Descripcion = () => {
                             src={`http://localhost:8000${evento.imagen}`}
                             alt={evento.nombre}
                             className="w-full h-full object-cover"
-                        /> 
+                        />
                     </div>
 
                     <Tabs value={tabValue} onChange={handleTabChange} aria-label={t('event_details')}>
@@ -177,18 +182,18 @@ const Descripcion = () => {
 
                                 <h3 className="text-xl font-bold mt-6 mb-4">{t('categories')}</h3>
                                 <div className="flex gap-2 flex-wrap mb-2">
-                                {Array.isArray(evento.categorias) && evento.categorias.length > 0 ? (
-                                <div className="text-m text-blue-600 font-semibold mb-2 whitespace-normal break-words">
-                                    {evento.categorias.map((categoria, index) => (
-                                    <span key={index}>
-                                        {getDisplay(categoria.sigla)}
-                                        {index < evento.categorias.length - 1 && ", "}
-                                    </span>
-                                    ))}
-                                </div>
-                                ) : (
-                                <span className="text-sm text-gray-500">{t('no_category')}</span>
-                                )}
+                                    {Array.isArray(evento.categorias) && evento.categorias.length > 0 ? (
+                                        <div className="text-m text-blue-600 font-semibold mb-2 whitespace-normal break-words">
+                                            {evento.categorias.map((categoria, index) => (
+                                                <span key={index}>
+                                                    {getDisplay(categoria.sigla)}
+                                                    {index < evento.categorias.length - 1 && ", "}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <span className="text-sm text-gray-500">{t('no_category')}</span>
+                                    )}
                                 </div>
                             </CardContent>
                         </Card>
@@ -261,7 +266,7 @@ const Descripcion = () => {
                                 <Business />
                                 <div>
                                     <p>
-                                        <b>{t('form.organizer')}: </b> 
+                                        <b>{t('form.organizer')}: </b>
                                         {evento.autor === "admin" ? "Eventos Lanzarote" : evento.autor}
                                     </p>
                                 </div>
@@ -274,15 +279,15 @@ const Descripcion = () => {
                                 {evento.precio &&
                                     evento.precio.toString().toLowerCase() !== "0.00" &&
                                     evento.precio.toString().toLowerCase() !== "gratis" ? (
-                                        evento.precio + '€'
-                                    ) : (
-                                        <p className="flex items-center justify-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-md text-sm font-medium border border-green-300">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                            {t('free')}
-                                        </p>
-                                    )}
+                                    evento.precio + '€'
+                                ) : (
+                                    <p className="flex items-center justify-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-md text-sm font-medium border border-green-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        {t('free')}
+                                    </p>
+                                )}
                             </div>
                             <br />
                             {evento.enlace && evento.enlace.trim() !== "" && (

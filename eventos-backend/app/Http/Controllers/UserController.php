@@ -76,10 +76,9 @@ class UserController extends Controller
         );
 
         Mail::to($user->email)->send(new VerificacionEmailMailable($user, $url));
-/*         return response()->json(['mensaje' => 'Usuario creado correctamente', 'usuario' => $user], 201); */        
             return response()->json([
             'message' => 'Usuario registrado correctamente.',
-            'verificacion_url' => $url, // 👈 aquí podrás verla desde el frontend o en Postman
+            'verificacion_url' => $url, 
         ]);
 
     }
