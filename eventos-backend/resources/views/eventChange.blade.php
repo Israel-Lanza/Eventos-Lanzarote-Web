@@ -17,16 +17,7 @@
         <h2 style="color: #333;">¡Hola {{ $evento->autor }}!</h2>
 
         <p style="font-size: 16px; color: #555;">
-            Su evento <strong>{{ $evento->nombre }}</strong> del día <strong>{{ $evento->fecha }}</strong> ha sido
-            <strong>
-                @if($evento->estado === 'A')
-                    aprobado
-                @elseif($evento->estado === 'D')
-                    denegado
-                @else
-                    marcado como pendiente
-                @endif
-            </strong>.
+            Su evento <strong>{{ $evento->nombre }}</strong> del día <strong>{{ $evento->fecha }}</strong> ha sido <strong>{{ $estado }}</strong>.
         </p>
 
         <p style="font-size: 14px; color: #999;">

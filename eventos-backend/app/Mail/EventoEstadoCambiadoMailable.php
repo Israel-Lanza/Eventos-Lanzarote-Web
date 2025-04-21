@@ -8,6 +8,8 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Evento;
+
 
 class EventoEstadoCambiadoMailable extends Mailable
 {
@@ -26,6 +28,7 @@ class EventoEstadoCambiadoMailable extends Mailable
                     ->view('eventChange')
                     ->with([
                         'evento' => $this->evento,
+                        'estado' => Evento::ESTADOS[$this->evento->estado]
                     ]);
     }
 }
