@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Evento;
+use Illuminate\Support\Facades\App;
 
 
 class EventoEstadoCambiadoMailable extends Mailable
@@ -25,12 +26,18 @@ class EventoEstadoCambiadoMailable extends Mailable
 
     public function build()
     {
+        setlocale(LC_TIME, 'es_ES.UTF-8');
+        Carbon::setLocale('es');
+
+        $fechaFormateada = \Carbon\Carbon::parse($this->evento->fecha)
+        ->translatedFormat('d \d\e F \d\e Y');
+
         return $this->subject('Tu evento ha cambiado de estado')
-                    ->view('eventChange')
-                    ->with([
-                        'evento' => $this->evento,
-                        'estado' => Evento::ESTADOS[$this->evento->estado],
-                        'fecha_formateada' => Carbon::parse($this->evento->fecha)->format('d/m/Y'),
-                    ]);
+            ->view('eventChange')
+            ->with([
+                'evento' => $this->evento,
+                'estado' => Evento::ESTADOS[$this->evento->estado],
+                'fecha_formateada' =>  $fechaFormateada,
+            ]);
     }
 }

@@ -17,7 +17,7 @@
         <h2 style="color: #333;">¡Hola {{ $evento->autor }}!</h2>
 
         <p style="font-size: 16px; color: #555;">
-            Su evento <strong>{{ $evento->nombre }}</strong> del día <strong>{{ $fecha_formateada }}</strong> ha sido <strong>{{ $estado }}</strong>.
+            Su evento <strong>{{ $evento->nombre }}</strong> del día <strong>{{ $fecha_formateada }}</strong> ha sido cambiado a <strong>{{ $estado }}</strong>.
             
         </p>
 
