@@ -30,7 +30,7 @@ class EventoEstadoCambiadoMailable extends Mailable
                     ->with([
                         'evento' => $this->evento,
                         'estado' => Evento::ESTADOS[$this->evento->estado],
-                        'fecha_formateada' => Carbon::parse($this->evento->fecha)->format('d/m/Y H:i'),
+                        'fecha_formateada' => Carbon::parse($this->evento->fecha)->format('d/m/Y'),
                     ]);
     }
 }
