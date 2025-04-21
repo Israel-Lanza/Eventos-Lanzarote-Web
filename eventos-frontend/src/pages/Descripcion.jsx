@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { getEventoById } from "../services/eventos";  // Asegúrate que esta función reciba un nombre o slug
 import { Card, CardContent, CardHeader, Divider, Button, Tabs, Tab } from "@mui/material";
 import { ArrowBack, Share, CalendarToday, AccessTime, LocationOn, Business, Map } from "@mui/icons-material";
-import { Link } from "react-router-dom";//Volver atras
 import { getDisplay } from "../constantes/categorias";
 import { formatearFecha } from "../utils/formatearFecha";
 import Breadcrumbs from "../components/Breadcrumbs";
@@ -12,6 +11,7 @@ import { useLocation } from "react-router-dom";
 import categorias from "../constantes/categorias";
 import { FaWhatsapp, FaFacebookF, FaXTwitter } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+
 
 const Descripcion = () => {
     const { nombreEvento } = useParams();
@@ -57,14 +57,10 @@ const Descripcion = () => {
     };
 
 
-    {/*{t("go_back")}*/ }//Esto es para las traducciones
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="mb-6">
-                <button
-                    onClick={() => navigate(-1)}
-                    className="mb-4 flex items-center text-sm text-gray-600 hover:text-black"
-                >
+                <button onClick={() => navigate(-1)} className="mb-4 flex items-center text-sm text-gray-600 hover:text-black">
                     <ArrowBack className="mr-1" />
                     {t("go_back")}
                 </button>

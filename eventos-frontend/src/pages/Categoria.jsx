@@ -6,10 +6,10 @@ import categorias from "../constantes/categorias";
 import { Skeleton, Button } from "@mui/material";
 import NavCategoria from "../components/NavCategoria";
 import Breadcrumbs from "../components/Breadcrumbs";
-import { Link } from "react-router-dom";//Volver atras
 import { useTranslation } from 'react-i18next';
-import { ArrowBack } from "@mui/icons-material";
 import Paginacion from "../components/Paginacion";
+import { useNavigate } from "react-router-dom";
+import { ArrowBack } from "@mui/icons-material";
 
 const Categoria = () => {
   const { nombreCategoria } = useParams();
@@ -20,6 +20,7 @@ const Categoria = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const eventosPorPagina = 6;
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
 
@@ -43,10 +44,10 @@ const Categoria = () => {
 
 
     <div className="container mx-auto px-4 py-6">
-      <Link to="/" className="mb-4 flex items-center text-sm text-gray-600 hover:text-black">
+      <button onClick={() => navigate(-1)} className="mb-4 flex items-center text-sm text-gray-600 hover:text-black">
         <ArrowBack className="mr-1" />
-        {t("go_back")}
-      </Link>
+          {t("go_back")}
+      </button>
       <Breadcrumbs
         rutas={[
           { to: "/", label: "Inicio" },

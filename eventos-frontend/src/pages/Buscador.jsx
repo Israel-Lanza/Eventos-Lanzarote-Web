@@ -3,9 +3,9 @@ import { useSearchParams } from "react-router-dom";
 import { buscarEventosPorNombre } from "../services/eventos";
 import TarjetaEvento from "../components/TarjetaEvento";
 import Breadcrumbs from "../components/Breadcrumbs";
-import { Link } from "react-router-dom";//Volver atras
-import { ArrowBack } from "@mui/icons-material";
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from "react-router-dom";
+import { ArrowBack } from "@mui/icons-material";
 
 const Buscador = () => {
   const [searchParams] = useSearchParams();
@@ -13,6 +13,7 @@ const Buscador = () => {
   const [resultados, setResultados] = useState([]);
   const [loading, setLoading] = useState(true);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -24,10 +25,10 @@ const Buscador = () => {
 
   return (
     <div className="py-6">
-      <Link to="/" className="mb-4 flex items-center text-sm text-gray-600 hover:text-black">
+       <button onClick={() => navigate(-1)} className="mb-4 flex items-center text-sm text-gray-600 hover:text-black">
           <ArrowBack className="mr-1" />
           {t("go_back")}
-      </Link>
+        </button>
       <Breadcrumbs
         rutas={[
           { to: "/", label: "Inicio" },
