@@ -51,7 +51,6 @@ class UserController extends Controller
             'email.unique'      => 'Este correo ya está en uso.',
             'password.required' => 'La contraseña es obligatoria.',
             'cif.required'      => 'El número de identificación es obligatorio.',
-            'cif.required'      => 'El número de identificación es obligatorio.',
             'cif.max'           => 'El número de identificación no puede tener más de 9 caracteres.',
             'cif.regex'         => 'El número de identificación debe tener un formato válido (Ej: A1234567Z).',
         ]);

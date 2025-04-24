@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createEvento, updateEvento } from "../services/eventos";
+import { createEmpresa, updateEmpresa } from "../services/empresas";
 
 function FormularioEmpresa({ closeModal, empresaEditar = null, onActualizar }) {
   const [formData, setFormData] = useState({
@@ -74,23 +74,24 @@ function FormularioEmpresa({ closeModal, empresaEditar = null, onActualizar }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validate()) return;
-
+  
+    
+    validate();
+  
     const data = new FormData();
     data.append("nombre", formData.nombre);
     data.append("cif", formData.cif);
     data.append("email", formData.email);
     data.append("password", formData.password);
-
+  
     try {
       let resultado;
       if (empresaEditar) {
-        resultado = await updateEvento(empresaEditar.id, data);
+        resultado = await updateEmpresa(empresaEditar.id, data);
       } else {
-        resultado = await createEvento(data);
+        resultado = await createEmpresa(data);
       }
-
+  
       if (resultado) {
         if (onActualizar) onActualizar();
         closeModal();
@@ -112,6 +113,7 @@ function FormularioEmpresa({ closeModal, empresaEditar = null, onActualizar }) {
       }
     }
   };
+  
 
   return (
     <div className="w-full px-4 sm:px-6 md:px-8 py-6 flex justify-center">
