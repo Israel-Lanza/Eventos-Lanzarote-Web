@@ -44,7 +44,7 @@ export default function AdminDashboard() {
                                 onActualizarDashboard: actualizarDashboard
                             }} />
                         )}
-                        {empresa && <ListadoEventos eventosIniciales={data.eventos} />}
+                        {empresa && <ListadoEventos eventosIniciales={data.eventos} actualizarDashboard={actualizarDashboard}/>}
                     </div>
                 ) : (
                     <div className="text-center text-gray-500">Cargando datos del dashboard...</div>

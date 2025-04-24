@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Edit, MoreVertical, Trash, X, Loader2 } from "lucide-react";
-import { deleteEvento, cambiarEstadoEvento } from "../services/eventos";
+import { deleteEvento, cambiarEstadoEvento, getDashboardData } from "../services/eventos";
 import Formulario from './Formulario';
 import Modal from '@mui/material/Modal';
 import { useOutletContext } from "react-router-dom";
@@ -9,7 +9,7 @@ import { getEventoById } from "../services/eventos";
 import Paginacion from "../components/Paginacion";
 
 
-export default function ListadoEventos({ eventosIniciales }) {
+export default function ListadoEventos({ eventosIniciales, actualizarDashboard }) {
     const [mostrarForm, setMostrarForm] = useState(false);
     const [editarEvento, setEditarEvento] = useState(null);
     const [menuActivo, setMenuActivo] = useState(null);
@@ -29,7 +29,13 @@ export default function ListadoEventos({ eventosIniciales }) {
     const eventosDesdeOutlet = outletContext.eventos;
     const onActualizarDashboard = outletContext.onActualizarDashboard;
 
-    const eventos = eventosDesdeOutlet || eventosIniciales || [];
+    const [eventos, setEventos] = useState(eventosIniciales || []);
+
+    useEffect(() => {
+        if (eventosDesdeOutlet) {
+            setEventos(eventosDesdeOutlet);
+        }
+    }, [eventosDesdeOutlet, eventosIniciales]);
 
     const handleMostrarForm = () => setMostrarForm(true);
     const handleClose = () => {
@@ -90,9 +96,14 @@ export default function ListadoEventos({ eventosIniciales }) {
 
 
     const actualizarEventos = () => {
-        if (user && user.nombre) {
-            if (onActualizarDashboard) onActualizarDashboard();
-        }
+      getDashboardData().then((data) => {
+          setEventos(data.eventos);
+          if (actualizarDashboard) {
+            actualizarDashboard();
+          } else if (onActualizarDashboard) {
+            onActualizarDashboard();
+          }
+      });
     };
 
     const eventosFiltrados = eventos.filter(evento =>
@@ -333,7 +344,7 @@ export default function ListadoEventos({ eventosIniciales }) {
                 <button
                   onClick={async () => {
                     const exito = await deleteEvento(eventoAEliminar.id);
-                    if (exito && onActualizarDashboard) onActualizarDashboard();
+                    if (exito) actualizarEventos();
                     setMostrarConfirmacion(false);
                   }}
                   className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
