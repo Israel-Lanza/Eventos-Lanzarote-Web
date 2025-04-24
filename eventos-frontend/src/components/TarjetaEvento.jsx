@@ -59,7 +59,6 @@ const TarjetaEvento = ({ evento }) => {
                         </div>
                         <h3 className="text-lg font-bold text-gray-800 mb-1">{evento.nombre || "Nombre no disponible"}</h3>
                         <p className="text-sm text-gray-600">{formatearFecha(evento.fecha) || "Fecha no disponible"}</p>
-                        <p className="text-sm text-gray-600">{mostrarPrecio(evento.precio)}</p>
                         <p className="text-sm text-gray-600">{evento.hora || "Hora no especificada"}</p>
                         <div className="text-sm text-gray-600 flex items-center mt-1">
                             <PlaceIcon className="w-4 h-4 mr-1" />
@@ -68,6 +67,12 @@ const TarjetaEvento = ({ evento }) => {
                         <p className="text-sm text-gray-700 mt-2 line-clamp-2">
                             {evento.descripcion || "Sin descripción"}
                         </p>
+                        <br></br>
+                        <div className="flex justify-end mt-2">
+                            <span className="text-base font-semibold text-indigo-600 bg-indigo-100 px-3 py-1 rounded-md">
+                                {mostrarPrecio(evento.precio)}
+                            </span>
+                        </div>
                     </div>
 
                     <Link

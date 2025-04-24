@@ -153,11 +153,6 @@ const Descripcion = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2">
                     <div className="mb-8">
-                        {/* <img
-                            src={evento.imagen || "/placeholder.svg"}
-                            alt={evento.nombre}
-                            className="w-full h-96 object-cover rounded-lg"
-                        /> */}
                         <img
                             src={`http://localhost:8000${evento.imagen}`}
                             alt={evento.nombre}
@@ -269,15 +264,23 @@ const Descripcion = () => {
                             </div>
 
                             <Divider className="my-4" />
+                            <br />
 
                             <div className="flex justify-between items-center">
-                                <p><b>{t('form.price')}:</b></p>
+                                <p className="flex items-center gap-2">
+                                    <span className="text-base font-semibold text-indigo-600 bg-indigo-100 px-2 py-1 rounded-md">
+                                        {t('form.price')}:
+                                    </span>
+                                </p>
+
                                 {evento.precio &&
                                     evento.precio.toString().toLowerCase() !== "0.00" &&
                                     evento.precio.toString().toLowerCase() !== "gratis" ? (
-                                    evento.precio + '€'
+                                    <span className="text-base font-semibold text-indigo-600 bg-indigo-100 px-3 py-1 rounded-md">
+                                        {evento.precio} €
+                                    </span>
                                 ) : (
-                                    <p className="flex items-center justify-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-md text-sm font-medium border border-green-300">
+                                    <p className="flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-md text-sm font-medium border border-green-300">
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
@@ -285,6 +288,8 @@ const Descripcion = () => {
                                     </p>
                                 )}
                             </div>
+
+
                             <br />
                             {evento.enlace && evento.enlace.trim() !== "" && (
                                 <a href={evento.enlace} target="_blank" rel="noopener noreferrer" className="block w-full mt-4">
