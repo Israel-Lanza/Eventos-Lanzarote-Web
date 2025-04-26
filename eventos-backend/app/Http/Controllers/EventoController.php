@@ -23,13 +23,13 @@ class EventoController extends Controller
     public function index(Request $request)
     {
         $hoy = now()->toDateString();
-        $sieteDiasDespues = now()->copy()->addDays(7)->toDateString();
+        $sieteDiasDespues = now()->copy()->addDays(30)->toDateString();
         $page = $request->get('page', 1);
 
         $cacheKey = "eventos_semana_{$hoy}_pagina_{$page}";
 
         $eventos = Cache::remember($cacheKey, now()->addMinutes(2), function () use ($hoy, $sieteDiasDespues) {
-            return Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace')
+            return Evento::select('id', 'nombre', 'fecha', 'hora', 'horaFin', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace', 'organizador')
                 ->with(['categorias:id,sigla'])
                 ->where('estado', 'A')
                 ->whereDate('fecha', '>=', $hoy)
@@ -64,10 +64,10 @@ class EventoController extends Controller
 
         $evento = Evento::with(['categorias:id,sigla']) //Asegúrate de incluir "nombre"
             ->where('nombre', $nombre)
-            ->first(['id', 'nombre', 'imagen', 'ubicacion', 'fecha', 'precio', 'hora', 'descripcion', 'enlace', 'autor']);
+            ->first(['id', 'nombre', 'imagen', 'ubicacion', 'fecha', 'precio', 'hora', 'horaFin' , 'descripcion', 'enlace', 'organizador', 'autor']);
 
         if (!$evento) {
-            return response()->json(['error' => 'Evento no encontrado'], 404);
+            return response()->json(['error' => 'Evento no encontrado'], 404); 
         }
 
         return response()->json($evento);
@@ -82,9 +82,11 @@ class EventoController extends Controller
             'fecha'         => 'required|date|after_or_equal:today',
             'fechaFin'      => 'nullable|date|after_or_equal:fecha',
             'hora'          => 'required|date_format:H:i',
+            'horaFin'       => 'nullable|date_format:H:i',
             'ubicacion'     => 'required',
             'enlace'        => 'nullable|regex:/^https?:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/',
             'precio'        => 'required|min:0|numeric',
+            'organizador'   => 'nullable|string|max:200',
             'imagen'        => 'nullable|image|max:2048',
             'categorias'    => 'required',
         ], [
@@ -97,6 +99,7 @@ class EventoController extends Controller
             'fechaFin.after_or_equal' => 'La fecha de fin debe ser igual o posterior a la fecha de inicio.',
             'hora.required'         => 'La hora es obligatoria.',
             'hora.date_format'      => 'La hora debe tener el formato HH:mm.',
+            'horaFin.date_format'   => 'La hora de fin debe tener el formato HH:mm.',
             'ubicacion.required'    => 'La ubicación es obligatoria.',
             'enlace.regex'          => 'El enlace debe ser una URL válida (ej: https://www.google.com).',
             'precio.required'       => 'El precio es obligatorio.',
@@ -105,6 +108,7 @@ class EventoController extends Controller
             'imagen.image'          => 'El archivo debe ser una imagen.',
             'imagen.max'            => 'La imagen no puede superar los 2MB.',
             'categorias.required'   => 'Debe seleccionar minimo una categoria',
+            'organizador.max'       => 'El organizador no puede tener más de 200 caracteres.',
         ]);
 
 
@@ -117,6 +121,8 @@ class EventoController extends Controller
         $evento->enlace = $request->enlace;
         $evento->precio = $request->precio;
         $evento->fechaFin = $request->fechaFin;
+        $evento->horaFin = $request->horaFin;
+        $evento->organizador = $request->organizador;
         $evento->autor = Auth::user()->nombre;
 
         /*if ($request->hasFile('imagen')) {
@@ -160,10 +166,12 @@ class EventoController extends Controller
             'fecha'         => 'required|date|after_or_equal:today',
             'fechaFin'      => 'nullable|date|after_or_equal:fecha',
             'hora'          => 'required|date_format:H:i',
+            'horaFin'       => 'nullable|date_format:H:i',
             'ubicacion'     => 'required|string',
             'enlace'        => 'nullable|regex:/^https?:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/',
             'precio'        => 'required|numeric|min:0',
             'imagen'        => 'nullable|image|max:2048',
+            'organizador'   => 'nullable|string|max:200',
             'categorias'    => 'required',
         ], [
             'nombre.required'       => 'El nombre del evento es obligatorio.',
@@ -175,6 +183,7 @@ class EventoController extends Controller
             'fechaFin.after_or_equal' => 'La fecha de fin debe ser igual o posterior a la fecha de inicio.',
             'hora.required'         => 'La hora es obligatoria.',
             'hora.date_format'      => 'La hora debe tener el formato HH:mm.',
+            'horaFin.date_format'   => 'La hora de fin debe tener el formato HH:mm.',
             'ubicacion.required'    => 'La ubicación es obligatoria.',
             'enlace.regex'          => 'El enlace debe ser una URL válida (ej: https://www.google.com/algo).',
             'precio.required'       => 'El precio es obligatorio.',
@@ -183,6 +192,7 @@ class EventoController extends Controller
             'imagen.image'          => 'El archivo debe ser una imagen.',
             'imagen.max'            => 'La imagen no puede superar los 2MB.',
             'categorias.required'   => 'Debe seleccionar mínimo una categoría.',
+            'organizador.max'       => 'El organizador no puede tener más de 200 caracteres.',
         ]);
 
         $evento->nombre = $request->nombre ?? $evento->nombre;
@@ -192,6 +202,8 @@ class EventoController extends Controller
         $evento->ubicacion = $request->ubicacion ?? $evento->ubicacion;
         $evento->enlace = $request->enlace ?? $evento->enlace;
         $evento->precio = $request->precio ?? $evento->precio;
+        $evento->horaFin = $request->fechaFin ?? $evento->fechaFin;
+        $evento->organizador = $request->organizador ?? $evento->organizador;
 
         if ($request->hasFile('imagen')) {
             $nombreImagen = str_replace(' ', '', $request->nombre . '.' . $request->file('imagen')->getClientOriginalExtension());
@@ -276,7 +288,7 @@ class EventoController extends Controller
     {
         $nombre = $request->query('nombre');
 
-        $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace')
+        $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace', 'organizador', 'horaFin')
             ->with(['categorias:id,sigla'])
             ->when($nombre, function ($query, $nombre) {
                 return $query->where('nombre', 'like', '%' . $nombre . '%');
