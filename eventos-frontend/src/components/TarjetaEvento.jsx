@@ -44,11 +44,6 @@ const TarjetaEvento = ({ evento }) => {
                         alt={evento.nombre}
                         className="w-full h-full object-cover"
                     /> 
-                    {/*<img
-                        src="https://inkscape.app/wp-content/uploads/imagen-vectorial.webp"
-                        alt="lanzarote"
-                        className="w-full h-full object-cover"
-                    />*/}
                 </div>
 
                 {/* Contenido del evento */}
@@ -59,7 +54,7 @@ const TarjetaEvento = ({ evento }) => {
                         </div>
                         <h3 className="text-lg font-bold text-gray-800 mb-1">{evento.nombre || "Nombre no disponible"}</h3>
                         <p className="text-sm text-gray-600">{formatearFecha(evento.fecha) || "Fecha no disponible"}</p>
-                        <p className="text-sm text-gray-600">{evento.hora || "Hora no especificada"}</p>
+                        <p className="text-sm text-gray-600">{evento.hora + " horas" || "Hora no especificada"}</p>
                         <div className="text-sm text-gray-600 flex items-center mt-1">
                             <PlaceIcon className="w-4 h-4 mr-1" />
                             {evento.ubicacion || "Ubicación no disponible"}

@@ -139,14 +139,14 @@ const Header = () => {
                 onClick={() => cambiarIdioma('en')}
                 className="text-sm px-2 py-1 flex items-center gap-1"
               >
-                🇬🇧 {t('english')}
+                &#x1f1ec;&#x1f1e7; {t('english')}
               </button>
             ) : (
               <button
                 onClick={() => cambiarIdioma('es')}
                 className="text-sm px-2 py-1 flex items-center gap-1"
               >
-                🇪🇸 {t('spanish')}
+                &#x1f1ea;&#x1f1e6; {t('spanish')}
               </button>
             )}
           </div>
@@ -180,8 +180,6 @@ const Header = () => {
                 </div>
               )}
             </div>
-
-
           )}
         </div>
       </nav>

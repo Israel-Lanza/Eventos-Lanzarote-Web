@@ -258,7 +258,7 @@ const Descripcion = () => {
                                 <div>
                                     <p>
                                         <b>{t('form.organizer')}: </b>
-                                        {evento.autor === "admin" ? "Eventos Lanzarote" : evento.autor}
+                                        {evento.organizador}
                                     </p>
                                 </div>
                             </div>

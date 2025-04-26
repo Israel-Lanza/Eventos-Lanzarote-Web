@@ -185,14 +185,6 @@ export default function ListadoEmpresas() {
                 empresaEditar={empresaEditar}
                 onActualizar={onActualizarDashboard}
               />
-              <div className="flex justify-end mt-4">
-                <button
-                  onClick={handleClose}
-                  className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition text-sm"
-                >
-                  Cerrar
-                </button>
-              </div>
             </Box>
           </Modal>
       
