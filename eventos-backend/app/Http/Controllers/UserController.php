@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PasswordResetMailable;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use App\Mail\VerificacionEmailMailable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 
 
@@ -25,18 +27,47 @@ class UserController extends Controller
         return response()->json($usuarios);
     }
 
-    /*public function show($id)
+    public function sendResetLinkEmail(Request $request)
     {
-        $usuario = User::select('id', 'nombre', 'email', 'cif')
-            ->where('id', $id)
-            ->first();
+        $request->validate([
+            'email' => 'required|email'
+        ]);
 
-        if (!$usuario) {
-            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'No se encontró ningún usuario con ese email.'], 404);
         }
 
-        return response()->json($usuario);
-    }*/
+        $token = Str::random(60);
+
+        $frontendUrl = "http://localhost:5173"; 
+        $url = $frontendUrl . "/reset-password?token=$token&email=" . urlencode($user->email);
+
+        Mail::to($user->email)->send(new PasswordResetMailable($url, $user->nombre));
+
+        return response()->json(['message' => 'Correo de recuperación enviado correctamente.']);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'token' => 'required',
+            'password' => 'required|confirmed|min:8',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'No se encontró ningún usuario con ese email.'], 404);
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return response()->json(['message' => 'Contraseña actualizada correctamente.']);
+    }
 
     public function store(Request $request)
     {
@@ -75,11 +106,10 @@ class UserController extends Controller
         );
 
         Mail::to($user->email)->send(new VerificacionEmailMailable($user, $url));
-            return response()->json([
+        return response()->json([
             'message' => 'Usuario registrado correctamente.',
-            'verificacion_url' => $url, 
+            'verificacion_url' => $url,
         ]);
-
     }
 
     public function update(Request $request, $id)

@@ -6,6 +6,7 @@ export const getEventos = async (page = 1) => {
     const response = await api.get(`/eventos?page=${page}`);
     return response.data;
   } catch (error) {
+    console.error("Error: ", error)
     return { data: [], last_page: 1 };
   }
 };
@@ -58,17 +59,6 @@ export const updateEvento = async (id, eventoData) => {
   return response.data;
   
 };
-  
-  /*//Función para eliminar un evento
-  export const deleteEvento = async (id) => {
-    try{
-      await api.delete(`/eventos/${id}`);
-      return true; // Indica que se eliminó correctamente
-    }catch(error) {
-      console.error("Error eliminando el evento:", error);
-      return false;
-    }
-  };*/
 
 export const deleteEvento = async (id) => {
   try {

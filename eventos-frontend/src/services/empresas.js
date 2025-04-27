@@ -32,13 +32,6 @@ export const createEmpresa = async (empresaData) => {
 export const updateEmpresa = async (id, empresaData) => {
   const response = await api.put(`/empresas/${id}`, empresaData);
   return response.data;
-  
-  /* try {
-    
-  } catch (error) {
-    console.error("Error actualizando la empresa:", error);
-    return null;
-  } */
 };
 
 //Función para eliminar una empresa
@@ -51,3 +44,13 @@ export const deleteEmpresa = async (id) => {
     return false;
   }
 };
+
+export const changePassword = async (email) => {
+  try {
+    const response = await api.post(`/password/email`, { email });
+    return response.data;
+  } catch (error) {
+    console.error("Error enviando enlace de recuperación:", error);
+    throw error;
+  }
+}

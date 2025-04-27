@@ -12,7 +12,7 @@ import Buscar from "./pages/Buscador";
 
 //Autenticación
 import Login from "./auth/Login";
-
+import PasswordReset from "./auth/PasswordReset";
 import Register from "./auth/Register";
 
 //Dashboard y componentes protegidos
@@ -26,6 +26,7 @@ import Error404 from "./pages/Error404";
 
 //Para rutas no definidas dentro del dashboard
 import Error404Dashboard from "./pages/Error404Dashboard";
+import NuevaPassword from "./auth/NuevaPassword";
 
 export default function Router() {
 
@@ -44,6 +45,8 @@ export default function Router() {
                 {/* Ruta de Auth */}
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
+                <Route path="/forgot-password" element={<PasswordReset />} />
+                <Route path="/reset-password" element={<NuevaPassword />} />
 
                 {/* Rutas protegidas para el dashboard */}
                 <Route path="/dashboard/*" element={<RutasProtegidas><AdminDashboard /></RutasProtegidas>}>

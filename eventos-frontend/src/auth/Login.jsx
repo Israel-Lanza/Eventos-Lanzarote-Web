@@ -4,7 +4,7 @@ import api from "../services/api";
 import Auth from "./Auth";
 import toast from "react-hot-toast";
 import { useTranslation } from 'react-i18next';
-import { HiEye, HiEyeOff } from "react-icons/hi"; 
+import { HiEye, HiEyeOff } from "react-icons/hi";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -68,9 +68,8 @@ const Login = () => {
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-              errors.email ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
-            }`}
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${errors.email ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
+              }`}
           />
           {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
         </div>
@@ -82,9 +81,8 @@ const Login = () => {
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className={`w-full px-4 py-2 pr-10 border rounded-lg focus:outline-none focus:ring-2 ${
-              errors.password ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
-            }`}
+            className={`w-full px-4 py-2 pr-10 border rounded-lg focus:outline-none focus:ring-2 ${errors.password ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
+              }`}
           />
           {/* Ícono ojo/oculto */}
           <button
@@ -113,7 +111,12 @@ const Login = () => {
         <Link to="/register" className="text-indigo-600 hover:underline">
           {t('register_here')}
         </Link>
+        <br /><br />
+        <Link to="/forgot-password" className="text-indigo-600 hover:underline ">
+          ¿Se te olvidó la contraseña?
+        </Link>
       </div>
+
     </Auth>
   );
 };

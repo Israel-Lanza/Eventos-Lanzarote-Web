@@ -11,6 +11,8 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 //Ruta para el login (visualizacion del login)
 Route::post('/login', [AutenticationController::class, 'login']);
 Route::post('/empresas', [UserController::class, 'store']);
+Route::post('/password/email', [UserController::class, 'sendResetLinkEmail']);
+Route::post('/password/reset', [UserController::class, 'resetPassword']);
 
 //Ruta para el deslogearse (tiene que estar autenticado para deslogearse)
 Route::post('/logout', [AutenticationController::class, 'logout'])->middleware('auth:sanctum');
