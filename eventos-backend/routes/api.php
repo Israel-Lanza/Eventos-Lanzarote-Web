@@ -48,6 +48,8 @@ Route::middleware(['auth:sanctum', 'role:admin|empresa'])->group(function () {
     Route::delete('/eventos/{id}', [EventoController::class, 'destroy']); //Eliminar evento DASHBOARD (ROL ADMIN/EMPRESA)
     //Route::get('/eventos/resumen/{autor}', [EventoController::class, 'resumen']);
     Route::get('/dashboard-data', [EventoController::class, 'dashboardData']);//Que se muestre el dashboard para todos los usuarios
+    Route::put('/user/update-profile', [UserController::class, 'updateProfile']);
+    Route::get('/user/profile', [UserController::class, 'profile']);
 });
 
 

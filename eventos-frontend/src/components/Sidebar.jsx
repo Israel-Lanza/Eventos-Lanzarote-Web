@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import api from "../services/api";
 import { useTranslation } from 'react-i18next';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ export default function Sidebar() {
           ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
           transition-transform bg-gray-900 text-white 
           w-64 p-6 h-screen flex flex-col justify-between shadow-lg
-          lg:translate-x-0 h-96
+          lg:translate-x-0
         `}>
           <div>
             <div className="mb-6 mt-12">
@@ -73,10 +74,9 @@ export default function Sidebar() {
                 to="/"
                 end
                 className={({ isActive }) =>
-                  `flex items-center px-3 py-2 rounded-md transition ${
-                    isActive
-                      ? 'bg-gray-800 border-l-4 border-blue-400 text-white font-semibold'
-                      : 'text-gray-300 hover:text-white'
+                  `flex items-center px-3 py-2 rounded-md transition ${isActive
+                    ? 'bg-gray-800 border-l-4 border-blue-400 text-white font-semibold'
+                    : 'text-gray-300 hover:text-white'
                   }`
                 }
               >
@@ -87,24 +87,35 @@ export default function Sidebar() {
                 to="/dashboard"
                 end
                 className={({ isActive }) =>
-                  `flex items-center px-3 py-2 rounded-md transition ${
-                    isActive
-                      ? 'bg-gray-800 border-l-4 border-blue-400 text-white font-semibold'
-                      : 'text-gray-300 hover:text-white'
+                  `flex items-center px-3 py-2 rounded-md transition ${isActive
+                    ? 'bg-gray-800 border-l-4 border-blue-400 text-white font-semibold'
+                    : 'text-gray-300 hover:text-white'
                   }`
                 }
               >
                 <Calendar size={18} className="mr-2" /> {t('menu.events')}
               </NavLink>
 
+              <NavLink
+                to="/dashboard/settings"
+                end
+                className={({ isActive }) =>
+                  `flex items-center px-3 py-2 rounded-md transition ${isActive
+                    ? 'bg-gray-800 border-l-4 border-blue-400 text-white font-semibold'
+                    : 'text-gray-300 hover:text-white'
+                  }`
+                }
+              >
+                <SettingsIcon size={18} className="mr-2" />Ajustes
+              </NavLink>
+
               {admin && (
                 <NavLink
                   to="/dashboard/empresas"
                   className={({ isActive }) =>
-                    `flex items-center px-3 py-2 rounded-md transition ${
-                      isActive
-                        ? 'bg-gray-800 border-l-4 border-blue-400 text-white font-semibold'
-                        : 'text-gray-300 hover:text-white'
+                    `flex items-center px-3 py-2 rounded-md transition ${isActive
+                      ? 'bg-gray-800 border-l-4 border-blue-400 text-white font-semibold'
+                      : 'text-gray-300 hover:text-white'
                     }`
                   }
                 >

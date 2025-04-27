@@ -1,6 +1,7 @@
 import Sidebar from "../components/Sidebar";
 import Resumen from "../components/Resumen";
 import ListadoEventos from "../components/ListadoEventos";
+import Settings from "../components/Settings"; // IMPORTAMOS Settings
 import { useEffect, useState } from "react";
 import { getDashboardData } from "../services/eventos";
 import { Outlet } from "react-router-dom";
@@ -37,6 +38,8 @@ export default function AdminDashboard() {
                 {data ? (
                     <div className="mb-6 flex flex-col gap-6">
                         <Resumen resumen={data.resumen} />
+
+                        {/* ADMIN */}
                         {admin && (
                             <Outlet context={{
                                 eventos: data.eventos,
@@ -44,7 +47,15 @@ export default function AdminDashboard() {
                                 onActualizarDashboard: actualizarDashboard
                             }} />
                         )}
-                        {empresa && <ListadoEventos eventosIniciales={data.eventos} actualizarDashboard={actualizarDashboard}/>}
+
+                        {/* EMPRESA */}
+                        {empresa && (
+                            <Outlet context={{
+                                eventos: data.eventos,
+                                onActualizarDashboard: actualizarDashboard
+                            }} />
+                        )}
+
                     </div>
                 ) : (
                     <div className="text-center text-gray-500">Cargando datos del dashboard...</div>
