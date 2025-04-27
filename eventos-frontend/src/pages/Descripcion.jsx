@@ -24,6 +24,7 @@ const Descripcion = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [copied, setCopied] = useState(false);
     const navigate = useNavigate();
+    
 
     const handleOpenDialog = () => setOpenDialog(true);
     const handleCloseDialog = () => {
@@ -202,7 +203,8 @@ const Descripcion = () => {
                                                 if (ref && window.google && evento.ubicacion) {
                                                     const map = new window.google.maps.Map(ref, {
                                                         zoom: 15,
-                                                        center: { lat: 28.1235, lng: -15.4363 }, // coordenadas por defecto
+                                                        center: { lat: 28.1235, lng: -15.4363 }, //coordenadas por defecto
+                                                        mapId: "15af9bcc470cf157",
                                                     });
 
                                                     const geocoder = new window.google.maps.Geocoder();
@@ -210,7 +212,7 @@ const Descripcion = () => {
                                                         if (status === "OK") {
                                                             const location = results[0].geometry.location;
                                                             map.setCenter(location);
-                                                            new window.google.maps.Marker({
+                                                            new window.google.maps.marker.AdvancedMarkerElement({
                                                                 map,
                                                                 position: location,
                                                             });

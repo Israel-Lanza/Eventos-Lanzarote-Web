@@ -13,8 +13,8 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'es', // idioma por defecto
-    fallbackLng: 'en', // idioma de respaldo
+    lng: 'es', //idioma por defecto
+    fallbackLng: 'en', //idioma de respaldo
     interpolation: { escapeValue: false }
   });
 

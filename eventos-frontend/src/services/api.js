@@ -3,7 +3,7 @@ import axios from "axios";
 //const API_URL = "http://api-eventoslanzarote.api/api"; // Cambia esto según tu backend
 const API_URL = "http://localhost:8000/api";
 
-// Configuración de Axios con la base URL
+//Configuración de Axios con la base URL
 const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -18,16 +18,16 @@ export const getCsrfCookie = () => {
   });
 };
 
-// Interceptor para incluir el token de autenticación si existe
+//Interceptor para incluir el token de autenticación si existe
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token"); // O usa un estado global (Redux, Zustand, etc.)
+  const token = localStorage.getItem("token"); //O usa un estado global (Redux, Zustand, etc.)
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
-// Exporta la instancia de Axios por si necesitas usarla directamente
+//Exporta la instancia de Axios por si necesitas usarla directamente
 export default api;
 
 
