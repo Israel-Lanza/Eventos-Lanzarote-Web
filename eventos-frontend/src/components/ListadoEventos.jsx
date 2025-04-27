@@ -160,7 +160,7 @@ export default function ListadoEventos({ eventosIniciales, actualizarDashboard }
       </div>
 
       {/* Tabla con scroll horizontal en móvil */}
-      <div className="overflow-x-auto mb-3">
+      <div className="overflow-visible h-96 mb-3">
         <table className="min-w-full text-left border-collapse text-sm">
           <thead>
             <tr>
@@ -180,7 +180,7 @@ export default function ListadoEventos({ eventosIniciales, actualizarDashboard }
                   <td className="py-2 px-4">{evento.autor}</td>
                   <td className="py-2 px-4">{evento.fecha}</td>
                   <td className="py-2 px-4">{evento.ubicacion}</td>
-                  <td className="py-2 px-4">
+                  <td className="py-2 px-4 text-right">
                     {user?.roles?.includes("admin") ? (
                       <select
                         value={estadosActualizados[evento.id] ?? evento.estado}
@@ -301,7 +301,6 @@ export default function ListadoEventos({ eventosIniciales, actualizarDashboard }
             </h2>
 
           </div>
-
           {cargandoEvento ? (
             <div className="text-center text-gray-500 py-8">Cargando evento...</div>
           ) : (

@@ -58,7 +58,7 @@ export default function ListadoEmpresas() {
         bgcolor: 'background.paper',
         borderRadius: '16px',
         boxShadow: 24,
-        p: 4,
+        p: 1,
         maxHeight: '90vh',
         overflowY: 'auto',
     };
@@ -90,7 +90,7 @@ export default function ListadoEmpresas() {
           </div>
       
           {/* Tabla con scroll en móvil */}
-          <div className="overflow-x-auto mb-3">
+          <div className="overflow-visible h-96 mb-3">
             <table className="min-w-full text-left border-collapse text-sm">
               <thead>
                 <tr>
@@ -158,27 +158,27 @@ export default function ListadoEmpresas() {
                 )}
               </tbody>
             </table>
+            <div className="mt-4">
+              <Paginacion
+                currentPage={paginaActual}
+                lastPage={totalPaginas}
+                onPageChange={setPaginaActual}
+              />
+            </div>
           </div>
       
-          {/* Paginación */}
-          <div className="mt-4">
-            <Paginacion
-              currentPage={paginaActual}
-              lastPage={totalPaginas}
-              onPageChange={setPaginaActual}
-            />
-          </div>
+          
       
           {/* MODAL Formulario */}
           <Modal open={mostrarForm} onClose={handleClose}>
             <Box sx={modalStyle}>
-              <div className="flex justify-between items-center mb-4">
+              <button onClick={handleClose} className="absolute right-3">
+                  <X size={24} />
+              </button>
+              <div className="flex justify-center items-center">
                 <h2 className="text-lg sm:text-xl font-semibold">
                   {empresaEditar ? "Editar Empresa" : "Nueva Empresa"}
                 </h2>
-                <button onClick={handleClose}>
-                  <X size={24} />
-                </button>
               </div>
               <FormularioEmpresa
                 closeModal={handleClose}
