@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import { deleteEmpresa } from "../services/empresas";
 import FormularioEmpresa from "./FormularioEmpresas";
 import Paginacion from "../components/Paginacion";
+import { toast } from 'react-hot-toast';
 
 
 export default function ListadoEmpresas() {
@@ -219,7 +220,10 @@ export default function ListadoEmpresas() {
                   onClick={async () => {
                     const exito = await deleteEmpresa(empresaAEliminar.id);
                     if (exito && onActualizarDashboard) {
+                      toast.success("Empresa eliminada correctamente.");
                       onActualizarDashboard();
+                    }else{
+                      toast.error("Error al eliminar la empresa.");
                     }
                     setMostrarConfirmacion(false);
                   }}

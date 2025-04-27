@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { createEmpresa, updateEmpresa } from "../services/empresas";
+import { toast } from 'react-hot-toast';
 
 function FormularioEmpresa({ closeModal, empresaEditar = null, onActualizar }) {
   const [formData, setFormData] = useState({
@@ -94,6 +95,7 @@ function FormularioEmpresa({ closeModal, empresaEditar = null, onActualizar }) {
   
       if (resultado) {
         if (onActualizar) onActualizar();
+        toast.success(empresaEditar ? "Empresa actualizada correctamente." : "Empresa creada correctamente.");
         closeModal();
       }
     } catch (error) {
@@ -110,6 +112,8 @@ function FormularioEmpresa({ closeModal, empresaEditar = null, onActualizar }) {
             return acc;
           }, {}),
         }));
+      } else{
+        toast.error("Error al procesar la empresa.");
       }
     }
   };

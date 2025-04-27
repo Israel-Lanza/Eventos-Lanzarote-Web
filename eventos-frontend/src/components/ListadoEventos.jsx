@@ -7,6 +7,7 @@ import { useOutletContext } from "react-router-dom";
 import Box from '@mui/material/Box';
 import { getEventoById } from "../services/eventos";
 import Paginacion from "../components/Paginacion";
+import { toast } from 'react-hot-toast';
 
 
 export default function ListadoEventos({ eventosIniciales, actualizarDashboard }) {
@@ -343,7 +344,12 @@ export default function ListadoEventos({ eventosIniciales, actualizarDashboard }
             <button
               onClick={async () => {
                 const exito = await deleteEvento(eventoAEliminar.id);
-                if (exito) actualizarEventos();
+                if (exito){
+                  toast.success("Evento eliminado correctamente.");
+                  actualizarEventos();
+                } else{
+                  toast.error("Error al eliminar el evento.");
+                } 
                 setMostrarConfirmacion(false);
               }}
               className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm"

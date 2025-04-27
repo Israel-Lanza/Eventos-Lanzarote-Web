@@ -16,6 +16,7 @@ import StepLabel from "@mui/material/StepLabel";
 import Typography from "@mui/material/Typography";
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
+import { toast } from 'react-hot-toast';
 
 export default function Formulario({ closeModal, eventoEditar = null, onActualizar }) {
   const pasos = ['Información general', 'Detalles del evento', 'Extras'];
@@ -178,6 +179,7 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
       if (resultado) {
         setEventoCreado(true);
         if (onActualizar) onActualizar();
+        toast.success(eventoEditar ? "Evento actualizado correctamente." : "Evento creado correctamente.");
         closeModal();
       }
     } catch (error) {
@@ -187,6 +189,7 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
         setPasosFallidos(new Set([0, 1, 2]));
       } else {
         console.error("Error en el formulario:", error);
+        toast.error("Error al procesar el evento.");
       }
     }
   };
