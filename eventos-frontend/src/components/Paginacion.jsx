@@ -20,9 +20,8 @@ const Paginacion = ({ currentPage, lastPage, onPageChange }) => {
       {/* Botón Siguiente */}
       <button
         onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === lastPage}
-        className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed"
-      >
+        disabled={currentPage >= lastPage || lastPage === 0}
+        className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed">
         Siguiente
       </button>
     </div>

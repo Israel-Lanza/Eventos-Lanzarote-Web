@@ -115,7 +115,8 @@ export default function ListadoEventos({ eventosIniciales, actualizarDashboard }
   const indiceFin = indiceInicio + eventosPorPagina;
   const eventosPaginados = eventosFiltrados.slice(indiceInicio, indiceFin);
 
-  const totalPaginas = Math.ceil(eventosFiltrados.length / eventosPorPagina);
+  const totalPaginas = Math.max(1, Math.ceil(eventosFiltrados.length / eventosPorPagina));
+
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");

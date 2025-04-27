@@ -69,7 +69,7 @@ export default function ListadoEmpresas() {
     const indiceFin = indiceInicio + empresasPorPagina;
     const empresasPaginadas = empresasFiltradas.slice(indiceInicio, indiceFin);
 
-    const totalPaginas = Math.ceil(empresasFiltradas.length / empresasPorPagina);
+    const totalPaginas = Math.max(1, Math.ceil(eventosFiltrados.length / eventosPorPagina));
 
     return (
         <div className="bg-white shadow-lg rounded-lg p-4 sm:p-6">
