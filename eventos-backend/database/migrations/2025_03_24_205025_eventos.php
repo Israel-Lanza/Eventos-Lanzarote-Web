@@ -17,13 +17,15 @@ return new class extends Migration
             $table->text('descripcion');
             $table->string('fecha');
             $table->string('fechaFin')->nullable();
-            $table->string('hora'); 
+            $table->string('hora')->nullable(); 
+            $table->string('horaFin')->nullable();
             $table->string('ubicacion');
             $table->string('enlace')->nullable();
             $table->string('imagen')->nullable();
             $table->decimal('precio',8, 2);
             $table->char('estado',1)->default('P');
             $table->string('autor');
+            $table->string('organizador')->nullable();
             $table->timestamps();
         });
     }

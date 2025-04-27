@@ -200,7 +200,7 @@ class EventoController extends Controller
         $evento->ubicacion = $request->ubicacion ?? $evento->ubicacion;
         $evento->enlace = $request->enlace ?? $evento->enlace;
         $evento->precio = $request->precio ?? $evento->precio;
-        $evento->horaFin = $request->fechaFin ?? $evento->fechaFin;
+        $evento->horaFin = $request->horaFin ?? $evento->horaFin;
         $evento->organizador = $request->organizador ?? $evento->organizador;
 
         if ($request->hasFile('imagen')) {

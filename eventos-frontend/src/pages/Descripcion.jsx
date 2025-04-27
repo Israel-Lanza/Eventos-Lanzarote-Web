@@ -260,7 +260,9 @@ const Descripcion = () => {
                                 <div>
                                     <p>
                                         <b>{t('form.organizer')}: </b>
-                                        {evento.organizador}
+                                        {evento.organizador
+                                            ? evento.organizador
+                                            : "Sin información"}
                                     </p>
                                 </div>
                             </div>
