@@ -329,7 +329,7 @@ class EventoController extends Controller
 
         $usuario = $request->user();
 
-        if ($usuario->nombre === 'admin') {
+        if ($usuario->hasRole('admin')) {
             $eventos = Evento::orderBy('created_at', 'desc')->get();
         } else {
             $eventos = Evento::where('autor', $usuario->nombre)

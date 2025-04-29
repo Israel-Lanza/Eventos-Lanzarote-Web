@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use App\Mail\VerificacionEmailMailable;
+use App\Models\Evento;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
@@ -130,6 +131,7 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $user = $request->user(); // usuario logueado
+        $nombreOriginal = $user->nombre;
 
         $request->validate([
             'nombre'    => 'string|max:200',
@@ -158,6 +160,10 @@ class UserController extends Controller
 
         $user->save();
 
+        if ($request->filled('nombre') && $request->nombre !== $nombreOriginal) {
+            Evento::where('autor', $nombreOriginal)->update(['autor' => $user->nombre]);
+        }
+
         return response()->json([
             'mensaje' => 'Perfil actualizado correctamente',
             'user' => [
@@ -176,6 +182,8 @@ class UserController extends Controller
         if (!$user) {
             return response()->json(['error' => 'Usuario no encontrado'], 404);
         }
+
+        $nombreOriginal = $user->nombre;
 
         $request->validate([
             'nombre'    => 'string|max:200',
@@ -206,6 +214,10 @@ class UserController extends Controller
         }
 
         $user->save();
+
+        if ($request->filled('nombre') && $request->nombre !== $nombreOriginal) {
+            Evento::where('autor', $nombreOriginal)->update(['autor' => $user->nombre]);
+        }
 
         return response()->json(['mensaje' => 'Usuario actualizado correctamente', 'usuario' => $user]);
     }
