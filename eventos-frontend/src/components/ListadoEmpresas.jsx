@@ -91,7 +91,7 @@ export default function ListadoEmpresas() {
           </div>
       
           {/* Tabla con scroll en móvil */}
-          <div className="overflow-visible h-96 mb-3">
+          <div className="overflow-x-auto mb-3">
             <table className="min-w-full text-left border-collapse text-sm">
               <thead>
                 <tr>
