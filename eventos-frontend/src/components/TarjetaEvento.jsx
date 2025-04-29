@@ -71,9 +71,10 @@ const TarjetaEvento = ({ evento }) => {
                             <PlaceIcon className="w-4 h-4 mr-1" />
                             {evento.ubicacion || "Ubicación no disponible"}
                         </div>
-                        <p className="text-sm text-gray-700 mt-2 line-clamp-2">
-                            {evento.descripcion || "Sin descripción"}
-                        </p>
+                        <div
+                            className="text-sm text-gray-700 mt-2 line-clamp-2"
+                            dangerouslySetInnerHTML={{ __html: evento.descripcion || "Sin descripción" }}
+                        />
                     </div>
 
                     {/* Parte de abajo: precio + botón */}

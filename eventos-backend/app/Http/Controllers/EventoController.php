@@ -288,7 +288,7 @@ class EventoController extends Controller
     {
         $nombre = $request->query('nombre');
 
-        $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace', 'organizador', 'horaFin')
+        $eventos = Evento::select('id', 'nombre', 'fecha', 'fechaFin', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace', 'organizador', 'horaFin')
             ->with(['categorias:id,sigla'])
             ->when($nombre, function ($query, $nombre) {
                 return $query->where('nombre', 'like', '%' . $nombre . '%');

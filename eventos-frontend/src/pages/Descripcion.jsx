@@ -131,7 +131,7 @@ const Descripcion = () => {
                         <Card className="mt-4">
                             <CardContent>
                                 <h3 className="text-xl font-bold mb-4">{t('about_event')}</h3>
-                                <p>{evento.descripcion}</p>
+                                <div dangerouslySetInnerHTML={{ __html: evento.descripcion }} />
 
                                 <h3 className="text-xl font-bold mt-6 mb-4">{t('categories')}</h3>
                                 <div className="flex gap-2 flex-wrap mb-2">
