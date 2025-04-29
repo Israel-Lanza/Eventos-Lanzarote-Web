@@ -22,6 +22,7 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
   const pasos = ['Información general', 'Detalles del evento', 'Extras'];
   const [pasoActual, setPasoActual] = useState(0);
   const [pasosFallidos, setPasosFallidos] = useState(new Set());
+  const fechaHoy = new Date().toISOString().split("T")[0];
 
   const [formData, setFormData] = useState({
     nombre: "",
@@ -224,7 +225,7 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block font-bold mb-2">Fecha *</label>
-                <input type="date" name="fecha" value={formData.fecha} className="w-full border rounded px-4 py-2" onChange={handleChange} disabled={eventoCreado} />
+                <input type="date" name="fecha" value={formData.fecha} min={fechaHoy} className="w-full border rounded px-4 py-2" onChange={handleChange} disabled={eventoCreado} />
                 {errores.fecha && <p className="text-red-600 text-sm">{errores.fecha[0]}</p>}
               </div>
               <div>
@@ -252,7 +253,7 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
                   <HelpCircle size={18} className="text-gray-500 cursor-pointer" />
                 </span>
               </label>
-              <input type="number" name="precio" value={formData.precio} min="0" step="0.01" className="w-full border rounded px-4 py-2" onChange={handleChange} disabled={eventoCreado} />
+              <input type="number" name="precio" value={formData.precio} min="0" step="1" className="w-full border rounded px-4 py-2" onChange={handleChange} disabled={eventoCreado} />
               {errores.precio && <p className="text-red-600 text-sm">{errores.precio[0]}</p>}
             </div>
           </>
