@@ -62,6 +62,7 @@ const TarjetaEvento = ({ evento }) => {
                         </h3>
                         <p className="text-sm text-gray-600">
                             <CalendarTodayIcon className="mr-1"/> {formatearFecha(evento.fecha) || "Fecha no disponible"}
+                            {evento.fechaFin && ` - ${formatearFecha(evento.fechaFin)}`}
                         </p>
                         <p className="text-sm text-gray-600">
                             <AccessTimeIcon className="mr-2"/>{evento.hora ? evento.hora + " horas" : "Hora no especificada"}

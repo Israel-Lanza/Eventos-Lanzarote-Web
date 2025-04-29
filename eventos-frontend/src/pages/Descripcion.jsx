@@ -206,7 +206,11 @@ const Descripcion = () => {
                         <CardContent>
                             <div className="flex items-center gap-3 mb-4">
                                 <CalendarToday />
-                                <p><b>{t('form.date')}:</b> {formatearFecha(evento.fecha)}</p>
+                                <p>
+                                    <b>{t('form.date')}:</b>{" "}
+                                    {formatearFecha(evento.fecha)}
+                                    {evento.fechaFin && ` - ${formatearFecha(evento.fechaFin)}`}
+                                </p>
                             </div>
                             <div className="flex items-center gap-3 mb-4">
                                 <AccessTime />

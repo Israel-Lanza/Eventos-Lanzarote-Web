@@ -29,7 +29,7 @@ class EventoController extends Controller
         $cacheKey = "eventos_semana_{$hoy}_pagina_{$page}";
 
         $eventos = Cache::remember($cacheKey, now()->addMinutes(2), function () use ($hoy, $sieteDiasDespues) {
-            return Evento::select('id', 'nombre', 'fecha', 'hora', 'horaFin', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace', 'organizador')
+            return Evento::select('id', 'nombre', 'fecha', 'hora', 'horaFin', 'fechaFin', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace', 'organizador')
                 ->with(['categorias:id,sigla'])
                 ->where('estado', 'A')
                 ->whereDate('fecha', '>=', $hoy)
@@ -64,7 +64,7 @@ class EventoController extends Controller
 
         $evento = Evento::with(['categorias:id,sigla']) //Asegúrate de incluir "nombre"
             ->where('nombre', $nombre)
-            ->first(['id', 'nombre', 'imagen', 'ubicacion', 'fecha', 'precio', 'hora', 'horaFin' , 'descripcion', 'enlace', 'organizador', 'autor']);
+            ->first(['id', 'nombre', 'imagen', 'ubicacion', 'fecha', 'fechaFin' , 'precio', 'hora', 'horaFin' , 'descripcion', 'enlace', 'organizador', 'autor']);
 
         if (!$evento) {
             return response()->json(['error' => 'Evento no encontrado'], 404); 
