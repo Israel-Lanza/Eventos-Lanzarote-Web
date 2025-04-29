@@ -328,10 +328,13 @@ class EventoController extends Controller
         $usuario = $request->user();
 
         if ($usuario->nombre === 'admin') {
-            $eventos = Evento::all();
+            $eventos = Evento::orderBy('created_at', 'desc')->get();
         } else {
-            $eventos = Evento::where('autor', $usuario->nombre)->get();
+            $eventos = Evento::where('autor', $usuario->nombre)
+                             ->orderBy('created_at', 'desc')
+                             ->get();
         }
+        
 
         $resumen = [
             'total' => $eventos->count(),
