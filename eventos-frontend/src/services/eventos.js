@@ -55,10 +55,14 @@ export const createEvento = async (eventoData) => {
   
 //Función para actualizar un evento existente
 export const updateEvento = async (id, eventoData) => {
-  const response = await api.put(`/eventos/${id}`, eventoData);
+  const response = await api.post(`/eventos/${id}?_method=PUT`, eventoData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response.data;
-  
 };
+
 
 export const deleteEvento = async (id) => {
   try {

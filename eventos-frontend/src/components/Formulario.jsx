@@ -92,7 +92,11 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
   };
 
   const handleImageChange = (e) => {
-    setFormData({ ...formData, imagen: e.target.files[0] });
+    const file = e.target.files[0];
+    setFormData((prev) => ({
+      ...prev,
+      imagen: file instanceof File ? file : null,
+    }));
   };
 
   const handleCategoriaChange = (e) => {
@@ -167,7 +171,9 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
     data.append("ubicacion", formData.ubicacion);
     data.append("enlace", formData.enlaceWeb);
     data.append("organizador", formData.organizador);
-    if (formData.imagen) data.append("imagen", formData.imagen);
+    if (formData.imagen && typeof formData.imagen === "object" && formData.imagen instanceof File) {
+      data.append("imagen", formData.imagen);
+    }
     formData.categorias.forEach((cat) => data.append("categorias[]", cat));
 
     try {

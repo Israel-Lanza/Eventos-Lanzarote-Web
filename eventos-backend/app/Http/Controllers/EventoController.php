@@ -169,7 +169,7 @@ class EventoController extends Controller
             'ubicacion'     => 'required|string',
             'enlace'        => 'nullable|regex:/^https?:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/',
             'precio'        => 'required|numeric|min:0',
-            'imagen'        => 'nullable|image|max:2048',
+            'imagen'        => 'nullable|file|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'organizador'   => 'nullable|string|max:200',
             'categorias'    => 'required',
         ], [
@@ -204,9 +204,11 @@ class EventoController extends Controller
         $evento->organizador = $request->organizador ?? $evento->organizador;
 
         if ($request->hasFile('imagen')) {
-            $nombreImagen = str_replace(' ', '', $request->nombre . '.' . $request->file('imagen')->getClientOriginalExtension());
-            $path = $request->file('imagen')->storeAs('imgEventos', $nombreImagen);
-            $evento->imagen = Storage::url("/" . $path);
+            $extension = $request->file('imagen')->getClientOriginalExtension();
+            $nombreNormalizado = preg_replace('/[^A-Za-z0-9]/', '', str_replace(' ', '', $request->nombre));
+            $nombreImagen = $nombreNormalizado . '.' . $extension;
+            $request->file('imagen')->move(public_path('imgEventos'), $nombreImagen);
+            $evento->imagen = '/imgEventos/' . $nombreImagen;
         }
 
         $evento->save();
