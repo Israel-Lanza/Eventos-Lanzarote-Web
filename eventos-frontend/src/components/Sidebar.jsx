@@ -96,19 +96,6 @@ export default function Sidebar() {
                 <Calendar size={18} className="mr-2" /> {t('menu.events')}
               </NavLink>
 
-              <NavLink
-                to="/dashboard/settings"
-                end
-                className={({ isActive }) =>
-                  `flex items-center px-3 py-2 rounded-md transition ${isActive
-                    ? 'bg-gray-800 border-l-4 border-blue-400 text-white font-semibold'
-                    : 'text-gray-300 hover:text-white'
-                  }`
-                }
-              >
-                <SettingsIcon size={18} className="mr-2" />Ajustes
-              </NavLink>
-
               {admin && (
                 <NavLink
                   to="/dashboard/empresas"
@@ -122,6 +109,20 @@ export default function Sidebar() {
                   <Users size={18} className="mr-2" /> {t('menu.business')}
                 </NavLink>
               )}
+
+
+              <NavLink
+                to="/dashboard/settings"
+                end
+                className={({ isActive }) =>
+                  `flex items-center px-3 py-2 rounded-md transition ${isActive
+                    ? 'bg-gray-800 border-l-4 border-blue-400 text-white font-semibold'
+                    : 'text-gray-300 hover:text-white'
+                  }`
+                }
+              >
+                <SettingsIcon size={18} className="mr-2" />Ajustes
+              </NavLink>
             </div>
           </div>
 
