@@ -66,8 +66,13 @@ export default function Sidebar() {
           lg:translate-x-0
         `}>
           <div>
-            <div className="mb-6 mt-12">
-              <h5 className="text-xl font-bold">{t('dashboard')}</h5>
+            <div className="flex flex-col items-center gap-3 mb-6 mt-12">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-sm sm:text-lg">
+                {user.nombre.trim().slice(0, 2).toUpperCase()}
+              </div>
+              <h5 className="text-base sm:text-xl font-semibold truncate max-w-[150px]">
+                Hola {user.nombre}
+              </h5>
             </div>
             <div className="space-y-3">
               <NavLink
