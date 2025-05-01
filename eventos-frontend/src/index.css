@@ -15,4 +15,18 @@
   display: inline-block; /* 👈 importante para que se vea el div vacío */
 }
 
+.portada {
+  background-image: url('assets/portada.png');
+  background-size: cover;
+  background-position: center;
+}
+
+/* Estilos para móviles */
+@media (max-width: 768px) {
+  .portada {
+    background-size: contain;
+    background-position: top;
+    background-repeat: no-repeat;
+  }
+}
 

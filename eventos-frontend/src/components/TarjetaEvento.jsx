@@ -42,11 +42,22 @@ const TarjetaEvento = ({ evento }) => {
 
                 {/* Imagen del evento */}
                 <div className="h-48 w-full overflow-hidden">
-                    <img
-                        src={`http://localhost:8000${evento.imagen}`}
-                        alt={evento.nombre}
-                        className="w-full h-full object-cover"
-                    />
+                    <Link
+                        to={`/eventos/${evento.nombre.replace(/\s+/g, '-')}`}
+                        state={{
+                            from: location.pathname,
+                            query: new URLSearchParams(location.search).get("query") || null,
+                            categoria: location.pathname.includes("/categoria/")
+                                ? location.pathname.split("/").pop()
+                                : null
+                        }}
+                    >
+                        <img
+                            src={`http://localhost:8000${evento.imagen}`}
+                            alt={evento.nombre}
+                            className="w-full h-full object-cover"
+                        />
+                    </Link>
                 </div>
 
                 {/* Contenido del evento */}
@@ -61,11 +72,11 @@ const TarjetaEvento = ({ evento }) => {
                             {evento.nombre || "Nombre no disponible"}
                         </h3>
                         <p className="text-sm text-gray-600">
-                            <CalendarTodayIcon className="mr-1"/> {formatearFecha(evento.fecha) || "Fecha no disponible"}
+                            <CalendarTodayIcon className="mr-1" /> {formatearFecha(evento.fecha) || "Fecha no disponible"}
                             {evento.fechaFin && ` - ${formatearFecha(evento.fechaFin)}`}
                         </p>
                         <p className="text-sm text-gray-600">
-                            <AccessTimeIcon className="mr-2"/>{evento.hora ? evento.hora + " horas" : "Hora no especificada"}
+                            <AccessTimeIcon className="mr-2" />{evento.hora ? evento.hora + " horas" : "Hora no especificada"}
                         </p>
                         <div className="text-sm text-gray-600 flex items-center mt-1">
                             <PlaceIcon className="w-4 h-4 mr-1" />

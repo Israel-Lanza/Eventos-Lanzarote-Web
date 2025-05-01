@@ -5,7 +5,6 @@ import { Skeleton } from "@mui/material";
 import NavCategoria from "../components/NavCategoria";
 import { useTranslation } from 'react-i18next';
 import Paginacion from "../components/Paginacion";
-import portadaImg from '../assets/portada.png';
 
 const HomePage = () => {
   const [eventos, setEventos] = useState([]);
@@ -42,17 +41,10 @@ const HomePage = () => {
   return (
     <>
       {/* Cabecera */}
-      <div
-        className="relative w-full h-96 mb-6 rounded shadow overflow-hidden"
-        style={{
-          backgroundImage: `url(${portadaImg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
+      <div className="portada relative w-full h-96 rounded shadow overflow-hidden">
         {/* Overlay azul semitransparente */}
         <div className="bg-black bg-opacity-40 px-4 py-2 rounded inline-block">
-          <h3 className="text-2xl md:text-3xl font-bold text-white">
+          <h3 className="text-2xl md:text-3xl font-bold text-white text-center">
             {t("welcome")}
           </h3>
         </div>

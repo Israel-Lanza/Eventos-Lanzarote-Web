@@ -97,6 +97,11 @@ export default function Sidebar() {
                     : 'text-gray-300 hover:text-white'
                   }`
                 }
+                onClick={() => {
+                  if (window.innerWidth < 1024) {
+                    setIsOpen(false);
+                  }
+                }}
               >
                 <Calendar size={18} className="mr-2" /> {t('menu.events')}
               </NavLink>
@@ -110,6 +115,11 @@ export default function Sidebar() {
                       : 'text-gray-300 hover:text-white'
                     }`
                   }
+                  onClick={() => {
+                    if (window.innerWidth < 1024) {
+                      setIsOpen(false);
+                    }
+                  }}
                 >
                   <Users size={18} className="mr-2" /> {t('menu.business')}
                 </NavLink>
@@ -125,6 +135,11 @@ export default function Sidebar() {
                     : 'text-gray-300 hover:text-white'
                   }`
                 }
+                onClick={() => {
+                  if (window.innerWidth < 1024) {
+                    setIsOpen(false);
+                  }
+                }}
               >
                 <SettingsIcon size={18} className="mr-2" />Ajustes
               </NavLink>

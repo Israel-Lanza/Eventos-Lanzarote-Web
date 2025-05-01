@@ -78,12 +78,12 @@ const Header = () => {
           <Link to="/" className="block text-gray-700 mb-2">{t('menu.home')}</Link>
           <Link to="/about" className="block text-gray-700 mb-2">{t('about_us')}</Link>
           {!user ? (
-            <Link to="/login" className="py-1 px-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">{t('login')}</Link>
+            <Link to="/login" className="block text-gray-700 mb-2">{t('login')}</Link>
           ) : (
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="py-1 px-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                className="block text-gray-700 mb-2"
               >
                 {t("hello")}, {user.nombre}
               </button>

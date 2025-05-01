@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import { getEventoById } from "../services/eventos";
 import Paginacion from "../components/Paginacion";
 import { toast } from 'react-hot-toast';
+import { formatearFecha } from "../utils/formatearFecha";
 
 
 export default function ListadoEventos({ eventosIniciales, actualizarDashboard }) {
@@ -180,7 +181,7 @@ export default function ListadoEventos({ eventosIniciales, actualizarDashboard }
                 <tr key={evento.id} className="hover:bg-gray-50">
                   <td className="py-2 px-4 font-medium">{evento.nombre}</td>
                   <td className="py-2 px-4">{evento.autor}</td>
-                  <td className="py-2 px-4">{evento.fecha}</td>
+                  <td className="py-2 px-4">{formatearFecha(evento.fecha)}</td>
                   <td className="py-2 px-4">{evento.ubicacion}</td>
                   <td className="py-2 px-4">
                     {user?.roles?.includes("admin") ? (
