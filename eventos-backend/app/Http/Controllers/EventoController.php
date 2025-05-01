@@ -57,7 +57,7 @@ class EventoController extends Controller
         return response()->json($eventos);
     }*/
 
-    //¿¿¿¿¿¿???????
+    //Descripcion
     public function show($nombre)
     {
         $nombre = str_replace('-', ' ', $nombre);

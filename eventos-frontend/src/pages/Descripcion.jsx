@@ -22,6 +22,7 @@ const Descripcion = () => {
     const [copied, setCopied] = useState(false);
     const navigate = useNavigate();
     const [mostrarBotonArriba, setMostrarBotonArriba] = useState(false);
+    const [imagenAmpliada, setImagenAmpliada] = useState(false);
 
     const handleOpenDialog = () => setOpenDialog(true);
     const handleCloseDialog = () => {
@@ -95,15 +96,15 @@ const Descripcion = () => {
 
                             <div className="flex justify-center space-x-4 mt-4">
                                 <a href={`https://wa.me/?text=${encodeURIComponent(currentUrl)}`} target="_blank" rel="noopener noreferrer"
-                                   className="text-green-500 hover:text-green-600 text-2xl" title="Compartir en WhatsApp">
+                                    className="text-green-500 hover:text-green-600 text-2xl" title="Compartir en WhatsApp">
                                     <FaWhatsapp />
                                 </a>
                                 <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`} target="_blank"
-                                   rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 text-2xl" title="Compartir en Facebook">
+                                    rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 text-2xl" title="Compartir en Facebook">
                                     <FaFacebookF />
                                 </a>
                                 <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}`} target="_blank"
-                                   rel="noopener noreferrer" className="text-black hover:text-gray-800 text-2xl" title="Compartir en X">
+                                    rel="noopener noreferrer" className="text-black hover:text-gray-800 text-2xl" title="Compartir en X">
                                     <FaXTwitter />
                                 </a>
                             </div>
@@ -118,9 +119,13 @@ const Descripcion = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2">
-                    <div className="mb-8">
-                        <img src={`http://localhost:8000${evento.imagen}`} alt={evento.nombre} className="w-full h-full object-cover" />
+                    <div
+                        className="mb-8 h-40 sm:h-52 md:h-64 lg:h-72 xl:h-80 overflow-hidden rounded-md cursor-pointer"
+                        onClick={() => setImagenAmpliada(true)}
+                    >
+                        <img src={`${evento.imagen}`} alt={evento.nombre} className="w-full h-full object-cover" />
                     </div>
+
 
                     <Tabs value={tabValue} onChange={handleTabChange} aria-label={t('event_details')}>
                         <Tab label={t("details")} />
@@ -261,7 +266,7 @@ const Descripcion = () => {
                 </div>
             </div>
 
-            {/* 🔝 BOTÓN IR ARRIBA */}
+            {/*BOTÓN IR ARRIBA */}
             {mostrarBotonArriba && (
                 <button
                     onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -270,6 +275,22 @@ const Descripcion = () => {
                 >
                     <FaArrowUp className="text-xl" />
                 </button>
+            )}
+
+
+            {imagenAmpliada && (
+                <div className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center">
+                    <div className="relative">
+                        <img src={`${evento.imagen}`} alt="Evento ampliado" className="max-w-full max-h-screen rounded shadow-lg" />
+                        <button
+                            onClick={() => setImagenAmpliada(false)}
+                            className="absolute top-2 right-2 text-white text-2xl bg-black bg-opacity-50 rounded-full px-2 hover:bg-opacity-75"
+                            title="Cerrar"
+                        >
+                            ✖
+                        </button>
+                    </div>
+                </div>
             )}
         </div>
     );
