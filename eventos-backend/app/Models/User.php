@@ -13,7 +13,7 @@ use App\Notifications\VerificacionEmail;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    
+
     use HasFactory, Notifiable, HasApiTokens, HasRoles;
 
     protected $fillable = [
@@ -39,5 +39,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerificacionEmail);
+    }
+
+
+    public function eventos()
+    {
+        return $this->hasMany(Evento::class);
     }
 }

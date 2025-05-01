@@ -123,6 +123,7 @@ class EventoController extends Controller
         $evento->horaFin = $request->horaFin;
         $evento->organizador = $request->organizador;
         $evento->autor = Auth::user()->nombre;
+        $evento->user_id = Auth::id();
 
         /*if ($request->hasFile('imagen')) {
             $nombreImagen = str_replace(' ', '', $request->nombre . '.' . $request->file('imagen')->getClientOriginalExtension());
@@ -327,17 +328,18 @@ class EventoController extends Controller
     public function dashboardData(Request $request)
     {
 
+        
         $usuario = $request->user();
 
         if ($usuario->hasRole('admin')) {
             $eventos = Evento::orderBy('created_at', 'desc')->get();
         } else {
-            $eventos = Evento::where('autor', $usuario->nombre)
+            $eventos = Evento::where('user_id', $usuario->id)
                              ->orderBy('created_at', 'desc')
                              ->get();
         }
         
-
+        Log::info('Hola:'.$eventos);
         $resumen = [
             'total' => $eventos->count(),
             'activos' => $eventos->where('estado', 'A')->count(),
