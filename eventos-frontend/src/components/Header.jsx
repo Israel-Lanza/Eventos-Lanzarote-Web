@@ -75,6 +75,7 @@ const Header = () => {
       {/* Menu lateral mobile */}
       {menuOpen && (
         <div className="sm:hidden px-4 py-2 space-y-2">
+          <Link to="/" className="block text-gray-700 mb-2">{t('menu.home')}</Link>
           <Link to="/about" className="block text-gray-700 mb-2">{t('about_us')}</Link>
           {!user ? (
             <Link to="/login" className="py-1 px-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">{t('login')}</Link>
