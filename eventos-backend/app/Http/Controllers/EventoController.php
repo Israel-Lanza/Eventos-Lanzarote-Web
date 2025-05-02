@@ -339,7 +339,6 @@ class EventoController extends Controller
                              ->get();
         }
         
-        Log::info('Hola:'.$eventos);
         $resumen = [
             'total' => $eventos->count(),
             'activos' => $eventos->where('estado', 'A')->count(),

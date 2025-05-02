@@ -3,11 +3,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import api from "../services/api";
 import toast from "react-hot-toast";
 import Auth from "./Auth";
+import { HiEye, HiEyeOff } from "react-icons/hi";
 import { useTranslation } from 'react-i18next';
 
 const NuevaPassword = () => {
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [errors, setErrors] = useState({});
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -30,7 +33,7 @@ const NuevaPassword = () => {
             });
 
             toast.success(response.data.message || "Contraseña restablecida correctamente.");
-            navigate("/login"); 
+            navigate("/login");
         } catch (error) {
             if (error.response?.data?.errors) {
                 setErrors(error.response.data.errors);
@@ -51,27 +54,47 @@ const NuevaPassword = () => {
 
             <form onSubmit={handleSubmit}>
                 {/* Contraseña */}
-                <div className="mb-4">
+                <div className="mb-4 relative">
                     <label className="block text-sm font-semibold mb-1">Nueva Contraseña</label>
                     <input
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${errors.password ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"}`}
+                        className={`w-full px-4 py-2 pr-10 border rounded-lg focus:outline-none focus:ring-2 ${
+                            errors.password ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
+                        }`}
                     />
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-9 text-gray-600 hover:text-indigo-600 focus:outline-none"
+                    >
+                        {showPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
+                    </button>
                     {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password}</p>}
                 </div>
 
                 {/* Confirmar Contraseña */}
-                <div className="mb-4">
+                <div className="mb-4 relative">
                     <label className="block text-sm font-semibold mb-1">Confirmar Contraseña</label>
                     <input
-                        type="password"
+                        type={showConfirmPassword ? "text" : "password"}
                         value={passwordConfirmation}
                         onChange={(e) => setPasswordConfirmation(e.target.value)}
-                        className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${errors.password_confirmation ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"}`}
+                        className={`w-full px-4 py-2 pr-10 border rounded-lg focus:outline-none focus:ring-2 ${
+                            errors.password_confirmation ? "border-red-500 focus:ring-red-400" : "border-gray-300 focus:ring-indigo-400"
+                        }`}
                     />
-                    {errors.password_confirmation && <p className="text-sm text-red-500 mt-1">{errors.password_confirmation}</p>}
+                    <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute right-3 top-9 text-gray-600 hover:text-indigo-600 focus:outline-none"
+                    >
+                        {showConfirmPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
+                    </button>
+                    {errors.password_confirmation && (
+                        <p className="text-sm text-red-500 mt-1">{errors.password_confirmation}</p>
+                    )}
                 </div>
 
                 {errors.general && <p className="text-center text-sm text-red-600 mb-4">{errors.general}</p>}
