@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createEmpresa, updateEmpresa } from "../services/empresas";
 import { toast } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 function FormularioEmpresa({ closeModal, empresaEditar = null, onActualizar }) {
   const [formData, setFormData] = useState({
@@ -9,7 +10,7 @@ function FormularioEmpresa({ closeModal, empresaEditar = null, onActualizar }) {
     email: "",
     password: "",
   });
-
+  const { t } = useTranslation();
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
 
@@ -28,7 +29,7 @@ function FormularioEmpresa({ closeModal, empresaEditar = null, onActualizar }) {
     let temp = { ...errors };
 
     if ("nombre" in fieldValues)
-      temp.nombre = fieldValues.nombre ? "" : "El nombre es obligatorio";
+      temp.nombre = fieldValues.nombre ? "" : t("form.errors.name");
 
     if ("cif" in fieldValues)
       temp.cif = /^[A-Za-z0-9]{8,10}$/.test(fieldValues.cif)
@@ -95,7 +96,7 @@ function FormularioEmpresa({ closeModal, empresaEditar = null, onActualizar }) {
   
       if (resultado) {
         if (onActualizar) onActualizar();
-        toast.success(empresaEditar ? "Empresa actualizada correctamente." : "Empresa creada correctamente.");
+        toast.success(empresaEditar ? t("user_updated") : t("user_created"));
         closeModal();
       }
     } catch (error) {
@@ -113,7 +114,7 @@ function FormularioEmpresa({ closeModal, empresaEditar = null, onActualizar }) {
           }, {}),
         }));
       } else{
-        toast.error("Error al procesar la empresa.");
+        toast.error(t("errors.user_process"));
       }
     }
   };
@@ -127,13 +128,13 @@ function FormularioEmpresa({ closeModal, empresaEditar = null, onActualizar }) {
       >
         {/* NOMBRE */}
         <div className="flex flex-col">
-          <label className="text-gray-700 font-medium text-sm mb-1">Nombre</label>
+          <label className="text-gray-700 font-medium text-sm mb-1">{t("form.name")}</label>
           <input
             type="text"
             name="nombre"
             value={formData.nombre}
             className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-            placeholder="Nombre de la empresa"
+            placeholder={t("form.name")}
             onChange={handleChange}
             onBlur={handleBlur}
           />
@@ -178,13 +179,13 @@ function FormularioEmpresa({ closeModal, empresaEditar = null, onActualizar }) {
   
         {/* PASSWORD */}
         <div className="flex flex-col">
-          <label className="text-gray-700 font-medium text-sm mb-1">Contraseña</label>
+          <label className="text-gray-700 font-medium text-sm mb-1">{t("form.password")}</label>
           <input
             type="password"
             name="password"
             value={formData.password}
             className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-            placeholder="Contraseña"
+            placeholder={t("form.password")}
             onChange={handleChange}
             onBlur={handleBlur}
           />
@@ -198,7 +199,7 @@ function FormularioEmpresa({ closeModal, empresaEditar = null, onActualizar }) {
           type="submit"
           className="w-full py-2 px-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
         >
-          {empresaEditar ? "Actualizar Empresa" : "Alta Empresa"}
+          {empresaEditar ? t("update_user") : t("create_user")}
         </button>
       </form>
     </div>

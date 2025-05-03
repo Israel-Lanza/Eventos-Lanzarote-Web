@@ -8,9 +8,9 @@ const Footer = () => {
     return (
         <footer className="text-gray-800 pt-16 pb-8 mt-4">
             <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-extrabold mb-2">¿Quieres publicar tu evento?</h2>
+            <h2 className="text-3xl font-extrabold mb-2">{t("footer.publish")}</h2>
                 <p className="text-gray-700 mb-4">
-                    Regístrate gratis o escríbenos a <a href="mailto:info@eventoslanzarote.es" className="text-blue-600 underline">info@eventoslanzarote.es</a>
+                {t("footer.register_or_write")} <a href="mailto:info@eventoslanzarote.es" className="text-blue-600 underline">info@eventoslanzarote.es</a>
                 </p>
                 
                 <Link
@@ -30,7 +30,7 @@ const Footer = () => {
                         <Link to="/about" className="hover:text-blue-600">{t('about_us')}</Link>
                     </div>
 
-                    <div className="text-xs">&copy; 2025 eventoslanzarote.es. Todos los derechos reservados.</div>
+                    <div className="text-xs">&copy; 2025 eventoslanzarote.es. {t("footer.rights")}.</div>
                 </div>
             </div>
         </footer>

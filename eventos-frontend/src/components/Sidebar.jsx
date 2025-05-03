@@ -43,6 +43,7 @@ export default function Sidebar() {
     }
   };
 
+
   if (!user) return null;
 
   const admin = user.roles.includes("admin");
@@ -71,7 +72,7 @@ export default function Sidebar() {
                 {user.nombre.trim().slice(0, 2).toUpperCase()}
               </div>
               <h5 className="text-base sm:text-xl font-semibold truncate max-w-[150px]">
-                Hola {user.nombre}
+                {t("hello")} {user.nombre}
               </h5>
             </div>
             <div className="space-y-3">
@@ -141,14 +142,14 @@ export default function Sidebar() {
                   }
                 }}
               >
-                <SettingsIcon size={18} className="mr-2" />Ajustes
+                <SettingsIcon size={18} className="mr-2" /> {t('menu.settings')}
               </NavLink>
             </div>
           </div>
 
           <div>
             <button onClick={handleLogout} className="flex items-center text-red-500 hover:text-red-700 transition">
-              <LogOut size={18} className="mr-2" /> Cerrar sesión
+              <LogOut size={18} className="mr-2" /> {t('logout')}
             </button>
           </div>
         </div>

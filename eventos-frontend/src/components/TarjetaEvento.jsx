@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 import PlaceIcon from '@mui/icons-material/Place';
 import { formatearFecha } from "../utils/formatearFecha";
 import { useLocation } from "react-router-dom";
-import { Calendar } from "lucide-react";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { useTranslation } from 'react-i18next';
 
 const TarjetaEvento = ({ evento }) => {
     const location = useLocation();
     let categoriasDisplay = "Sin categoría";
+    const { t } = useTranslation();
 
     if (evento.categorias) {
         const categoriasArray = Array.isArray(evento.categorias)
@@ -31,7 +32,7 @@ const TarjetaEvento = ({ evento }) => {
             precio === null ||
             precio === ""
         ) {
-            return "Evento gratuito";
+            return t('free');
         }
         return `${precio} €`;
     };
@@ -107,7 +108,7 @@ const TarjetaEvento = ({ evento }) => {
                                     : null
                             }}
                         >
-                            Más información
+                            {t("more")}
                         </Link>
                     </div>
                 </div>

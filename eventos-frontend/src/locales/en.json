@@ -18,8 +18,14 @@
     "event_details": "Event Details",
     "menu": {
         "home": "Home",
+        "settings": "Settings",
         "events": "Events",
         "business": "Business"
+    },
+    "status": {
+        "denied": "Denied",
+        "approved": "Approved",
+        "pending": "Pending"
     },
     "about_event": "About this event",
     "categories": "Categories",
@@ -27,12 +33,28 @@
     "location": "Location",
     "form": {
         "date": "Date",
+        "endDate": "End date",
         "time": "Hour",
+        "timeUntil": "Hour until",
         "price": "Price",
         "organizer": "Organizer",
         "password": "Password",
         "repeat": "Repeat password",
-        "name": "Name"
+        "name": "Name",
+        "title": "Event's title",
+        "link": "Link",
+        "image": "Event's image",
+        "free": "Enter the price of the event. Use 0 if it is free",
+        "accions": "Actions",
+        "status": "Status",
+        "errors": {
+            "time": "The start time is mandatory.",
+            "date": "The end date cannot be earlier than the start date.",
+            "location": "Location is required.",
+            "description": "Description is required.",
+            "categories": "Select at least one category.",
+            "name": "The name is required"
+        }
     },
     "free": "Free entry",
     "more": "More information",
@@ -52,12 +74,57 @@
         "field": "Please review the fields and try again.",
         "network": "Network error. Please try again later.",
         "required": "Please fill in all required fields.",
-        "not_match": "The passwords do not match."
+        "not_match": "The passwords do not match.",
+        "review": "Check this step",
+        "event_process": "Error processing the event.",
+        "user_process": "Error processing the company",
+        "delete_user": "Error when deleting the company"
     },
     "no-account": "Don't have an account?",
     "have-account": "Already have an account?",
     "register_here": "Sign up here",
     "success": {
-        "registered": "User successfully registered. Check your email to verify your account."
+        "registered": "User successfully registered. Check your email to verify your account.",
+        "event_updated": "Event successfully updated.",
+        "event_created": "Event successfully created",
+        "user_updated": "Company successfully updated.",
+        "user_created": "Company successfully created."
+    },
+    "category": "category",
+    "footer": {
+        "publish": "Do you want to publish your event?",
+        "register_or_write": "Register for free or write to us at",
+        "rights": "All rights reserved"
+    },
+    "navigation": {
+        "before": "Previous",
+        "next": "Next",
+        "page": "Page",
+        "of": "of"
+    },
+    "update_event": "Update event",
+    "create_event": "Create event",
+    "update_user": "Update company",
+    "create_user": "Create business",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "no_result": "There are no results",
+    "edit_user": "Edit company",
+    "new_user": "New company",
+    "edit_event": "Edit event",
+    "new_event": "New event",
+    "confirm_delete": "Confirm deletion",
+    "sure_user": "Are you sure you want to eliminate the company",
+    "add_user": "Add company",
+    "add_event": "Add event",
+    "company": "Company",
+    "summary": {
+        "sum": "Summary",
+        "general": "Overview of events",
+        "total": "Total events",
+        "actives": "Active events",
+        "denied": "Denied events",
+        "pending": "Pending events"
     }
 }

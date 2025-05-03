@@ -17,8 +17,14 @@
     "event_details": "Detalles del evento",
     "menu": {
         "home": "Inicio",
+        "settings": "Ajustes",
         "events": "Eventos",
         "business": "Empresas"
+    },
+    "status": {
+        "denied": "Denegado",
+        "approved": "Aprobado",
+        "pending": "Pendiente"
     },
     "about_event": "Sobre este evento",
     "categories": "Categorías",
@@ -26,12 +32,28 @@
     "location": "Ubicación del evento",
     "form": {
         "date": "Fecha",
+        "endDate": "Fecha fin",
         "time": "Hora",
+        "timeUntil": "Hora hasta",
         "price": "Precio",
         "organizer": "Organizador",
         "password": "Contraseña",
         "repeat": "Repetir contraseña",
-        "name": "Nombre"
+        "name": "Nombre",
+        "title": "Título del evento",
+        "link": "Enlace web",
+        "image": "Imagen del evento",
+        "free": "Introduce el precio del evento. Usa 0 si es gratuito",
+        "accions": "Acciones",
+        "status": "Estado",
+        "errors": {
+            "time": "La hora de inicio es obligatoria.",
+            "date": "La fecha de fin no puede ser anterior a la de inicio.",
+            "location": "La ubicación es obligatoria.",
+            "description": "La descripción es obligatoria.",
+            "categories": "Selecciona al menos una categoría.",
+            "name": "El nombre es obligatorio"
+        }
     },
     "free": "Entrada gratuita",
     "more": "Más información",
@@ -51,13 +73,57 @@
         "field": "Revisa los campos e inténtalo de nuevo.",
         "network": "Error de red. Intenta más tarde.",
         "required": "Rellena todos los campos obligatorios.",
-        "not_match": "Las contraseñas no coinciden."
+        "not_match": "Las contraseñas no coinciden.",
+        "review": "Revisa este paso",
+        "event_process": "Error al procesar el evento.",
+        "user_process": "Error al procesar la empresa",
+        "delete_user": "Error al eliminar la empresa"
     },
     "no-account": "¿No tienes cuenta?",
     "have-account": "¿Ya tienes cuenta?",
     "register_here": "Regístrate aquí",
     "success": {
-        "registered": "Usuario registrado correctamente. Revisa tu correo para verificar la cuenta."
+        "registered": "Usuario registrado correctamente. Revisa tu correo para verificar la cuenta.",
+        "event_updated": "Evento actualizado correctamente.",
+        "event_created": "Evento creado correctamente",
+        "user_updated": "Empresa actualizada correctamente.",
+        "user_created": "Empresa creada correctamente"
     },
-    "category": "categoría"
+    "category": "categoría",
+    "footer": {
+        "publish": "¿Quieres publicar tu evento?",
+        "register_or_write": "Regístrate gratis o escríbenos a",
+        "rights": "Todos los derechos reservados"
+    },
+    "navigation": {
+        "before": "Anterior",
+        "next": "Siguiente",
+        "page": "Página",
+        "of": "de"
+    },
+    "update_event": "Actualizar evento",
+    "create_event": "Crear evento",
+    "update_user": "Actualizar empresa",
+    "create_user": "Crear empresa",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "cancel": "Cancelar",
+    "no_result": "No hay resultados",
+    "edit_user": "Editar empresa",
+    "new_user": "Nueva empresa",
+    "edit_event": "Editar evento",
+    "new_event": "Nueva evento",
+    "confirm_delete": "Confirmar eliminación",
+    "sure_user": "¿Estás seguro de que quieres eliminar la empresa",
+    "add_user": "Agregar empresa",
+    "add_event": "Agregar evento",
+    "company": "Empresa",
+    "summary": {
+        "sum": "Resumen",
+        "general": "Vista general de los eventos",
+        "total": "Total eventos",
+        "actives": "Eventos activos",
+        "denied": "Eventos denegados",
+        "pending": "Eventos pendientes"
+    }
 }

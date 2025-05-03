@@ -2,12 +2,6 @@ import { useEffect, useState, useRef } from "react";
 import { createEvento, updateEvento } from "../services/eventos";
 import categoriasDisponibles from "../constantes/categorias";
 import {
-  Calendar,
-  Clock,
-  Upload,
-  Euro,
-  Link as LinkIcon,
-  CheckCircle,
   HelpCircle,
 } from "lucide-react";
 import Stepper from "@mui/material/Stepper";
@@ -17,12 +11,14 @@ import Typography from "@mui/material/Typography";
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import { toast } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 export default function Formulario({ closeModal, eventoEditar = null, onActualizar }) {
   const pasos = ['Información general', 'Detalles del evento', 'Extras'];
   const [pasoActual, setPasoActual] = useState(0);
   const [pasosFallidos, setPasosFallidos] = useState(new Set());
   const fechaHoy = new Date().toISOString().split("T")[0];
+  const { t } = useTranslation();
 
   const [formData, setFormData] = useState({
     nombre: "",
@@ -93,10 +89,9 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setFormData((prev) => ({
-      ...prev,
-      imagen: file instanceof File ? file : null,
-    }));
+    if (file){
+      setFormData(prev => ({...prev, imagen: file}));
+    }
   };
 
   const handleCategoriaChange = (e) => {
@@ -116,21 +111,21 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
       if (!formData.nombre) erroresPaso.nombre = ["El título es obligatorio."];
       if (!formData.fecha) erroresPaso.fecha = ["La fecha es obligatoria."];
       if (formData.horaFin && !formData.hora) {
-        erroresPaso.hora = ["La hora de inicio es obligatoria si especificas una hora de fin."];
+        erroresPaso.hora = [t("form.errors.time")];
       }
       if (formData.precio === "") erroresPaso.precio = ["El precio es obligatorio."];
       if (formData.fecha && formData.fechaFin && formData.fechaFin < formData.fecha) {
-        erroresPaso.fechaFin = ["La fecha de fin no puede ser anterior a la de inicio."];
+        erroresPaso.fechaFin = [t("form.errors.date")];
       }
     }
 
     if (pasoActual === 1) {
-      if (!formData.ubicacion) erroresPaso.ubicacion = ["La ubicación es obligatoria."];
-      if (!formData.descripcion) erroresPaso.descripcion = ["La descripción es obligatoria."];
+      if (!formData.ubicacion) erroresPaso.ubicacion = [t("form.errors.location")];
+      if (!formData.descripcion) erroresPaso.descripcion = [t("form.errors.description")];
     }
 
     if (pasoActual === 2) {
-      if (formData.categorias.length === 0) erroresPaso.categorias = ["Selecciona al menos una categoría."];
+      if (formData.categorias.length === 0) erroresPaso.categorias = [t("form.errors.categories")];
     }
 
     setErrores(erroresPaso);
@@ -171,7 +166,7 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
     data.append("ubicacion", formData.ubicacion);
     data.append("enlace", formData.enlaceWeb);
     data.append("organizador", formData.organizador);
-    if (formData.imagen && typeof formData.imagen === "object" && formData.imagen instanceof File) {
+    if (formData.imagen) {
       data.append("imagen", formData.imagen);
     }
     formData.categorias.forEach((cat) => data.append("categorias[]", cat));
@@ -186,7 +181,7 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
       if (resultado) {
         setEventoCreado(true);
         if (onActualizar) onActualizar();
-        toast.success(eventoEditar ? "Evento actualizado correctamente." : "Evento creado correctamente.");
+        toast.success(eventoEditar ? t("success.event_updated") : t("success.event_created"));
         closeModal();
       }
     } catch (error) {
@@ -195,8 +190,7 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
         setErrores(error.response.data.errors);
         setPasosFallidos(new Set([0, 1, 2]));
       } else {
-        console.error("Error en el formulario:", error);
-        toast.error("Error al procesar el evento.");
+        toast.error(t("error.event_process"));
       }
     }
   };
@@ -211,7 +205,7 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
               <Step key={label}>
                 <StepLabel
                   error={fallo}
-                  optional={fallo ? <Typography variant="caption" color="error">Revisa este paso</Typography> : null}
+                  optional={fallo ? <Typography variant="caption" color="error">{t("errors.review")}</Typography> : null}
                 >
                   {label}
                 </StepLabel>
@@ -224,38 +218,38 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
         {pasoActual === 0 && (
           <>
             <div>
-              <label className="block font-bold mb-2">Título del Evento *</label>
+              <label className="block font-bold mb-2">{t("form.title")} *</label>
               <input type="text" name="nombre" value={formData.nombre} className="w-full border rounded px-4 py-2" onChange={handleChange} disabled={eventoCreado} />
               {errores.nombre && <p className="text-red-600 text-sm">{errores.nombre[0]}</p>}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block font-bold mb-2">Fecha *</label>
+                <label className="block font-bold mb-2">{t("form.date")} *</label>
                 <input type="date" name="fecha" value={formData.fecha} min={fechaHoy} className="w-full border rounded px-4 py-2" onChange={handleChange} disabled={eventoCreado} />
                 {errores.fecha && <p className="text-red-600 text-sm">{errores.fecha[0]}</p>}
               </div>
               <div>
-                <label className="block font-bold mb-2">Fecha fin</label>
+                <label className="block font-bold mb-2">{t("form.endDate")}</label>
                 <input type="date" name="fechaFin" value={formData.fechaFin} min={formData.fecha} className="w-full border rounded px-4 py-2" onChange={handleChange} disabled={eventoCreado} />
                 {errores.fechaFin && <p className="text-red-600 text-sm">{errores.fechaFin[0]}</p>}
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block font-bold mb-2">Hora</label>
+                <label className="block font-bold mb-2">{t("form.time")}</label>
                 <input type="time" name="hora" value={formData.hora} className="w-full border rounded px-4 py-2" onChange={handleChange} disabled={eventoCreado} />
                 {errores.hora && <p className="text-red-600 text-sm">{errores.hora[0]}</p>}
               </div>
               <div>
-                <label className="block font-bold mb-2">Hora hasta</label>
+                <label className="block font-bold mb-2">{t("form.timeUntil")}</label>
                 <input type="time" name="horaFin" value={formData.horaFin} className="w-full border rounded px-4 py-2" onChange={handleChange} disabled={eventoCreado} />
                 {errores.horaFin && <p className="text-red-600 text-sm">{errores.horaFin[0]}</p>}
               </div>
             </div>
             <div>
               <label className="font-bold mb-2 flex items-center gap-2">
-                Precio *
-                <span title="Introduce el precio del evento. Usa 0 si es gratuito">
+                {t("form.price")} *
+                <span title={t("form.free")}>
                   <HelpCircle size={18} className="text-gray-500 cursor-pointer" />
                 </span>
               </label>
@@ -269,17 +263,17 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
         {pasoActual === 1 && (
           <>
             <div>
-              <label className="block font-bold mb-2">Ubicación *</label>
+              <label className="block font-bold mb-2">{t("location")} *</label>
               <input ref={inputRef} type="text" name="ubicacion" value={formData.ubicacion} className="w-full border rounded px-4 py-2" onChange={handleChange} disabled={eventoCreado} />
               {errores.ubicacion && <p className="text-red-600 text-sm">{errores.ubicacion[0]}</p>}
             </div>
             <div>
-              <label className="block font-bold mb-2">Enlace Web</label>
+              <label className="block font-bold mb-2">{t("form.link")}</label>
               <input type="url" name="enlaceWeb" value={formData.enlaceWeb ? formData.enlaceWeb : "https://"} className="w-full border rounded px-4 py-2" onChange={handleChange} disabled={eventoCreado} />
               {errores.enlace && <p className="text-red-600 text-sm">{errores.enlace[0]}</p>}
             </div>
             <div>
-              <label className="block font-bold mb-2">Descripción *</label>
+              <label className="block font-bold mb-2">{t("details")} *</label>
               <ReactQuill
                 value={formData.descripcion}
                 onChange={(value) => handleChange({ target: { name: 'descripcion', value } })}
@@ -296,7 +290,7 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
         {pasoActual === 2 && (
           <>
             <div>
-              <label className="block font-bold mb-2">Categorías *</label>
+              <label className="block font-bold mb-2">{t("categories")} *</label>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                 {Object.entries(categoriasDisponibles).map(([key, cat]) => (
                   <label key={key} className="flex items-center space-x-2">
@@ -308,36 +302,28 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
               {errores.categorias && <p className="text-red-600 text-sm">{errores.categorias[0]}</p>}
             </div>
             <div>
-              <label className="block font-bold mb-2">Organizador</label>
+              <label className="block font-bold mb-2">{t("form.organizer")}</label>
               <input type="text" name="organizador" value={formData.organizador} className="w-full border rounded px-4 py-2" onChange={handleChange} disabled={eventoCreado} />
               {errores.organizador && <p className="text-red-600 text-sm">{errores.organizador[0]}</p>}
             </div>
             <div>
-              <label className="block font-bold mb-2">Imagen del Evento</label>
+              <label className="block font-bold mb-2">{t("form.image")}</label>
               <input type="file" name="imagen" onChange={handleImageChange} disabled={eventoCreado} />
               {errores.imagen && <p className="text-red-600 text-sm">{errores.imagen[0]}</p>}
             </div>
           </>
         )}
 
-        {/* Mensaje de éxito */}
-        {eventoCreado && (
-          <div className="flex items-center justify-between p-4 mb-4 bg-green-100 border border-green-400 text-green-800 rounded">
-            <CheckCircle className="mr-2" />
-            {eventoEditar ? "Evento actualizado correctamente." : "Evento creado correctamente."}
-          </div>
-        )}
-
         {/* Botones de navegación */}
         <div className="flex flex-col sm:flex-row justify-between gap-4 mt-6">
           {pasoActual > 0 && (
             <button type="button" onClick={pasoAnterior} className="w-full sm:w-auto px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
-              Anterior
+              {t("navigation.before")}
             </button>
           )}
           {pasoActual < pasos.length - 1 ? (
             <button type="button" onClick={siguientePaso} className="w-full sm:w-auto ml-auto px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-              Siguiente
+              {t("navigation.next")}
             </button>
           ) : (
             !eventoCreado && (
@@ -346,7 +332,7 @@ export default function Formulario({ closeModal, eventoEditar = null, onActualiz
                 onClick={handleSubmit}
                 className="w-full sm:w-auto ml-auto px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
               >
-                {eventoEditar ? 'Actualizar Evento' : 'Crear Evento'}
+                {eventoEditar ? t("update_event") : t("create_event")}
               </button>
             )
           )}

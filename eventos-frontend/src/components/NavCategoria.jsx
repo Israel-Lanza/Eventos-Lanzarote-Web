@@ -1,8 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Music4, BookOpen, Palette, Utensils, Smile, Feather, Volleyball } from 'lucide-react';
 import FestivalIcon from '@mui/icons-material/Festival';
-import CelebrationIcon from '@mui/icons-material/Celebration';
-import StarIcon from '@mui/icons-material/Star';
 import TheaterComedyIcon from '@mui/icons-material/TheaterComedy';
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef } from "react";
@@ -32,7 +30,7 @@ const NavCategoria = () => {
   return (
     <div className="mx-auto my-8 px-4" ref={gridRef}>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-3xl font-bold text-gray-800">Categorías</h2>
+        <h2 className="text-3xl font-bold text-gray-800">{t("categories")}</h2>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-9 gap-3">
         {categorias.map((categoria) => {

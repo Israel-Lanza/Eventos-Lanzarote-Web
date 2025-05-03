@@ -219,7 +219,7 @@ const Descripcion = () => {
                             </div>
                             <div className="flex items-center gap-3 mb-4">
                                 <AccessTime />
-                                <p><b>{t('form.time')}:</b>  {evento.hora}</p>
+                                <p><b>{t('form.time')}:</b>  {evento.hora || "Sin información"}</p>
                             </div>
                             <div className="flex items-center gap-3 mb-4">
                                 <LocationOn />
@@ -235,7 +235,7 @@ const Descripcion = () => {
 
                             <div className="flex justify-between items-center">
                                 <p className="flex items-center gap-2">
-                                    <span className="text-base font-semibold text-indigo-600 bg-indigo-100 px-2 py-1 rounded-md">
+                                    <span className="text-base font-semibold px-2 py-1 rounded-md">
                                         {t('form.price')}:
                                     </span>
                                 </p>

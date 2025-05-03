@@ -7,7 +7,7 @@ import { deleteEmpresa } from "../services/empresas";
 import FormularioEmpresa from "./FormularioEmpresas";
 import Paginacion from "../components/Paginacion";
 import { toast } from 'react-hot-toast';
-
+import { useTranslation } from 'react-i18next';
 
 export default function ListadoEmpresas() {
     const { empresas, onActualizarDashboard } = useOutletContext();
@@ -19,7 +19,7 @@ export default function ListadoEmpresas() {
     const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
     const [paginaActual, setPaginaActual] = useState(1);
     const empresasPorPagina = 5;
-
+    const { t } = useTranslation();
 
     const menuRefs = useRef({});
 
@@ -86,7 +86,7 @@ export default function ListadoEmpresas() {
               onClick={() => setMostrarForm(true)}
               className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition text-sm"
             >
-              Agregar empresa
+              {t("add_user")}
             </button>
           </div>
       
@@ -95,10 +95,10 @@ export default function ListadoEmpresas() {
             <table className="min-w-full text-left border-collapse text-sm">
               <thead>
                 <tr>
-                  <th className="border-b py-2 px-4">Nombre</th>
+                  <th className="border-b py-2 px-4">{t("form.name")}</th>
                   <th className="border-b py-2 px-4">Email</th>
                   <th className="border-b py-2 px-4">CIF</th>
-                  <th className="border-b py-2 px-4 text-right">Acciones</th>
+                  <th className="border-b py-2 px-4 text-right">{t("form.accions")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -130,7 +130,7 @@ export default function ListadoEmpresas() {
                                   onClick={() => handleEditar(empresa)}
                                 >
                                   <Edit size={16} className="mr-2" />
-                                  Editar
+                                  {t("edit")}
                                 </button>
                                 <button
                                   className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 w-full"
@@ -141,7 +141,7 @@ export default function ListadoEmpresas() {
                                   }}
                                 >
                                   <Trash size={16} className="mr-2" />
-                                  Eliminar
+                                  {t("delete")}
                                 </button>
                               </div>
                             </div>
@@ -153,7 +153,7 @@ export default function ListadoEmpresas() {
                 ) : (
                   <tr>
                     <td colSpan={4} className="text-center py-4 text-gray-500">
-                      No hay resultados
+                      {t("no_result")}
                     </td>
                   </tr>
                 )}
@@ -178,7 +178,7 @@ export default function ListadoEmpresas() {
               </button>
               <div className="flex justify-center items-center">
                 <h2 className="text-lg sm:text-xl font-semibold">
-                  {empresaEditar ? "Editar Empresa" : "Nueva Empresa"}
+                  {empresaEditar ? t("edit_user") : t( "new_user")}
                 </h2>
               </div>
               <FormularioEmpresa
@@ -204,9 +204,9 @@ export default function ListadoEmpresas() {
                 p: 4,
               }}
             >
-              <h2 className="text-lg font-bold mb-4 text-gray-800">Confirmar eliminación</h2>
+              <h2 className="text-lg font-bold mb-4 text-gray-800">{t("confirm_delete")}</h2>
               <p className="mb-6 text-gray-600">
-                ¿Estás seguro de que quieres eliminar la empresa{" "}
+                {t("sure_user")}{" "}
                 <strong>{empresaAEliminar?.nombre}</strong>?
               </p>
               <div className="flex justify-end space-x-2">
@@ -214,7 +214,7 @@ export default function ListadoEmpresas() {
                   onClick={() => setMostrarConfirmacion(false)}
                   className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 text-sm"
                 >
-                  Cancelar
+                  {t("cancel")}
                 </button>
                 <button
                   onClick={async () => {
@@ -223,13 +223,13 @@ export default function ListadoEmpresas() {
                       toast.success("Empresa eliminada correctamente.");
                       onActualizarDashboard();
                     }else{
-                      toast.error("Error al eliminar la empresa.");
+                      toast.error(t("errors.delete_user"));
                     }
                     setMostrarConfirmacion(false);
                   }}
                   className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
                 >
-                  Eliminar
+                  {t("delete")}
                 </button>
               </div>
             </Box>

@@ -9,7 +9,7 @@ import { getEventoById } from "../services/eventos";
 import Paginacion from "../components/Paginacion";
 import { toast } from 'react-hot-toast';
 import { formatearFecha } from "../utils/formatearFecha";
-
+import { useTranslation } from 'react-i18next';
 
 export default function ListadoEventos({ eventosIniciales, actualizarDashboard }) {
   const [mostrarForm, setMostrarForm] = useState(false);
@@ -25,7 +25,7 @@ export default function ListadoEventos({ eventosIniciales, actualizarDashboard }
   const [paginaActual, setPaginaActual] = useState(1);
   const eventosPorPagina = 5;
   const menuRefs = useRef({});
-
+  const { t } = useTranslation();
 
   const outletContext = useOutletContext() || {};
   const eventosDesdeOutlet = outletContext.eventos;
@@ -158,7 +158,7 @@ export default function ListadoEventos({ eventosIniciales, actualizarDashboard }
           onClick={handleMostrarForm}
           className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition text-sm"
         >
-          Agregar eventos
+          {t("add_event")}
         </button>
       </div>
 
@@ -167,11 +167,11 @@ export default function ListadoEventos({ eventosIniciales, actualizarDashboard }
         <table className="min-w-full text-left border-collapse text-sm">
           <thead>
             <tr>
-              <th className="border-b py-2 px-4">Evento</th>
-              <th className="border-b py-2 px-4">Empresa</th>
-              <th className="border-b py-2 px-4">Fecha</th>
-              <th className="border-b py-2 px-4">Ubicación</th>
-              <th className="border-b py-2 px-4">Estado</th>
+              <th className="border-b py-2 px-4">{t("form.title")}</th>
+              <th className="border-b py-2 px-4">{t("company")}</th>
+              <th className="border-b py-2 px-4">{t("form.date")}</th>
+              <th className="border-b py-2 px-4">{t("location")}</th>
+              <th className="border-b py-2 px-4">{t("form.status")}</th>
               <th className="border-b py-2 px-4 text-right"></th>
             </tr>
           </thead>
@@ -208,12 +208,12 @@ export default function ListadoEventos({ eventosIniciales, actualizarDashboard }
                           }`}
                       >
                         {cargandoId === evento.id ? (
-                          <option>Cargando...</option>
+                          <option>{t("loading")}...</option>
                         ) : (
                           <>
-                            <option value="A">Aprobado</option>
-                            <option value="P">Pendiente</option>
-                            <option value="D">Denegado</option>
+                            <option value="A">{t("status.approved")}</option>
+                            <option value="P">{t("status.pending")}</option>
+                            <option value="D">{t("status.denied")}</option>
                           </>
                         )}
                       </select>
@@ -227,10 +227,10 @@ export default function ListadoEventos({ eventosIniciales, actualizarDashboard }
                           }`}
                       >
                         {evento.estado === "A"
-                          ? "Aprobado"
+                          ? t("status.approved")
                           : evento.estado === "P"
-                            ? "Pendiente"
-                            : "Denegado"}
+                            ? t("status.pending")
+                            : t("status.denied")}
                       </span>
                     )}
                   </td>
@@ -254,7 +254,7 @@ export default function ListadoEventos({ eventosIniciales, actualizarDashboard }
                               onClick={() => handleEditar(evento)}
                             >
                               <Edit size={16} className="mr-2" />
-                              Editar
+                              {t("edit")}
                             </button>
                             <button
                               className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 w-full"
@@ -265,7 +265,7 @@ export default function ListadoEventos({ eventosIniciales, actualizarDashboard }
                               }}
                             >
                               <Trash size={16} className="mr-2" />
-                              Eliminar
+                              {t("delete")}
                             </button>
                           </div>
                         </div>
@@ -277,7 +277,7 @@ export default function ListadoEventos({ eventosIniciales, actualizarDashboard }
             ) : (
               <tr>
                 <td colSpan={6} className="text-center py-4 text-gray-500">
-                  No hay resultados
+                  {t("no_result")}
                 </td>
               </tr>
             )}
@@ -300,7 +300,7 @@ export default function ListadoEventos({ eventosIniciales, actualizarDashboard }
           </button>
           <div className="flex justify-center items-center mb-4">
             <h2 className="text-lg sm:text-xl font-semibold">
-              {editarEvento ? "Editar Evento" : "Nuevo Evento"}
+              {editarEvento ? t('edit_event') : t('new_event')}
             </h2>
 
           </div>
