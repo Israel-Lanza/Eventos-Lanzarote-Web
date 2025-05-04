@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->insert([
             'nombre' => 'empresa1',
             'email' => 'empresa@eventoslanzarote.es',
-            'password' => Hash::make('mamonaso123'),
+            'password' => Hash::make('entrar1234'),
             'cif' => 'P7878787'
         ]);
 

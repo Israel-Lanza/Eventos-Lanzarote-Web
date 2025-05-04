@@ -12,7 +12,7 @@ class EventoControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_index_retorna_eventos_activados()
+    public function test_index_eventos_activos()
     {
         Evento::factory()->create([
             'estado' => 'A',
@@ -31,8 +31,7 @@ class EventoControllerTest extends TestCase
         $this->assertCount(1, $response->json('data'));
     }
 
-
-    public function test_store_crea_evento_correctamente()
+    public function test_store_crea_evento()
     {
         Role::firstOrCreate(['name' => 'empresa']);
 
@@ -65,4 +64,6 @@ class EventoControllerTest extends TestCase
             'descripcion' => 'Evento musical al aire libre',
         ]);
     }
+
+
 }
