@@ -32,7 +32,7 @@ Plataforma web de gestión, publicación y visualización de eventos en Lanzarot
 
 ### Requisitos para ejecutar el proyecto en local
 
-#### PHP >= 8.2 y extensiones necesarias
+#### -PHP >= 8.2 y extensiones necesarias
 
 ```bash
 sudo apt install software-properties-common -y
