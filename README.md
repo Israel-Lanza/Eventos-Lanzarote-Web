@@ -6,14 +6,14 @@
 
 Plataforma web de gestión, publicación y visualización de eventos en Lanzarote.
 
----
+
 
 ## Autores
 
 - Tania García Álvarez  
 - Israel Betancor Hernández
 
----
+
 
 ## Características
 
@@ -26,7 +26,7 @@ Plataforma web de gestión, publicación y visualización de eventos en Lanzarot
 - Botones para compartir eventos por WhatsApp, Facebook y X.
 - Dominio propio con hosting: [https://www.eventoslanzarote.es](https://www.eventoslanzarote.es)
 
----
+
 
 ## Instalación
 
