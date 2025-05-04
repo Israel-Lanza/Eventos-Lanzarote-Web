@@ -115,7 +115,10 @@ git clone git@github.com:Israel-Lanza/Eventos-Lanzarote-Web.git
 
 
 ## Enlaces a los documentos sobre el proceso de desarrollo del proyecto:
-- [**Documento de análisis**](ruta)
+- [**Boceto**](rutaAdoc)
+- [**Documento de análisis**](rutaAdoc)
+- [**Documento de diseño**](rutaAdoc)
+- [**Documento de pruebas unitarias**](rutaAdoc)
 
 
 
@@ -124,3 +127,4 @@ git clone git@github.com:Israel-Lanza/Eventos-Lanzarote-Web.git
 - [**https://www.eventoslanzarote.es**](https://www.eventoslanzarote.es)
 
 ## Vídeo explicación del proyecto en Youtube:
+- [**Documento de análisis**](https://www.youtube.com/watch?v=AilzSOfRrGQ&ab_channel=TaniaGarciaAlvarez)
