@@ -39,3 +39,11 @@ sudo apt install software-properties-common -y
 sudo add-apt-repository ppa:ondrej/php -y
 sudo apt update
 sudo apt install php php-cli php-mbstring php-xml php-bcmath php-curl php-zip unzip curl -y
+```
+
+#### Confirmas la instalación de PHP:
+```bash
+php -v
+```
+
+
