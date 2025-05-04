@@ -64,7 +64,7 @@ FLUSH PRIVILEGES;
 EXIT;
 ```
 
-- **Instalamos Composer:**
+- **Composer:**
 ```bash
 curl -sS https://getcomposer.org/installer | php
 sudo mv composer.phar /usr/local/bin/composer
@@ -73,6 +73,34 @@ sudo mv composer.phar /usr/local/bin/composer
 ```bash
 composer --version
 ```
+
+
+- **Node.js y npm:**
+```bash
+sudo apt update
+sudo apt install nodejs npm -y
+```
+#### Verificamos la instalación y las versiones:
+```bash
+node -v
+npm -v
+```
+
+
+- **Git:**
+```bash
+sudo apt install git
+```
+#### Verificamos la instalación:
+```bash
+git --version
+```
+
+- **Clonamos el repositorio:**
+```bash
+git clone git@github.com:Israel-Lanza/Eventos-Lanzarote-Web.git
+```
+
 
 
 
