@@ -15,16 +15,9 @@ Plataforma web de gestión, publicación y visualización de eventos en Lanzarot
 
 
 
-## Características
+## Cómo surgió nuestra idea
 
-- Plataforma web para descubrir, publicar y gestionar eventos en Lanzarote.
-- Usuarios individuales o empresas promotoras de eventos pueden registrar y gestionar sus propios eventos.
-- Los administradores validan eventos desde un panel de administrador para que aparezcan en la página principal.
-- Sistema de registro, verificación por email y recuperación de contraseña.
-- Búsqueda por nombre y categorías, con filtros para facilitar la navegación.
-- Soporte multilenguaje (incluye inglés).
-- Botones para compartir eventos por WhatsApp, Facebook y X.
-- Dominio propio con hosting: [https://www.eventoslanzarote.es](https://www.eventoslanzarote.es)
+
 
 
 
