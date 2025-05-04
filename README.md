@@ -41,9 +41,38 @@ sudo apt update
 sudo apt install php php-cli php-mbstring php-xml php-bcmath php-curl php-zip unzip curl -y
 ```
 
-#### Confirmas la instalación de PHP:
+#### Confirmamos la instalación de PHP:
 ```bash
 php -v
 ```
+
+- **MySQL:**
+```bash
+sudo apt install mysql-server php-mysql -y
+```
+#### Instalamos MySQL y configuramos la base de datos:
+```bash
+sudo apt install mysql-server php-mysql -y
+```
+#### Creamos la base de datos y el usuario:
+```bash
+sudo mysql
+CREATE DATABASE eventos_lanzarote;
+CREATE USER 'eventos'@'localhost' IDENTIFIED BY 'eventosLanzarote';
+GRANT ALL PRIVILEGES ON eventos_lanzarote.* TO 'eventos'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+```
+
+- **Instalamos Composer:**
+```bash
+curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+```
+#### Verificamos la instalación de Composer:
+```bash
+composer --version
+```
+
 
 
