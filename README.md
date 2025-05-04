@@ -1,5 +1,6 @@
-<div style="background-color: white; padding: 10px; display: inline-block;">
-  <img src="eventos-frontend/src/assets/logo4.png" alt="Eventos Lanzarote" width="200"/>
-</div>
+<p align="center">
+  <img src="eventos-frontend/src/assets/logoReadme.png" alt="Eventos Lanzarote" width="200"/>
+</p>
+
 
 
