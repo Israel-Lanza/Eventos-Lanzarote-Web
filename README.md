@@ -121,6 +121,6 @@ git clone git@github.com:Israel-Lanza/Eventos-Lanzarote-Web.git
 
 
 ## Visita nuestra página web (proyecto):
--**[https://www.eventoslanzarote.es](https://www.eventoslanzarote.es)**
+- [**https://www.eventoslanzarote.es**](https://www.eventoslanzarote.es)
 
 ## Vídeo explicación del proyecto en Youtube:
