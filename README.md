@@ -26,7 +26,14 @@
 <h2>Instalación</h2>
 <p>Requisitos para poder ejecutar el proyecto en local:</p>
 
-
+<h3>PHP >= 8.2 y sus extensiones necesarias</h3>
+<ul>
+<li>sudo apt update</li>
+<li>sudo apt install software-properties-common -y</li>
+<li>sudo add-apt-repository ppa:ondrej/php -y</li>
+<li>sudo apt update</li>
+<li>sudo apt install php php-cli php-mbstring php-xml php-bcmath php-curl php-zip unzip curl -y</li>
+</ul>
 
 
 
