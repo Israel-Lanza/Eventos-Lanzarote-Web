@@ -72,7 +72,7 @@ composer --version
 ```
 
 
-- **Node.js y npm:**
+- **Instalamos Node.js y npm:**
 ```bash
 sudo apt update
 sudo apt install nodejs npm -y
@@ -88,7 +88,7 @@ npm -v
 ```bash
 sudo apt install git
 ```
-#### Verificamos la instalación:
+#### Verificamos la instalación de git:
 ```bash
 git --version
 ```
@@ -172,7 +172,7 @@ php artisan serve
 
 ## Enlaces a los documentos sobre el proceso de desarrollo del proyecto:
 - [**Boceto**](rutaAdoc)
-- [**Documento de análisis**](https://drive.google.com/drive/folders/1zcFNSlP3zawz5vAXGavHZ80JoDi8gzl-?hl=es)
+- [**Documento de análisis**](https://drive.google.com/file/d/1dR_yhqcymZEsb01YfZpdZQEHtzEMKpji/view?usp=drive_link)
 - [**Documento de diseño**](rutaAdoc)
 - [**Documento de pruebas unitarias**](rutaAdoc)
 
