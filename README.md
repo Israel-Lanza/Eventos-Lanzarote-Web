@@ -143,7 +143,7 @@ DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=eventos_lanzarote
 DB_USERNAME=eventosLanzarote
-DB_PASSWORD=eventosLanzarote
+DB_PASSWORD=eventoslanzarote123
 ```
 
 #### Ejecutamos las migraciones:
