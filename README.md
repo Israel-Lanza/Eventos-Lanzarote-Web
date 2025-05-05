@@ -16,7 +16,11 @@ Plataforma web de gestión, publicación y visualización de eventos en Lanzarot
 
 
 ## Cómo surgió nuestra idea
+La idea de crear esta plataforma nació al darnos cuenta de algo muy sencillo pero importante: muchas personas no llegan a conocer todos los eventos que se celebran en Lanzarote. Esta necesidad nos impulsó a ponernos manos a la obra y desarrollar un espacio actual, práctico y pensado para todos: tanto para quienes quieren disfrutar de los planes que ofrece la isla, como para las empresas, asociaciones o entidades públicas que buscan dar visibilidad a sus eventos.
 
+Nuestro objetivo es simple: conectar a la gente con lo que ocurre en la isla. Por eso, ofrecemos la posibilidad de que empresas y organizaciones suban sus propios eventos de forma fácil, rápida y gratuita.
+
+Queremos que esta web sea un punto de encuentro para todos, donde la cultura, el ocio y las oportunidades se compartan y crezcan.
 
 
 
