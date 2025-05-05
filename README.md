@@ -172,7 +172,7 @@ php artisan serve
 
 ## Enlaces a los documentos sobre el proceso de desarrollo del proyecto:
 - [**Boceto**](rutaAdoc)
-- [**Documento de análisis**](https://drive.google.com/file/d/1dR_yhqcymZEsb01YfZpdZQEHtzEMKpji/view?usp=drive_link)
+- [**Documento de análisis**](https://drive.google.com/file/d/1iSc2-I9cK0Y3r4OkJ4Kkuxv1586Nu94E/view?usp=drive_link)
 - [**Documento de diseño**](rutaAdoc)
 - [**Documento de pruebas unitarias**](rutaAdoc)
 
