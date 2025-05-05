@@ -98,6 +98,70 @@ git --version
 git clone git@github.com:Israel-Lanza/Eventos-Lanzarote-Web.git
 ```
 
+- **El proyecto consta de dos entornos de desarrollo para el backend y para el frontend que se comunican a través de Api Rest**
+```bash
+cd EventosLanzaroteProject
+```
+#### Para el frontend (React):
+```bash
+cd eventos-frontend
+```
+#### Instalamos las dependencias de Node:
+```bash
+npm install
+```
+#### Iniciamos el servicio de frontend:
+```bash
+npm run dev
+```
+
+#### Para el backend (Laravel 12):
+```bash
+cd ../eventos-backend
+```
+
+#### Instalamos las dependencias de php:
+```bash
+cd ../eventos-backend
+```
+#### Copiamos y configuramos el archivo .env:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+#### Copiamos y configuramos el archivo .env:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+#### Configurar la conexión a la base de datos en el .env:
+```bash
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=eventos_lanzarote
+DB_USERNAME=eventosLanzarote
+DB_PASSWORD=eventosLanzarote
+```
+
+#### Ejecutamos las migraciones:
+```bash
+php artisan migrate
+php artisan db:seed --class=DatabaseSeeder
+php artisan db:seed --class=CategoriaSeeder
+php artisan db:seed --class=EventoSeeder
+```
+
+#### Iniciamos el servicio de backend:
+```bash
+php artisan serve
+```
+
+#### Teniendo los dos servicios iniciados deberiamos ver la página accediendo por http://localhost:5173/
+
+
 
 
 
