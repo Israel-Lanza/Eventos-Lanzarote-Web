@@ -120,17 +120,12 @@ npm run dev
 cd ../eventos-backend
 ```
 
-#### Instalamos las dependencias de php:
+#### Instalamos las dependencias de composer:
 ```bash
-cd ../eventos-backend
-```
-#### Copiamos y configuramos el archivo .env:
-```bash
-cp .env.example .env
-php artisan key:generate
+composer install
 ```
 
-#### Copiamos y configuramos el archivo .env:
+#### Copiamos el archivo .env y configuramos generando la clave de encriptación:
 ```bash
 cp .env.example .env
 php artisan key:generate
