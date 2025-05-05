@@ -144,7 +144,6 @@ DB_PASSWORD=eventoslanzarote123
 #### Ejecutamos las migraciones:
 ```bash
 php artisan migrate
-php artisan db:seed --class=DatabaseSeeder
 php artisan db:seed --class=CategoriaSeeder
 php artisan db:seed --class=EventoSeeder
 ```
