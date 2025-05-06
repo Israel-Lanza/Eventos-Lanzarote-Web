@@ -54,9 +54,9 @@ sudo apt install mysql-server php-mysql -y
 #### Creamos la base de datos y el usuario:
 ```bash
 sudo mysql
-CREATE DATABASE eventos_lanzarote;
-CREATE USER 'eventos'@'localhost' IDENTIFIED BY 'eventosLanzarote';
-GRANT ALL PRIVILEGES ON eventos_lanzarote.* TO 'eventos'@'localhost';
+CREATE DATABASE lztevent;
+CREATE USER 'eventos'@'localhost' IDENTIFIED BY 'eventosLanzarote123';
+GRANT ALL PRIVILEGES ON lztevent.* TO 'eventos'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
 ```
@@ -136,9 +136,9 @@ php artisan key:generate
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=eventos_lanzarote
-DB_USERNAME=eventosLanzarote
-DB_PASSWORD=eventoslanzarote123
+DB_DATABASE=lztevent
+DB_USERNAME=eventos
+DB_PASSWORD=eventosLanzarote123
 ```
 
 #### Ejecutamos las migraciones:
