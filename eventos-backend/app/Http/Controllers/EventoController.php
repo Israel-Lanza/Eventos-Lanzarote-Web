@@ -26,28 +26,28 @@ class EventoController extends Controller
         $en30Dias = now()->copy()->addDays(30)->toDateString();
         $page = $request->get('page', 1);
 
-        $cacheKey = "eventos_mes_{$hoy}_pagina_{$page}";
-
-        $eventos = Cache::remember($cacheKey, now()->addMinutes(2), function () use ($hoy, $en30Dias) {
-            return Evento::select('id', 'nombre', 'fecha', 'hora', 'horaFin', 'fechaFin', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace', 'organizador')
-                ->with(['categorias:id,sigla'])
-                ->where('estado', 'A')
-                ->where(function ($query) use ($hoy, $en30Dias) {
-                    $query->where(function ($q) use ($hoy, $en30Dias) {
-                        //Eventos con solo una fecha dentro del rango
+        $eventos = Evento::select(
+                'id', 'nombre', 'fecha', 'hora', 'horaFin', 'fechaFin',
+                'ubicacion', 'estado', 'imagen', 'precio', 'autor',
+                'descripcion', 'enlace', 'organizador'
+            )
+            ->with(['categorias:id,sigla'])
+            ->where('estado', 'A')
+            ->where(function ($query) use ($hoy, $en30Dias) {
+                $query
+                    ->where(function ($q) use ($hoy, $en30Dias) {
                         $q->whereNull('fechaFin')
-                            ->whereDate('fecha', '>=', $hoy)
-                            ->whereDate('fecha', '<=', $en30Dias);
-                    })->orWhere(function ($q) use ($hoy) {
-                        //Eventos con fechaFin donde hoy está entre fecha y fechaFin
+                        ->whereDate('fecha', '>=', $hoy)
+                        ->whereDate('fecha', '<=', $en30Dias);
+                    })
+                    ->orWhere(function ($q) use ($hoy, $en30Dias) {
                         $q->whereNotNull('fechaFin')
-                            ->whereDate('fecha', '<=', $hoy)
-                            ->whereDate('fechaFin', '>=', $hoy);
+                        ->whereDate('fecha', '<=', $en30Dias)
+                        ->whereDate('fechaFin', '>=', $hoy);
                     });
-                })
-                ->orderBy('fecha', 'asc')
-                ->paginate(6);
-        });
+            })
+            ->orderBy('fecha', 'asc')
+            ->paginate(6, ['*'], 'page', $page);
 
         return response()->json($eventos);
     }
