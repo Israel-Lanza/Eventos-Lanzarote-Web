@@ -23,17 +23,28 @@ class EventoController extends Controller
     public function index(Request $request)
     {
         $hoy = now()->toDateString();
-        $sieteDiasDespues = now()->copy()->addDays(30)->toDateString();
+        $en30Dias = now()->copy()->addDays(30)->toDateString();
         $page = $request->get('page', 1);
 
-        $cacheKey = "eventos_semana_{$hoy}_pagina_{$page}";
+        $cacheKey = "eventos_mes_{$hoy}_pagina_{$page}";
 
-        $eventos = Cache::remember($cacheKey, now()->addMinutes(2), function () use ($hoy, $sieteDiasDespues) {
+        $eventos = Cache::remember($cacheKey, now()->addMinutes(2), function () use ($hoy, $en30Dias) {
             return Evento::select('id', 'nombre', 'fecha', 'hora', 'horaFin', 'fechaFin', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace', 'organizador')
                 ->with(['categorias:id,sigla'])
                 ->where('estado', 'A')
-                ->whereDate('fecha', '>=', $hoy)
-                ->whereDate('fecha', '<=', $sieteDiasDespues)
+                ->where(function ($query) use ($hoy, $en30Dias) {
+                    $query->where(function ($q) use ($hoy, $en30Dias) {
+                        //Eventos con solo una fecha dentro del rango
+                        $q->whereNull('fechaFin')
+                            ->whereDate('fecha', '>=', $hoy)
+                            ->whereDate('fecha', '<=', $en30Dias);
+                    })->orWhere(function ($q) use ($hoy) {
+                        //Eventos con fechaFin donde hoy está entre fecha y fechaFin
+                        $q->whereNotNull('fechaFin')
+                            ->whereDate('fecha', '<=', $hoy)
+                            ->whereDate('fechaFin', '>=', $hoy);
+                    });
+                })
                 ->orderBy('fecha', 'asc')
                 ->paginate(6);
         });
@@ -41,21 +52,6 @@ class EventoController extends Controller
         return response()->json($eventos);
     }
 
-    //Para sacar todos los eventos sin tener en cuenta el estado
-    /*public function getAllEvents($autor)
-    {
-        if ($autor == 'admin') {
-            $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace')
-                ->with(['categorias:id,sigla'])
-                ->get();
-        } else {
-            $eventos = Evento::select('id', 'nombre', 'fecha', 'hora', 'ubicacion', 'estado', 'imagen', 'precio', 'autor', 'descripcion', 'enlace')
-                ->with(['categorias:id,sigla'])
-                ->where('autor', $autor)
-                ->get();
-        }
-        return response()->json($eventos);
-    }*/
 
     //Descripcion
     public function show($nombre)
@@ -64,10 +60,10 @@ class EventoController extends Controller
 
         $evento = Evento::with(['categorias:id,sigla']) //Asegúrate de incluir "nombre"
             ->where('nombre', $nombre)
-            ->first(['id', 'nombre', 'imagen', 'ubicacion', 'fecha', 'fechaFin' , 'precio', 'hora', 'horaFin' , 'descripcion', 'enlace', 'organizador', 'autor']);
+            ->first(['id', 'nombre', 'imagen', 'ubicacion', 'fecha', 'fechaFin', 'precio', 'hora', 'horaFin', 'descripcion', 'enlace', 'organizador', 'autor']);
 
         if (!$evento) {
-            return response()->json(['error' => 'Evento no encontrado'], 404); 
+            return response()->json(['error' => 'Evento no encontrado'], 404);
         }
 
         return response()->json($evento);
@@ -125,11 +121,7 @@ class EventoController extends Controller
         $evento->autor = Auth::user()->nombre;
         $evento->user_id = Auth::id();
 
-        /*if ($request->hasFile('imagen')) {
-            $nombreImagen = str_replace(' ', '', $request->nombre . '.' . $request->file('imagen')->getClientOriginalExtension());
-            $path = $request->file('imagen')->storeAs('imgEventos', $nombreImagen);
-            $evento->imagen = Storage::url($path);
-        }*/
+    
         if ($request->hasFile('imagen')) {
             $extension = $request->file('imagen')->getClientOriginalExtension();
             $nombreNormalizado = preg_replace('/[^A-Za-z0-9]/', '', str_replace(' ', '', $request->nombre));
@@ -301,44 +293,21 @@ class EventoController extends Controller
     }
 
 
-    //Para sacar el resumen de los eventos que estan publicados
-    /* public function resumen($autor)
-    {
-        if ($autor === 'admin') {
-            $total = Evento::count();
-            $activos = Evento::where('estado', 'A')->count();
-            $pendientes = Evento::where('estado', 'P')->count();
-            $denegados = Evento::where('estado', 'D')->count();
-        } else {
-            $total = Evento::where('autor', $autor)->count();
-            $activos = Evento::where('estado', 'A')->where('autor', $autor)->count();
-            $pendientes = Evento::where('estado', 'P')->where('autor', $autor)->count();
-            $denegados = Evento::where('estado', 'D')->where('autor', $autor)->count();
-        }
-
-        return response()->json([
-            'total' => $total,
-            'activos' => $activos,
-            'pendientes' => $pendientes,
-            'denegados' => $denegados
-        ]);
-    } */
-
     //Para sacar los eventos pendientes, aprobados, denegados
     public function dashboardData(Request $request)
     {
 
-        
+
         $usuario = $request->user();
 
         if ($usuario->hasRole('admin')) {
             $eventos = Evento::orderBy('created_at', 'desc')->get();
         } else {
             $eventos = Evento::where('user_id', $usuario->id)
-                             ->orderBy('created_at', 'desc')
-                             ->get();
+                ->orderBy('created_at', 'desc')
+                ->get();
         }
-        
+
         $resumen = [
             'total' => $eventos->count(),
             'activos' => $eventos->where('estado', 'A')->count(),
